@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: tuli-backend
+    runtime: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: DATABASE_URL
+        value: postgresql://postgres.uzozmzfwymidsnoksihf:Tuli%40Zambia2025!@aws-1-eu-west-1.pooler.supabase.com:5432/postgres
+      - key: PYTHON_VERSION
+        value: 3.11.9
