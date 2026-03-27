@@ -437,6 +437,16 @@ hr {
   grid-template-columns: repeat(2, 1fr) !important;
 }
 
+/* Product card — prevent tall cards on mobile */
+.product-card {
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.product-card button {
+  margin-top: auto;
+}
+
 @keyframes pulseOnline {
   0%, 100% { box-shadow: 0 0 0 0 rgba(39, 174, 96, 0.7); }
   50% { box-shadow: 0 0 0 5px rgba(39, 174, 96, 0); }
