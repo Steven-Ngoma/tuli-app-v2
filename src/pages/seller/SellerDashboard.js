@@ -38,7 +38,7 @@ const SellerDashboard = () => {
     fetchProducts();
     fetchChats();
     fetchOrders();
-    const ping = () => fetch(`http://localhost:8000/sellers/${seller.id}/ping`, { method: 'POST' }).catch(() => {});
+    const ping = () => fetch(`https://tuli-backend-44vd.onrender.com/sellers/${seller.id}/ping`, { method: 'POST' }).catch(() => {});
     ping();
     const interval = setInterval(fetchChats, 3000);
     const pingInterval = setInterval(ping, 30000);
@@ -68,27 +68,27 @@ const SellerDashboard = () => {
 
   const fetchProducts = async () => {
     try {
-      const res = await fetch(`http://localhost:8000/products?seller_id=${seller.id}`);
+      const res = await fetch(`https://tuli-backend-44vd.onrender.com/products?seller_id=${seller.id}`);
       setProducts(await res.json());
     } catch { setProducts([]); }
   };
 
   const fetchChats = async () => {
     try {
-      const res = await fetch(`http://localhost:8000/chat/seller/${seller.id}`);
+      const res = await fetch(`https://tuli-backend-44vd.onrender.com/chat/seller/${seller.id}`);
       setChats(await res.json());
     } catch { setChats([]); }
   };
 
   const fetchOrders = async () => {
     try {
-      const res = await fetch(`http://localhost:8000/orders/seller/${seller.id}`);
+      const res = await fetch(`https://tuli-backend-44vd.onrender.com/orders/seller/${seller.id}`);
       setOrders(await res.json());
     } catch { setOrders([]); }
   };
 
   const updateOrderStatus = async (orderId, status) => {
-    await fetch(`http://localhost:8000/orders/${orderId}/status`, {
+    await fetch(`https://tuli-backend-44vd.onrender.com/orders/${orderId}/status`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ status })
@@ -98,7 +98,7 @@ const SellerDashboard = () => {
 
   const fetchChatMessages = async (roomId, forceScroll = false) => {
     try {
-      const res = await fetch(`http://localhost:8000/chat/${roomId}`);
+      const res = await fetch(`https://tuli-backend-44vd.onrender.com/chat/${roomId}`);
       const data = await res.json();
       if (forceScroll) {
         shouldScrollRef.current = true;
@@ -128,7 +128,7 @@ const SellerDashboard = () => {
       if (imageFile) {
         const formData = new FormData();
         formData.append('file', imageFile);
-        const uploadRes = await fetch('http://localhost:8000/upload', { method: 'POST', body: formData });
+        const uploadRes = await fetch('https://tuli-backend-44vd.onrender.com/upload', { method: 'POST', body: formData });
         if (!uploadRes.ok) throw new Error('Image upload failed');
         image_url = (await uploadRes.json()).url;
       }
@@ -136,10 +136,10 @@ const SellerDashboard = () => {
       if (extraFiles.length > 0) {
         const formData = new FormData();
         extraFiles.forEach(f => formData.append('files', f));
-        const uploadRes = await fetch('http://localhost:8000/upload-multiple', { method: 'POST', body: formData });
+        const uploadRes = await fetch('https://tuli-backend-44vd.onrender.com/upload-multiple', { method: 'POST', body: formData });
         if (uploadRes.ok) extra_images = (await uploadRes.json()).urls;
       }
-      const res = await fetch('http://localhost:8000/products', {
+      const res = await fetch('https://tuli-backend-44vd.onrender.com/products', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...form, seller_id: seller.id, image_url, extra_images, food_category: form.food_category || null })
@@ -162,7 +162,7 @@ const SellerDashboard = () => {
 
   const handleDelete = async (id) => {
     if (!window.confirm('Remove this listing?')) return;
-    await fetch(`http://localhost:8000/products/${id}`, { method: 'DELETE' });
+    await fetch(`https://tuli-backend-44vd.onrender.com/products/${id}`, { method: 'DELETE' });
     fetchProducts();
   };
 
@@ -178,7 +178,7 @@ const SellerDashboard = () => {
       alert(blockedMsg);
       return;
     }
-    await fetch('http://localhost:8000/chat', {
+    await fetch('https://tuli-backend-44vd.onrender.com/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ room_id: activeChat.room_id, sender: seller.shop_name, message: replyText.trim(), is_seller: true })

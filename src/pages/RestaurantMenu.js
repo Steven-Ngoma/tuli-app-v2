@@ -9,7 +9,7 @@ const RestaurantMenu = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`http://localhost:8000/restaurants/${sellerId}/menu`)
+    fetch(`https://tuli-backend-44vd.onrender.com/restaurants/${sellerId}/menu`)
       .then(r => r.json())
       .then(setData)
       .catch(() => {})

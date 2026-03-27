@@ -14,7 +14,7 @@ const Navbar = () => {
   useEffect(() => {
     if (buyerName && !seller) {
       const calc = () => {
-        fetch(`http://localhost:8000/chat/buyer/${encodeURIComponent(buyerName)}`)
+        fetch(`https://tuli-backend-44vd.onrender.com/chat/buyer/${encodeURIComponent(buyerName)}`)
           .then(r => r.json())
           .then(chats => {
             const read = JSON.parse(localStorage.getItem('buyer_read_chats') || '{}');
@@ -31,7 +31,7 @@ const Navbar = () => {
     }
     if (seller) {
       const calc = () => {
-        fetch(`http://localhost:8000/chat/seller/${seller.id}`)
+        fetch(`https://tuli-backend-44vd.onrender.com/chat/seller/${seller.id}`)
           .then(r => r.json())
           .then(chats => {
             const read = JSON.parse(localStorage.getItem('read_chats') || '{}');

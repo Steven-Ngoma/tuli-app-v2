@@ -44,7 +44,7 @@ const BuyerChats = () => {
 
   const fetchChats = async () => {
     try {
-      const res = await fetch(`http://localhost:8000/chat/buyer/${encodeURIComponent(buyerName)}`);
+      const res = await fetch(`https://tuli-backend-44vd.onrender.com/chat/buyer/${encodeURIComponent(buyerName)}`);
       setChats(await res.json());
     } catch { setChats([]); }
   };
@@ -52,7 +52,7 @@ const BuyerChats = () => {
   const handlePlaceOrder = async e => {
     e.preventDefault();
     if (!orderForm.final_price.trim() || !activeChat) return;
-    await fetch('http://localhost:8000/orders', {
+    await fetch('https://tuli-backend-44vd.onrender.com/orders', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -65,7 +65,7 @@ const BuyerChats = () => {
       })
     });
     const roomId = activeChat.room_id;
-    await fetch('http://localhost:8000/chat', {
+    await fetch('https://tuli-backend-44vd.onrender.com/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ room_id: roomId, sender: buyerName, message: `🛒 Order placed! Agreed price: ${orderForm.final_price}. Delivery to: ${orderForm.delivery_address || 'To be arranged'}`, is_seller: false })
@@ -77,7 +77,7 @@ const BuyerChats = () => {
 
   const fetchMessages = async (roomId, forceScroll = false) => {
     try {
-      const res = await fetch(`http://localhost:8000/chat/${roomId}`);
+      const res = await fetch(`https://tuli-backend-44vd.onrender.com/chat/${roomId}`);
       const data = await res.json();
       if (forceScroll) {
         shouldScrollRef.current = true;
@@ -101,7 +101,7 @@ const BuyerChats = () => {
       alert(blockedMsg);
       return;
     }
-    await fetch('http://localhost:8000/chat', {
+    await fetch('https://tuli-backend-44vd.onrender.com/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ room_id: activeChat.room_id, sender: buyerName, message: text.trim(), is_seller: false })
@@ -260,7 +260,7 @@ const BuyerOrders = ({ buyerName }) => {
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
-    const load = () => fetch(`http://localhost:8000/orders/buyer/${encodeURIComponent(buyerName)}`)
+    const load = () => fetch(`https://tuli-backend-44vd.onrender.com/orders/buyer/${encodeURIComponent(buyerName)}`)
       .then(r => r.json()).then(setOrders).catch(() => {});
     load();
     const interval = setInterval(load, 5000);

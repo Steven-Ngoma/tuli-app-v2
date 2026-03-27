@@ -8,7 +8,7 @@ const Services = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch('http://localhost:8000/restaurants')
+    fetch('https://tuli-backend-44vd.onrender.com/restaurants')
       .then(res => res.json())
       .then(setRestaurants)
       .catch(() => setRestaurants([]))

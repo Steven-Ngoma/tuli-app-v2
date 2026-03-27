@@ -24,8 +24,8 @@ const Marketplace = () => {
     setSearch('');
     setCategory('All');
     const url = tab === 'services'
-      ? 'http://localhost:8000/restaurants'
-      : 'http://localhost:8000/products';
+      ? 'https://tuli-backend-44vd.onrender.com/restaurants'
+      : 'https://tuli-backend-44vd.onrender.com/products';
     fetch(url)
       .then(res => res.json())
       .then(data => {

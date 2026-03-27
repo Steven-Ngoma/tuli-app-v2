@@ -24,7 +24,7 @@ const Chat = () => {
   const roomId = nameSet ? `${sellerId}_${productId}_${buyerSlug}` : null;
 
   const fetchMessages = (forceScroll = false) => {
-    fetch(`http://localhost:8000/chat/${roomId}`)
+    fetch(`https://tuli-backend-44vd.onrender.com/chat/${roomId}`)
       .then(res => res.json())
       .then(data => {
         if (forceScroll) {
@@ -48,7 +48,7 @@ const Chat = () => {
   useEffect(() => {
     if (!roomId) return;
     fetchMessages(true);
-    const checkOnline = () => fetch(`http://localhost:8000/sellers/${sellerId}/status`).then(r => r.json()).then(d => setSellerOnline(d.online)).catch(() => {});
+    const checkOnline = () => fetch(`https://tuli-backend-44vd.onrender.com/sellers/${sellerId}/status`).then(r => r.json()).then(d => setSellerOnline(d.online)).catch(() => {});
     checkOnline();
     const interval = setInterval(() => fetchMessages(), 3000);
     const onlineInterval = setInterval(checkOnline, 15000);
@@ -58,7 +58,7 @@ const Chat = () => {
   const handlePlaceOrder = async e => {
     e.preventDefault();
     if (!orderForm.final_price.trim()) return;
-    await fetch('http://localhost:8000/orders', {
+    await fetch('https://tuli-backend-44vd.onrender.com/orders', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -70,7 +70,7 @@ const Chat = () => {
         delivery_address: orderForm.delivery_address.trim()
       })
     });
-    await fetch('http://localhost:8000/chat', {
+    await fetch('https://tuli-backend-44vd.onrender.com/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ room_id: roomId, sender: buyerName, message: `🛒 Order placed! Agreed price: ${orderForm.final_price}. Delivery to: ${orderForm.delivery_address || 'To be arranged'}`, is_seller: false })
@@ -100,7 +100,7 @@ const Chat = () => {
     }
     setSending(true);
     try {
-      await fetch('http://localhost:8000/chat', {
+      await fetch('https://tuli-backend-44vd.onrender.com/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ room_id: roomId, sender: buyerName, message: text.trim(), is_seller: false })

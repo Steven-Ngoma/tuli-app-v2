@@ -14,7 +14,7 @@ const SellerLogin = () => {
     setLoading(true);
     setError('');
     try {
-      const res = await fetch('http://localhost:8000/sellers/login', {
+      const res = await fetch('https://tuli-backend-44vd.onrender.com/sellers/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form)
