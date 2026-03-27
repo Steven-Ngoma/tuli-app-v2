@@ -1,14 +1,13 @@
 from fastapi import FastAPI, HTTPException, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from typing import Optional
 import psycopg2
 import psycopg2.extras
 import hashlib
 import os
-import uuid
-import shutil
+import cloudinary
+import cloudinary.uploader
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -22,9 +21,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-UPLOAD_DIR = "uploads"
-os.makedirs(UPLOAD_DIR, exist_ok=True)
-app.mount("/uploads", StaticFiles(directory=UPLOAD_DIR), name="uploads")
+cloudinary.config(
+    cloud_name=os.getenv("CLOUDINARY_CLOUD_NAME"),
+    api_key=os.getenv("CLOUDINARY_API_KEY"),
+    api_secret=os.getenv("CLOUDINARY_API_SECRET")
+)
 
 DATABASE_URL = os.getenv("DATABASE_URL")
 
@@ -165,11 +166,9 @@ async def upload_image(file: UploadFile = File(...)):
     ext = file.filename.split('.')[-1].lower()
     if ext not in ['jpg', 'jpeg', 'png', 'webp']:
         raise HTTPException(status_code=400, detail="Only JPG, PNG and WEBP images allowed")
-    filename = f"{uuid.uuid4()}.{ext}"
-    filepath = os.path.join(UPLOAD_DIR, filename)
-    with open(filepath, "wb") as f:
-        shutil.copyfileobj(file.file, f)
-    return {"url": f"http://localhost:8000/uploads/{filename}"}
+    contents = await file.read()
+    result = cloudinary.uploader.upload(contents, folder="tuli")
+    return {"url": result["secure_url"]}
 
 @app.post("/upload-multiple")
 async def upload_multiple(files: list[UploadFile] = File(...)):
@@ -178,11 +177,9 @@ async def upload_multiple(files: list[UploadFile] = File(...)):
         ext = file.filename.split('.')[-1].lower()
         if ext not in ['jpg', 'jpeg', 'png', 'webp']:
             continue
-        filename = f"{uuid.uuid4()}.{ext}"
-        filepath = os.path.join(UPLOAD_DIR, filename)
-        with open(filepath, "wb") as f:
-            shutil.copyfileobj(file.file, f)
-        urls.append(f"http://localhost:8000/uploads/{filename}")
+        contents = await file.read()
+        result = cloudinary.uploader.upload(contents, folder="tuli")
+        urls.append(result["secure_url"])
     return {"urls": urls}
 
 # ── Seller Routes ────────────────────────────────────────────────────────────
