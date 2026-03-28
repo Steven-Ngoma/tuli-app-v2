@@ -61,7 +61,7 @@ const Navbar = () => {
               WebkitBackgroundClip: 'text', backgroundClip: 'text',
               color: 'transparent', letterSpacing: '-0.5px'
             }}>TULI</h1>
-            <span style={{ fontSize: '0.8rem', color: '#2D6A4F', fontWeight: 500 }}>
+            <span style={{ fontSize: '0.8rem', color: '#9BB7D4', fontWeight: 500 }}>
               Tulipamodzi · Buy &amp; Sell in Zambia
             </span>
           </div>
@@ -69,8 +69,8 @@ const Navbar = () => {
 
         {/* Nav links — far right */}
         <div className="nav-links">
-          <Link to="/" style={{ color: isHome ? '#F39C12' : '#1B4332' }}>Home</Link>
-          <Link to="/marketplace" style={{ color: pathname === '/marketplace' ? '#F39C12' : '#1B4332' }}>
+          <Link to="/" style={{ color: isHome ? '#F39C12' : '#CDE5F7' }}>Home</Link>
+          <Link to="/marketplace" style={{ color: pathname === '/marketplace' ? '#F39C12' : '#CDE5F7' }}>
             🛒 Products
           </Link>
           {isHome && <a href="#how-it-works">How it works</a>}
@@ -80,7 +80,7 @@ const Navbar = () => {
                 {sellerUnread > 0 && <span style={{ position: 'absolute', top: '-6px', right: '-6px', background: '#FF5722', color: 'white', borderRadius: '50%', fontSize: '0.65rem', padding: '2px 6px', fontWeight: 700 }}>{sellerUnread}</span>}
               </Link>
             : <>
-                {buyerName && <Link to="/buyer/chats" style={{ color: pathname === '/buyer/chats' ? '#F39C12' : '#1B4332', position: 'relative' }}>
+                {buyerName && <Link to="/buyer/chats" style={{ color: pathname === '/buyer/chats' ? '#F39C12' : '#CDE5F7', position: 'relative' }}>
                   My Chats
                   {buyerUnread > 0 && <span style={{ position: 'absolute', top: '-8px', right: '-12px', background: '#FF5722', color: 'white', borderRadius: '50%', fontSize: '0.65rem', padding: '2px 6px', fontWeight: 700 }}>{buyerUnread}</span>}
                 </Link>}

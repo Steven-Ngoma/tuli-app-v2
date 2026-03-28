@@ -25,13 +25,13 @@ const Services = () => {
       <div className="container">
 
         <div style={{ marginBottom: '28px' }}>
-          <h1 style={{ fontSize: '2.3rem', fontWeight: 700, color: '#ffffff', marginBottom: '8px' }}>🤝 Services</h1>
-          <p style={{ color: '#52796F' }}>Browse service providers across Zambia.</p>
+          <h1 style={{ fontSize: '2.3rem', fontWeight: 700, color: '#0A1928', marginBottom: '8px' }}>🤝 Services</h1>
+          <p style={{ color: '#4A6080' }}>Browse service providers across Zambia.</p>
         </div>
 
         {/* Category pill — Restaurant only for now */}
         <div style={{ display: 'flex', gap: '10px', marginBottom: '24px' }}>
-          <span style={{ background: '#F39C12', color: '#ffffff', borderRadius: '40px', padding: '8px 20px', fontWeight: 700, fontSize: '0.9rem' }}>
+          <span style={{ background: '#F39C12', color: '#0A1928', borderRadius: '40px', padding: '8px 20px', fontWeight: 700, fontSize: '0.9rem' }}>
             🍽️ Restaurants & Food
           </span>
         </div>
@@ -41,16 +41,16 @@ const Services = () => {
           <input
             type="text" placeholder="Search restaurants by name or location..."
             value={search} onChange={e => setSearch(e.target.value)}
-            style={{ width: '100%', padding: '12px 16px', borderRadius: '40px', border: '1px solid #ccc', background: '#f5f7fa', color: '#ffffff', fontSize: '0.95rem', outline: 'none', boxSizing: 'border-box' }}
+            style={{ width: '100%', padding: '12px 16px', borderRadius: '40px', border: '1px solid #ccc', background: '#f5f7fa', color: '#0A1928', fontSize: '0.95rem', outline: 'none', boxSizing: 'border-box' }}
           />
         </div>
 
         {loading ? (
-          <div style={{ textAlign: 'center', padding: '60px 0', color: '#52796F' }}>
+          <div style={{ textAlign: 'center', padding: '60px 0', color: '#4A6080' }}>
             <p style={{ fontSize: '1.2rem' }}>Loading restaurants...</p>
           </div>
         ) : filtered.length === 0 ? (
-          <div style={{ textAlign: 'center', padding: '60px 0', color: '#52796F' }}>
+          <div style={{ textAlign: 'center', padding: '60px 0', color: '#4A6080' }}>
             <div style={{ fontSize: '3rem', marginBottom: '16px' }}>🍽️</div>
             <p style={{ fontSize: '1.2rem', fontWeight: 600 }}>No restaurants listed yet.</p>
             <p style={{ marginTop: '8px' }}>Be the first to list your restaurant on TULI.</p>
@@ -80,14 +80,14 @@ const Services = () => {
 
                   <div style={{ padding: '16px' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
-                      <h3 style={{ color: '#ffffff', fontSize: '1.1rem', fontWeight: 700 }}>{r.shop_name}</h3>
+                      <h3 style={{ color: '#0A1928', fontSize: '1.1rem', fontWeight: 700 }}>{r.shop_name}</h3>
                       <span style={{ display: 'flex', alignItems: 'center', gap: '4px', flexShrink: 0 }}>
                         <span className={online ? 'dot-online' : 'dot-offline'} style={{ width: '8px', height: '8px', borderRadius: '50%', background: online ? '#27AE60' : '#E74C3C', display: 'inline-block' }} />
                         <span style={{ color: online ? '#27AE60' : '#E74C3C', fontSize: '0.75rem', fontWeight: 600 }}>{online ? 'Open' : 'Closed'}</span>
                       </span>
                     </div>
                     <p style={{ color: '#6B8CAE', fontSize: '0.82rem', marginBottom: '4px' }}>📍 {r.location}</p>
-                    <p style={{ color: '#2D6A4F', fontSize: '0.78rem', marginBottom: '14px' }}>🍛 {r.item_count || 0} item{r.item_count !== 1 ? 's' : ''} on menu</p>
+                    <p style={{ color: '#9BB7D4', fontSize: '0.78rem', marginBottom: '14px' }}>🍛 {r.item_count || 0} item{r.item_count !== 1 ? 's' : ''} on menu</p>
                     <button className="btn-primary" style={{ width: '100%', fontSize: '0.85rem', padding: '8px' }}>
                       View Menu →
                     </button>
@@ -99,7 +99,7 @@ const Services = () => {
         )}
 
         {/* CTA */}
-        <div style={{ marginTop: '48px', background: '#ffffff', borderRadius: '32px', padding: '36px', textAlign: 'center' }}>
+        <div style={{ marginTop: '48px', background: '#0A1928', borderRadius: '32px', padding: '36px', textAlign: 'center' }}>
           <h3 style={{ color: '#FFD966', marginBottom: '12px' }}>Own a restaurant or food business?</h3>
           <p style={{ color: '#B8D0E7', marginBottom: '24px' }}>List your menu on TULI and start receiving orders. First month free.</p>
           <a href="/seller/register" className="btn-primary">List your restaurant →</a>
