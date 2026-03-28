@@ -114,7 +114,7 @@ const Chat = () => {
 
   if (!nameSet) {
     return (
-      <div style={{ position: 'fixed', inset: 0, background: '#0A1928', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px', zIndex: 100 }}>
+      <div style={{ position: 'fixed', inset: 0, background: '#1B4332', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px', zIndex: 100 }}>
         <div style={{ background: '#102433', borderRadius: '24px', padding: '32px', width: '100%', maxWidth: '380px', border: '1px solid #244C66', textAlign: 'center' }}>
           <div style={{ fontSize: '2.5rem', marginBottom: '12px' }}>💬</div>
           <h3 style={{ color: '#FFD966', marginBottom: '8px' }}>What's your name?</h3>
@@ -123,7 +123,7 @@ const Chat = () => {
             <input
               type="text" placeholder="Enter your name"
               value={buyerName} onChange={e => setBuyerName(e.target.value)} required autoFocus
-              style={{ padding: '14px 16px', borderRadius: '40px', border: '1px solid #244C66', background: '#0A1928', color: '#EFF3F8', fontSize: '1rem', outline: 'none', textAlign: 'center' }}
+              style={{ padding: '14px 16px', borderRadius: '40px', border: '1px solid #244C66', background: '#1B4332', color: '#EFF3F8', fontSize: '1rem', outline: 'none', textAlign: 'center' }}
             />
             <button type="submit" className="btn-primary" style={{ padding: '14px' }}>Start Chat →</button>
           </form>
@@ -133,7 +133,7 @@ const Chat = () => {
   }
 
   return (
-    <div style={{ position: 'fixed', inset: 0, background: '#0A1928', display: 'flex', flexDirection: 'column', zIndex: 100 }}>
+    <div style={{ position: 'fixed', inset: 0, background: '#1B4332', display: 'flex', flexDirection: 'column', zIndex: 100 }}>
 
       {/* Header */}
       <div style={{ background: '#102433', padding: '12px 16px', borderBottom: '1px solid #244C66', display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0 }}>
@@ -167,7 +167,7 @@ const Chat = () => {
                 maxWidth: '80%', padding: '10px 14px', wordBreak: 'break-word',
                 borderRadius: isMine ? '18px 18px 4px 18px' : '18px 18px 18px 4px',
                 background: isMine ? '#F39C12' : '#102433',
-                color: isMine ? '#0A1928' : '#EFF3F8',
+                color: isMine ? '#1B4332' : '#EFF3F8',
                 border: isMine ? 'none' : '1px solid #244C66'
               }}>
                 {!isMine && <div style={{ fontSize: '0.7rem', fontWeight: 700, marginBottom: '4px', color: '#F39C12' }}>{msg.sender}</div>}
@@ -183,7 +183,7 @@ const Chat = () => {
 
       {/* Place Order Button */}
       {!orderPlaced && (
-        <div style={{ padding: '8px 12px', background: '#0A1928', borderTop: '1px solid #1A3A50', flexShrink: 0 }}>
+        <div style={{ padding: '8px 12px', background: '#1B4332', borderTop: '1px solid #1A3A50', flexShrink: 0 }}>
           {!showOrderForm ? (
             <button onClick={() => setShowOrderForm(true)} style={{ width: '100%', background: '#27AE60', color: 'white', border: 'none', borderRadius: '40px', padding: '10px', fontWeight: 700, fontSize: '0.9rem', cursor: 'pointer' }}>
               🛒 Place Order
@@ -224,7 +224,7 @@ const Chat = () => {
         <input
           type="text" placeholder="Type a message..."
           value={text} onChange={e => setText(e.target.value)}
-          style={{ flex: 1, padding: '12px 16px', borderRadius: '40px', border: '1px solid #244C66', background: '#0A1928', color: '#EFF3F8', fontSize: '1rem', outline: 'none', minWidth: 0 }}
+          style={{ flex: 1, padding: '12px 16px', borderRadius: '40px', border: '1px solid #244C66', background: '#1B4332', color: '#EFF3F8', fontSize: '1rem', outline: 'none', minWidth: 0 }}
         />
         <button type="submit" disabled={sending || !text.trim()} style={{
           background: text.trim() ? '#F39C12' : '#244C66', border: 'none', borderRadius: '50%',

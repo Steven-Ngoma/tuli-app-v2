@@ -127,7 +127,7 @@ const SellerRegister = () => {
             <input
               key={field.name} name={field.name} type={field.type} placeholder={field.placeholder}
               value={form[field.name]} onChange={handleChange} required={field.name !== 'email'}
-              style={{ padding: '14px 18px', borderRadius: '40px', border: '1px solid #244C66', background: '#0A1928', color: '#EFF3F8', fontSize: '0.95rem', outline: 'none' }}
+              style={{ padding: '14px 18px', borderRadius: '40px', border: '1px solid #244C66', background: '#1B4332', color: '#EFF3F8', fontSize: '0.95rem', outline: 'none' }}
             />
           ))}
 
