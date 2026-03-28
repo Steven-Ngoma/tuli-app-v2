@@ -110,6 +110,20 @@ const SellerDashboard = () => {
     } catch { setChatMessages([]); }
   };
 
+  const uploadToCloudinary = async (file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', 'tuli_unsigned');
+    formData.append('cloud_name', 'daxhjv2lt');
+    const res = await fetch('https://api.cloudinary.com/v1_1/daxhjv2lt/image/upload', {
+      method: 'POST',
+      body: formData
+    });
+    if (!res.ok) throw new Error('Image upload failed');
+    const data = await res.json();
+    return data.secure_url;
+  };
+
   const handleChange = e => setForm({ ...form, [e.target.name]: e.target.value });
 
   const handleImageChange = e => {
@@ -126,18 +140,11 @@ const SellerDashboard = () => {
     try {
       let image_url = '';
       if (imageFile) {
-        const formData = new FormData();
-        formData.append('file', imageFile);
-        const uploadRes = await fetch('https://tuli-backend-44vd.onrender.com/upload', { method: 'POST', body: formData });
-        if (!uploadRes.ok) throw new Error('Image upload failed');
-        image_url = (await uploadRes.json()).url;
+        image_url = await uploadToCloudinary(imageFile);
       }
       let extra_images = [];
       if (extraFiles.length > 0) {
-        const formData = new FormData();
-        extraFiles.forEach(f => formData.append('files', f));
-        const uploadRes = await fetch('https://tuli-backend-44vd.onrender.com/upload-multiple', { method: 'POST', body: formData });
-        if (uploadRes.ok) extra_images = (await uploadRes.json()).urls;
+        extra_images = await Promise.all(extraFiles.map(f => uploadToCloudinary(f)));
       }
       const res = await fetch('https://tuli-backend-44vd.onrender.com/products', {
         method: 'POST',
