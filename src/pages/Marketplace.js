@@ -150,25 +150,27 @@ const Marketplace = () => {
             {filtered.map(item => {
               const online = item.last_seen && (new Date() - new Date(item.last_seen + 'Z')) / 1000 < 120;
               return (
-                <div key={item.id} className="product-card" style={{ background: '#ffffff', borderRadius: '16px', padding: '10px', border: '1px solid #e0e0e0', boxShadow: '0 2px 8px rgba(0,0,0,0.06)', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
-                  <ImageCarousel images={item.images || (item.image_url ? [item.image_url] : [])} height="110px" />
-                  <span style={{ background: '#FFF3E0', color: '#E67E22', fontSize: '0.7rem', fontWeight: 600, padding: '3px 10px', borderRadius: '20px', display: 'inline-block', marginBottom: '6px' }}>
-                    {item.category}
-                  </span>
-                  <h3 style={{ color: '#0A1928', fontSize: '0.9rem', marginBottom: '3px' }}>{item.name}</h3>
-                  <p style={{ color: '#E67E22', fontWeight: 700, fontSize: '0.95rem', marginBottom: '3px' }}>{item.price}</p>
-                  <p style={{ color: '#6B8CAE', fontSize: '0.75rem', marginBottom: '2px' }}>📍 {item.location}</p>
-                  <p style={{ color: '#6B8CAE', fontSize: '0.75rem', marginBottom: '10px', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                    🏪 {item.shop_name}
-                    <span className={online ? 'dot-online' : 'dot-offline'} style={{ width: '7px', height: '7px', borderRadius: '50%', background: online ? '#27AE60' : '#E74C3C', display: 'inline-block', flexShrink: 0 }} />
-                  </p>
-                  <button
-                    onClick={() => navigate(`/chat/${item.seller_id}/${item.id}?product=${encodeURIComponent(item.name)}&shop=${encodeURIComponent(item.shop_name)}&price=${encodeURIComponent(item.price)}`)}
-                    className="btn-primary"
-                    style={{ fontSize: '0.8rem', padding: '7px 12px', width: '100%' }}
-                  >
-                    {chatLabel}
-                  </button>
+                <div key={item.id} className="product-card" style={{ background: '#ffffff', borderRadius: '16px', padding: '0', border: '1px solid #e0e0e0', boxShadow: '0 2px 8px rgba(0,0,0,0.06)', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+                  <ImageCarousel images={item.images || (item.image_url ? [item.image_url] : [])} height="120px" />
+                  <div style={{ padding: '10px', flex: 1, display: 'flex', flexDirection: 'column' }}>
+                    <span style={{ background: '#FFF3E0', color: '#E67E22', fontSize: '0.7rem', fontWeight: 600, padding: '3px 10px', borderRadius: '20px', display: 'inline-block', marginBottom: '6px' }}>
+                      {item.category}
+                    </span>
+                    <h3 style={{ color: '#0A1928', fontSize: '0.88rem', fontWeight: 700, marginBottom: '3px' }}>{item.name}</h3>
+                    <p style={{ color: '#E67E22', fontWeight: 700, fontSize: '0.9rem', marginBottom: '3px' }}>{item.price}</p>
+                    <p style={{ color: '#6B8CAE', fontSize: '0.72rem', marginBottom: '2px' }}>📍 {item.location}</p>
+                    <p style={{ color: '#6B8CAE', fontSize: '0.72rem', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                      🏪 {item.shop_name}
+                      <span className={online ? 'dot-online' : 'dot-offline'} style={{ width: '7px', height: '7px', borderRadius: '50%', background: online ? '#27AE60' : '#E74C3C', display: 'inline-block', flexShrink: 0 }} />
+                    </p>
+                    <button
+                      onClick={() => navigate(`/chat/${item.seller_id}/${item.id}?product=${encodeURIComponent(item.name)}&shop=${encodeURIComponent(item.shop_name)}&price=${encodeURIComponent(item.price)}`)}
+                      className="btn-primary"
+                      style={{ fontSize: '0.78rem', padding: '7px', width: '100%', marginTop: 'auto' }}
+                    >
+                      {chatLabel}
+                    </button>
+                  </div>
                 </div>
               );
             })}
