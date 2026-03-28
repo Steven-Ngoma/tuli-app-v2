@@ -117,41 +117,42 @@ const Marketplace = () => {
             <p style={{ marginTop: '8px' }}>Try a different search or category.</p>
           </div>
         ) : tab === 'services' ? (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))', gap: '16px' }} className="products-grid">
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '16px' }}>
             {filtered.map(r => {
               const online = r.last_seen && (new Date() - new Date(r.last_seen + 'Z')) / 1000 < 120;
               return (
                 <div key={r.id} onClick={() => navigate(`/restaurant/${r.id}`)}
-                  style={{ background: '#ffffff', borderRadius: '16px', border: '1px solid #e0e0e0', boxShadow: '0 2px 8px rgba(0,0,0,0.06)', overflow: 'hidden', cursor: 'pointer', display: 'flex', flexDirection: 'column' }}
+                  style={{ background: '#ffffff', borderRadius: '16px', border: '1px solid #e0e0e0', boxShadow: '0 2px 8px rgba(0,0,0,0.06)', overflow: 'hidden', cursor: 'pointer', display: 'flex', flexDirection: 'row', height: '90px' }}
                 >
-                  <div style={{ width: '100%', height: '110px', background: '#FFF3E0', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', flexShrink: 0 }}>
+                  <div style={{ width: '90px', minWidth: '90px', background: '#FFF3E0', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
                     {r.cover_image
                       ? <img src={r.cover_image} alt={r.shop_name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                      : <span style={{ fontSize: '3rem' }}>🍽️</span>}
+                      : <span style={{ fontSize: '2.5rem' }}>🍽️</span>}
                   </div>
-                  <div style={{ padding: '10px', flex: 1, display: 'flex', flexDirection: 'column' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
-                      <h3 style={{ color: '#0A1928', fontSize: '0.9rem', fontWeight: 700, margin: 0 }}>{r.shop_name}</h3>
-                      <span style={{ display: 'flex', alignItems: 'center', gap: '3px', flexShrink: 0 }}>
-                        <span className={online ? 'dot-online' : 'dot-offline'} style={{ width: '7px', height: '7px', borderRadius: '50%', background: online ? '#27AE60' : '#E74C3C', display: 'inline-block' }} />
-                        <span style={{ color: online ? '#27AE60' : '#E74C3C', fontSize: '0.68rem', fontWeight: 600 }}>{online ? 'Open' : 'Closed'}</span>
-                      </span>
+                  <div style={{ padding: '10px 12px', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', minWidth: 0 }}>
+                    <div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <h3 style={{ color: '#0A1928', fontSize: '0.88rem', fontWeight: 700, margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{r.shop_name}</h3>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: '3px', flexShrink: 0, marginLeft: '4px' }}>
+                          <span className={online ? 'dot-online' : 'dot-offline'} style={{ width: '7px', height: '7px', borderRadius: '50%', background: online ? '#27AE60' : '#E74C3C', display: 'inline-block' }} />
+                        </span>
+                      </div>
+                      <p style={{ color: '#6B8CAE', fontSize: '0.72rem', margin: '2px 0' }}>📍 {r.location}</p>
+                      <p style={{ color: '#9BB7D4', fontSize: '0.7rem', margin: 0 }}>{r.item_count || 0} items on menu</p>
                     </div>
-                    <p style={{ color: '#6B8CAE', fontSize: '0.75rem', marginBottom: '2px' }}>📍 {r.location}</p>
-                    <p style={{ color: '#9BB7D4', fontSize: '0.72rem', marginBottom: '8px' }}>🍻 {r.item_count || 0} items</p>
-                    <button className="btn-primary" style={{ width: '100%', fontSize: '0.78rem', padding: '6px', marginTop: 'auto' }}>View Menu →</button>
+                    <button className="btn-primary" style={{ fontSize: '0.72rem', padding: '4px 10px', width: '100%' }}>View Menu →</button>
                   </div>
                 </div>
               );
             })}
           </div>
         ) : (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))', gap: '16px' }} className="products-grid">
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '16px' }} className="products-grid">
             {filtered.map(item => {
               const online = item.last_seen && (new Date() - new Date(item.last_seen + 'Z')) / 1000 < 120;
               return (
-                <div key={item.id} className="product-card" style={{ background: '#ffffff', borderRadius: '16px', padding: '10px', border: '1px solid #e0e0e0', boxShadow: '0 2px 8px rgba(0,0,0,0.06)', overflow: 'hidden' }}>
-                  <ImageCarousel images={item.images || (item.image_url ? [item.image_url] : [])} height="120px" />
+                <div key={item.id} className="product-card" style={{ background: '#ffffff', borderRadius: '16px', padding: '10px', border: '1px solid #e0e0e0', boxShadow: '0 2px 8px rgba(0,0,0,0.06)', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+                  <ImageCarousel images={item.images || (item.image_url ? [item.image_url] : [])} height="110px" />
                   <span style={{ background: '#FFF3E0', color: '#E67E22', fontSize: '0.7rem', fontWeight: 600, padding: '3px 10px', borderRadius: '20px', display: 'inline-block', marginBottom: '6px' }}>
                     {item.category}
                   </span>
