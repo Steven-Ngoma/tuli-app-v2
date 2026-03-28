@@ -25,13 +25,13 @@ const Services = () => {
       <div className="container">
 
         <div style={{ marginBottom: '28px' }}>
-          <h1 style={{ fontSize: '2.3rem', fontWeight: 700, color: '#0A1928', marginBottom: '8px' }}>🤝 Services</h1>
+          <h1 style={{ fontSize: '2.3rem', fontWeight: 700, color: '#ffffff', marginBottom: '8px' }}>🤝 Services</h1>
           <p style={{ color: '#4A6080' }}>Browse service providers across Zambia.</p>
         </div>
 
         {/* Category pill — Restaurant only for now */}
         <div style={{ display: 'flex', gap: '10px', marginBottom: '24px' }}>
-          <span style={{ background: '#F39C12', color: '#0A1928', borderRadius: '40px', padding: '8px 20px', fontWeight: 700, fontSize: '0.9rem' }}>
+          <span style={{ background: '#F39C12', color: '#ffffff', borderRadius: '40px', padding: '8px 20px', fontWeight: 700, fontSize: '0.9rem' }}>
             🍽️ Restaurants & Food
           </span>
         </div>
@@ -41,7 +41,7 @@ const Services = () => {
           <input
             type="text" placeholder="Search restaurants by name or location..."
             value={search} onChange={e => setSearch(e.target.value)}
-            style={{ width: '100%', padding: '12px 16px', borderRadius: '40px', border: '1px solid #ccc', background: '#f5f7fa', color: '#0A1928', fontSize: '0.95rem', outline: 'none', boxSizing: 'border-box' }}
+            style={{ width: '100%', padding: '12px 16px', borderRadius: '40px', border: '1px solid #ccc', background: '#f5f7fa', color: '#ffffff', fontSize: '0.95rem', outline: 'none', boxSizing: 'border-box' }}
           />
         </div>
 
@@ -80,7 +80,7 @@ const Services = () => {
 
                   <div style={{ padding: '16px' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
-                      <h3 style={{ color: '#0A1928', fontSize: '1.1rem', fontWeight: 700 }}>{r.shop_name}</h3>
+                      <h3 style={{ color: '#ffffff', fontSize: '1.1rem', fontWeight: 700 }}>{r.shop_name}</h3>
                       <span style={{ display: 'flex', alignItems: 'center', gap: '4px', flexShrink: 0 }}>
                         <span className={online ? 'dot-online' : 'dot-offline'} style={{ width: '8px', height: '8px', borderRadius: '50%', background: online ? '#27AE60' : '#E74C3C', display: 'inline-block' }} />
                         <span style={{ color: online ? '#27AE60' : '#E74C3C', fontSize: '0.75rem', fontWeight: 600 }}>{online ? 'Open' : 'Closed'}</span>
@@ -99,7 +99,7 @@ const Services = () => {
         )}
 
         {/* CTA */}
-        <div style={{ marginTop: '48px', background: '#0A1928', borderRadius: '32px', padding: '36px', textAlign: 'center' }}>
+        <div style={{ marginTop: '48px', background: '#ffffff', borderRadius: '32px', padding: '36px', textAlign: 'center' }}>
           <h3 style={{ color: '#FFD966', marginBottom: '12px' }}>Own a restaurant or food business?</h3>
           <p style={{ color: '#B8D0E7', marginBottom: '24px' }}>List your menu on TULI and start receiving orders. First month free.</p>
           <a href="/seller/register" className="btn-primary">List your restaurant →</a>

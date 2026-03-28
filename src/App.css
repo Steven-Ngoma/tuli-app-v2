@@ -11,8 +11,8 @@ html {
 
 body {
   font-family: 'Inter', sans-serif;
-  background-color: #1B4332;
-  color: #EFF3F8;
+  background-color: #ffffff;
+  color: #0A1928;
   line-height: 1.5;
 }
 
@@ -30,7 +30,7 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #1B4332;
+  background: #ffffff;
 }
 
 ::-webkit-scrollbar-thumb {

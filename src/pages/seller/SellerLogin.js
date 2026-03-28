@@ -46,12 +46,12 @@ const SellerLogin = () => {
           <input
             name="phone" type="tel" placeholder="WhatsApp number"
             value={form.phone} onChange={handleChange} required
-            style={{ padding: '14px 18px', borderRadius: '40px', border: '1px solid #244C66', background: '#0A1928', color: '#EFF3F8', fontSize: '0.95rem', outline: 'none' }}
+            style={{ padding: '14px 18px', borderRadius: '40px', border: '1px solid #244C66', background: '#ffffff', color: '#EFF3F8', fontSize: '0.95rem', outline: 'none' }}
           />
           <input
             name="password" type="password" placeholder="Password"
             value={form.password} onChange={handleChange} required
-            style={{ padding: '14px 18px', borderRadius: '40px', border: '1px solid #244C66', background: '#0A1928', color: '#EFF3F8', fontSize: '0.95rem', outline: 'none' }}
+            style={{ padding: '14px 18px', borderRadius: '40px', border: '1px solid #244C66', background: '#ffffff', color: '#EFF3F8', fontSize: '0.95rem', outline: 'none' }}
           />
           <button type="submit" className="btn-primary" disabled={loading} style={{ marginTop: '8px' }}>
             {loading ? 'Logging in...' : 'Login →'}

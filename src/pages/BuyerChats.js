@@ -113,7 +113,7 @@ const BuyerChats = () => {
   return (
     <>
       {activeChat && (
-        <div style={{ position: 'fixed', inset: 0, background: '#0A1928', zIndex: 200, display: 'flex', flexDirection: 'column', height: '100vh' }}>
+        <div style={{ position: 'fixed', inset: 0, background: '#ffffff', zIndex: 200, display: 'flex', flexDirection: 'column', height: '100vh' }}>
           <div style={{ background: '#102433', padding: '14px 20px', borderBottom: '1px solid #244C66', display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0 }}>
             <button onClick={() => setActiveChat(null)} style={{ background: 'transparent', border: 'none', color: '#F39C12', fontSize: '1.4rem', cursor: 'pointer', padding: 0 }}>←</button>
             <div style={{ width: '38px', height: '38px', background: '#F39C1230', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.1rem' }}>🏪</div>
@@ -130,8 +130,8 @@ const BuyerChats = () => {
                   <div style={{
                     maxWidth: '70%', padding: '10px 14px', wordBreak: 'break-word',
                     borderRadius: isMine ? '18px 18px 4px 18px' : '18px 18px 18px 4px',
-                    background: isMine ? '#F39C12' : '#0A1928',
-                    color: isMine ? '#0A1928' : '#EFF3F8',
+                    background: isMine ? '#F39C12' : '#ffffff',
+                    color: isMine ? '#ffffff' : '#EFF3F8',
                     border: isMine ? 'none' : '1px solid #244C66'
                   }}>
                     <div style={{ fontSize: '0.9rem' }}>{m.message}</div>
@@ -146,7 +146,7 @@ const BuyerChats = () => {
 
           {/* Place Order */}
           {!orderPlaced[activeChat?.room_id] ? (
-            <div style={{ padding: '8px 12px', background: '#0A1928', borderTop: '1px solid #1A3A50', flexShrink: 0 }}>
+            <div style={{ padding: '8px 12px', background: '#ffffff', borderTop: '1px solid #1A3A50', flexShrink: 0 }}>
               {!showOrderForm ? (
                 <button onClick={() => { setShowOrderForm(true); setOrderForm({ final_price: '', delivery_address: '' }); }}
                   style={{ width: '100%', background: '#27AE60', color: 'white', border: 'none', borderRadius: '40px', padding: '10px', fontWeight: 700, fontSize: '0.9rem', cursor: 'pointer' }}>
@@ -181,7 +181,7 @@ const BuyerChats = () => {
             <input
               type="text" placeholder="Type a message..."
               value={text} onChange={e => setText(e.target.value)}
-              style={{ flex: 1, padding: '12px 16px', borderRadius: '40px', border: '1px solid #244C66', background: '#0A1928', color: '#EFF3F8', fontSize: '0.95rem', outline: 'none', minWidth: 0 }}
+              style={{ flex: 1, padding: '12px 16px', borderRadius: '40px', border: '1px solid #244C66', background: '#ffffff', color: '#EFF3F8', fontSize: '0.95rem', outline: 'none', minWidth: 0 }}
             />
             <button type="submit" disabled={!text.trim()}
               style={{ background: text.trim() ? '#F39C12' : '#244C66', border: 'none', borderRadius: '50%', width: '44px', height: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: text.trim() ? 'pointer' : 'default', flexShrink: 0, fontSize: '1.1rem' }}
@@ -292,7 +292,7 @@ const BuyerOrders = ({ buyerName }) => {
             </span>
           </div>
           <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap' }}>
-            <div style={{ background: '#0A1928', borderRadius: '12px', padding: '8px 14px' }}>
+            <div style={{ background: '#ffffff', borderRadius: '12px', padding: '8px 14px' }}>
               <div style={{ color: '#4A6080', fontSize: '0.7rem' }}>Agreed Price</div>
               <div style={{ color: '#27AE60', fontWeight: 700 }}>{o.final_price}</div>
             </div>

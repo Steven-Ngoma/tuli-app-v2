@@ -204,7 +204,7 @@ const SellerDashboard = () => {
   return (
     <>
     {activeChat && (
-      <div style={{ position: 'fixed', inset: 0, background: '#0A1928', zIndex: 200, display: 'flex', flexDirection: 'column', height: '100vh' }}>
+      <div style={{ position: 'fixed', inset: 0, background: '#ffffff', zIndex: 200, display: 'flex', flexDirection: 'column', height: '100vh' }}>
         <div style={{ background: '#102433', padding: '14px 20px', borderBottom: '1px solid #244C66', display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0 }}>
           <button onClick={() => setActiveChat(null)} style={{ background: 'transparent', border: 'none', color: '#F39C12', fontSize: '1.4rem', cursor: 'pointer', padding: 0 }}>←</button>
           <div>
@@ -220,8 +220,8 @@ const SellerDashboard = () => {
                 <div style={{
                   maxWidth: '70%', padding: '10px 14px', wordBreak: 'break-word',
                   borderRadius: isMine ? '18px 18px 4px 18px' : '18px 18px 18px 4px',
-                  background: isMine ? '#F39C12' : '#0A1928',
-                  color: isMine ? '#0A1928' : '#EFF3F8',
+                  background: isMine ? '#F39C12' : '#ffffff',
+                  color: isMine ? '#ffffff' : '#EFF3F8',
                   border: isMine ? 'none' : '1px solid #244C66'
                 }}>
                   <div style={{ fontSize: '0.9rem' }}>{m.message}</div>
@@ -237,7 +237,7 @@ const SellerDashboard = () => {
           <input
             type="text" placeholder="Reply..."
             value={replyText} onChange={e => setReplyText(e.target.value)}
-            style={{ flex: 1, padding: '12px 16px', borderRadius: '40px', border: '1px solid #244C66', background: '#0A1928', color: '#EFF3F8', fontSize: '0.95rem', outline: 'none', minWidth: 0 }}
+            style={{ flex: 1, padding: '12px 16px', borderRadius: '40px', border: '1px solid #244C66', background: '#ffffff', color: '#EFF3F8', fontSize: '0.95rem', outline: 'none', minWidth: 0 }}
           />
           <button type="submit" disabled={!replyText.trim()}
             style={{ background: replyText.trim() ? '#F39C12' : '#244C66', border: 'none', borderRadius: '50%', width: '44px', height: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: replyText.trim() ? 'pointer' : 'default', flexShrink: 0, fontSize: '1.1rem' }}
@@ -339,12 +339,12 @@ const SellerDashboard = () => {
                     <input
                       key={f.name} name={f.name} type={f.type} placeholder={f.placeholder}
                       value={form[f.name]} onChange={handleChange} required
-                      style={{ padding: '12px 16px', borderRadius: '40px', border: '1px solid #244C66', background: '#0A1928', color: '#EFF3F8', fontSize: '0.9rem', outline: 'none' }}
+                      style={{ padding: '12px 16px', borderRadius: '40px', border: '1px solid #244C66', background: '#ffffff', color: '#EFF3F8', fontSize: '0.9rem', outline: 'none' }}
                     />
                   ))}
                   <select
                     name="category" value={form.category} onChange={handleChange}
-                    style={{ padding: '12px 16px', borderRadius: '40px', border: '1px solid #244C66', background: '#0A1928', color: '#EFF3F8', fontSize: '0.9rem' }}
+                    style={{ padding: '12px 16px', borderRadius: '40px', border: '1px solid #244C66', background: '#ffffff', color: '#EFF3F8', fontSize: '0.9rem' }}
                   >
                     {(seller.shop_type === 'service'
                       ? ['Restaurant & Food']
@@ -355,7 +355,7 @@ const SellerDashboard = () => {
                   {form.category === 'Restaurant & Food' && (
                     <select
                       name="food_category" value={form.food_category} onChange={handleChange}
-                      style={{ padding: '12px 16px', borderRadius: '40px', border: '1px solid #244C66', background: '#0A1928', color: '#EFF3F8', fontSize: '0.9rem' }}
+                      style={{ padding: '12px 16px', borderRadius: '40px', border: '1px solid #244C66', background: '#ffffff', color: '#EFF3F8', fontSize: '0.9rem' }}
                     >
                       <option value="">Select menu section</option>
                       {foodCategories.map(c => <option key={c} value={c}>{c}</option>)}
@@ -364,7 +364,7 @@ const SellerDashboard = () => {
                   <textarea
                     name="description" placeholder="Short product description"
                     value={form.description} onChange={handleChange}
-                    style={{ padding: '12px 16px', borderRadius: '20px', border: '1px solid #244C66', background: '#0A1928', color: '#EFF3F8', fontSize: '0.9rem', resize: 'vertical', outline: 'none' }}
+                    style={{ padding: '12px 16px', borderRadius: '20px', border: '1px solid #244C66', background: '#ffffff', color: '#EFF3F8', fontSize: '0.9rem', resize: 'vertical', outline: 'none' }}
                   />
 
                   {/* Image Upload */}
@@ -372,7 +372,7 @@ const SellerDashboard = () => {
                     <label style={{
                       display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
                       border: '2px dashed #244C66', borderRadius: '20px', padding: '24px', cursor: 'pointer',
-                      background: imagePreview ? 'transparent' : '#0A1928', position: 'relative', overflow: 'hidden'
+                      background: imagePreview ? 'transparent' : '#ffffff', position: 'relative', overflow: 'hidden'
                     }}>
                       {imagePreview
                         ? <img src={imagePreview} alt="preview" style={{ width: '100%', maxHeight: '200px', objectFit: 'cover', borderRadius: '12px' }} />
@@ -503,12 +503,12 @@ const SellerDashboard = () => {
                   </div>
 
                   <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap', marginBottom: '14px' }}>
-                    <div style={{ background: '#0A1928', borderRadius: '12px', padding: '8px 14px' }}>
+                    <div style={{ background: '#ffffff', borderRadius: '12px', padding: '8px 14px' }}>
                       <div style={{ color: '#4A6080', fontSize: '0.7rem' }}>Listed Price</div>
                       <div style={{ color: '#9BB7D4', fontWeight: 600 }}>{o.original_price || 'N/A'}</div>
                     </div>
                     <div style={{ color: '#4A6080', fontSize: '1.2rem' }}>→</div>
-                    <div style={{ background: '#0A1928', borderRadius: '12px', padding: '8px 14px' }}>
+                    <div style={{ background: '#ffffff', borderRadius: '12px', padding: '8px 14px' }}>
                       <div style={{ color: '#4A6080', fontSize: '0.7rem' }}>Agreed Price</div>
                       <div style={{ color: '#27AE60', fontWeight: 700 }}>{o.final_price}</div>
                     </div>

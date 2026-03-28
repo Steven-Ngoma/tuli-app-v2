@@ -57,7 +57,7 @@ const Marketplace = () => {
 
         {/* Page Header */}
         <div style={{ marginBottom: '24px' }}>
-          <h1 style={{ fontSize: '2.3rem', fontWeight: 700, color: '#0A1928', marginBottom: '8px' }}>
+          <h1 style={{ fontSize: '2.3rem', fontWeight: 700, color: '#ffffff', marginBottom: '8px' }}>
             TULI Marketplace
           </h1>
           <p style={{ color: '#4A6080' }}>Browse listings from sellers across Zambia. Chat directly on TULI.</p>
@@ -71,7 +71,7 @@ const Marketplace = () => {
               padding: '10px 28px', borderRadius: '40px', border: 'none', cursor: 'pointer',
               fontWeight: 700, fontSize: '0.95rem',
               background: tab === 'products' ? '#F39C12' : '#f5f7fa',
-              color: tab === 'products' ? '#0A1928' : '#4A6080',
+              color: tab === 'products' ? '#ffffff' : '#4A6080',
               transition: '0.2s'
             }}
           >
@@ -83,7 +83,7 @@ const Marketplace = () => {
               padding: '10px 28px', borderRadius: '40px', border: 'none', cursor: 'pointer',
               fontWeight: 700, fontSize: '0.95rem',
               background: tab === 'services' ? '#F39C12' : '#f5f7fa',
-              color: tab === 'services' ? '#0A1928' : '#4A6080',
+              color: tab === 'services' ? '#ffffff' : '#4A6080',
               transition: '0.2s'
             }}
           >
@@ -96,11 +96,11 @@ const Marketplace = () => {
           <input
             type="text" placeholder="Search by name or location..."
             value={search} onChange={e => setSearch(e.target.value)}
-            style={{ flex: 1, minWidth: '220px', padding: '12px 16px', borderRadius: '40px', border: '1px solid #ccc', background: '#f5f7fa', color: '#0A1928', fontSize: '0.95rem', outline: 'none' }}
+            style={{ flex: 1, minWidth: '220px', padding: '12px 16px', borderRadius: '40px', border: '1px solid #ccc', background: '#f5f7fa', color: '#ffffff', fontSize: '0.95rem', outline: 'none' }}
           />
           <select
             value={category} onChange={e => setCategory(e.target.value)}
-            style={{ padding: '12px 16px', borderRadius: '40px', border: '1px solid #ccc', background: '#f5f7fa', color: '#0A1928', fontSize: '0.95rem', cursor: 'pointer' }}
+            style={{ padding: '12px 16px', borderRadius: '40px', border: '1px solid #ccc', background: '#f5f7fa', color: '#ffffff', fontSize: '0.95rem', cursor: 'pointer' }}
           >
             {categories.map(c => <option key={c} value={c}>{c}</option>)}
           </select>
@@ -131,7 +131,7 @@ const Marketplace = () => {
                   </div>
                   <div style={{ padding: '10px', flex: 1, display: 'flex', flexDirection: 'column' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
-                      <h3 style={{ color: '#0A1928', fontSize: '0.9rem', fontWeight: 700, margin: 0 }}>{r.shop_name}</h3>
+                      <h3 style={{ color: '#ffffff', fontSize: '0.9rem', fontWeight: 700, margin: 0 }}>{r.shop_name}</h3>
                       <span style={{ display: 'flex', alignItems: 'center', gap: '3px' }}>
                         <span className={online ? 'dot-online' : 'dot-offline'} style={{ width: '7px', height: '7px', borderRadius: '50%', background: online ? '#27AE60' : '#E74C3C', display: 'inline-block' }} />
                         <span style={{ color: online ? '#27AE60' : '#E74C3C', fontSize: '0.7rem', fontWeight: 600 }}>{online ? 'Open' : 'Closed'}</span>
@@ -156,7 +156,7 @@ const Marketplace = () => {
                     <span style={{ background: '#FFF3E0', color: '#E67E22', fontSize: '0.7rem', fontWeight: 600, padding: '3px 10px', borderRadius: '20px', display: 'inline-block', marginBottom: '6px' }}>
                       {item.category}
                     </span>
-                    <h3 style={{ color: '#0A1928', fontSize: '0.88rem', fontWeight: 700, marginBottom: '3px' }}>{item.name}</h3>
+                    <h3 style={{ color: '#ffffff', fontSize: '0.88rem', fontWeight: 700, marginBottom: '3px' }}>{item.name}</h3>
                     <p style={{ color: '#E67E22', fontWeight: 700, fontSize: '0.9rem', marginBottom: '3px' }}>{item.price}</p>
                     <p style={{ color: '#6B8CAE', fontSize: '0.72rem', marginBottom: '2px' }}>📍 {item.location}</p>
                     <p style={{ color: '#6B8CAE', fontSize: '0.72rem', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '4px' }}>
@@ -178,7 +178,7 @@ const Marketplace = () => {
         )}
 
         {/* CTA */}
-        <div style={{ marginTop: '32px', background: '#0A1928', borderRadius: '32px', padding: '36px', textAlign: 'center' }}>
+        <div style={{ marginTop: '32px', background: '#ffffff', borderRadius: '32px', padding: '36px', textAlign: 'center' }}>
           <h3 style={{ color: '#FFD966', marginBottom: '12px' }}>Want to list on TULI?</h3>
           <p style={{ color: '#B8D0E7', marginBottom: '24px' }}>
             Register as a seller and list your products or services for free.
