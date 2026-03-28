@@ -163,22 +163,16 @@ def fetchall(cur):
 
 @app.post("/upload")
 async def upload_image(file: UploadFile = File(...)):
-    ext = file.filename.split('.')[-1].lower()
-    if ext not in ['jpg', 'jpeg', 'png', 'webp']:
-        raise HTTPException(status_code=400, detail="Only JPG, PNG and WEBP images allowed")
     contents = await file.read()
-    result = cloudinary.uploader.upload(contents, folder="tuli")
+    result = cloudinary.uploader.upload(contents, folder="tuli", resource_type="image")
     return {"url": result["secure_url"]}
 
 @app.post("/upload-multiple")
 async def upload_multiple(files: list[UploadFile] = File(...)):
     urls = []
     for file in files:
-        ext = file.filename.split('.')[-1].lower()
-        if ext not in ['jpg', 'jpeg', 'png', 'webp']:
-            continue
         contents = await file.read()
-        result = cloudinary.uploader.upload(contents, folder="tuli")
+        result = cloudinary.uploader.upload(contents, folder="tuli", resource_type="image")
         urls.append(result["secure_url"])
     return {"urls": urls}
 
