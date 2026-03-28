@@ -16,7 +16,7 @@ const Contact = () => (
           📧 Send an email
         </a>
       </div>
-      <p style={{ marginTop: '28px', color: '#9BB7D4', fontSize: '0.9rem' }}>
+      <p style={{ marginTop: '28px', color: '#2D6A4F', fontSize: '0.9rem' }}>
         📍 Lusaka, Zambia
       </p>
     </div>

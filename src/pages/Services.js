@@ -26,7 +26,7 @@ const Services = () => {
 
         <div style={{ marginBottom: '28px' }}>
           <h1 style={{ fontSize: '2.3rem', fontWeight: 700, color: '#ffffff', marginBottom: '8px' }}>🤝 Services</h1>
-          <p style={{ color: '#4A6080' }}>Browse service providers across Zambia.</p>
+          <p style={{ color: '#52796F' }}>Browse service providers across Zambia.</p>
         </div>
 
         {/* Category pill — Restaurant only for now */}
@@ -46,11 +46,11 @@ const Services = () => {
         </div>
 
         {loading ? (
-          <div style={{ textAlign: 'center', padding: '60px 0', color: '#4A6080' }}>
+          <div style={{ textAlign: 'center', padding: '60px 0', color: '#52796F' }}>
             <p style={{ fontSize: '1.2rem' }}>Loading restaurants...</p>
           </div>
         ) : filtered.length === 0 ? (
-          <div style={{ textAlign: 'center', padding: '60px 0', color: '#4A6080' }}>
+          <div style={{ textAlign: 'center', padding: '60px 0', color: '#52796F' }}>
             <div style={{ fontSize: '3rem', marginBottom: '16px' }}>🍽️</div>
             <p style={{ fontSize: '1.2rem', fontWeight: 600 }}>No restaurants listed yet.</p>
             <p style={{ marginTop: '8px' }}>Be the first to list your restaurant on TULI.</p>
@@ -87,7 +87,7 @@ const Services = () => {
                       </span>
                     </div>
                     <p style={{ color: '#6B8CAE', fontSize: '0.82rem', marginBottom: '4px' }}>📍 {r.location}</p>
-                    <p style={{ color: '#9BB7D4', fontSize: '0.78rem', marginBottom: '14px' }}>🍛 {r.item_count || 0} item{r.item_count !== 1 ? 's' : ''} on menu</p>
+                    <p style={{ color: '#2D6A4F', fontSize: '0.78rem', marginBottom: '14px' }}>🍛 {r.item_count || 0} item{r.item_count !== 1 ? 's' : ''} on menu</p>
                     <button className="btn-primary" style={{ width: '100%', fontSize: '0.85rem', padding: '8px' }}>
                       View Menu →
                     </button>

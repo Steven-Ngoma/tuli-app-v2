@@ -17,13 +17,13 @@ const RestaurantMenu = () => {
   }, [sellerId]);
 
   if (loading) return (
-    <div style={{ textAlign: 'center', padding: '80px 20px', color: '#4A6080' }}>
+    <div style={{ textAlign: 'center', padding: '80px 20px', color: '#52796F' }}>
       <p style={{ fontSize: '1.2rem' }}>Loading menu...</p>
     </div>
   );
 
   if (!data) return (
-    <div style={{ textAlign: 'center', padding: '80px 20px', color: '#4A6080' }}>
+    <div style={{ textAlign: 'center', padding: '80px 20px', color: '#52796F' }}>
       <p>Restaurant not found.</p>
     </div>
   );
@@ -62,12 +62,12 @@ const RestaurantMenu = () => {
             <div>
               <h1 style={{ color: '#FFD966', fontSize: '1.8rem', fontWeight: 800 }}>{restaurant.shop_name}</h1>
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '6px', flexWrap: 'wrap' }}>
-                <span style={{ color: '#9BB7D4', fontSize: '0.85rem' }}>📍 {restaurant.location}</span>
+                <span style={{ color: '#2D6A4F', fontSize: '0.85rem' }}>📍 {restaurant.location}</span>
                 <span style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
                   <span className={online ? 'dot-online' : 'dot-offline'} style={{ width: '8px', height: '8px', borderRadius: '50%', background: online ? '#27AE60' : '#E74C3C', display: 'inline-block' }} />
                   <span style={{ color: online ? '#27AE60' : '#E74C3C', fontSize: '0.82rem', fontWeight: 600 }}>{online ? 'Open' : 'Closed'}</span>
                 </span>
-                <span style={{ color: '#9BB7D4', fontSize: '0.82rem' }}>{menu.length} item{menu.length !== 1 ? 's' : ''} on menu</span>
+                <span style={{ color: '#2D6A4F', fontSize: '0.82rem' }}>{menu.length} item{menu.length !== 1 ? 's' : ''} on menu</span>
               </div>
             </div>
           </div>
@@ -77,7 +77,7 @@ const RestaurantMenu = () => {
       <div className="container" style={{ padding: '32px 28px' }}>
 
         {menu.length === 0 ? (
-          <div style={{ textAlign: 'center', padding: '60px 0', color: '#4A6080' }}>
+          <div style={{ textAlign: 'center', padding: '60px 0', color: '#52796F' }}>
             <div style={{ fontSize: '3rem', marginBottom: '12px' }}>🍽️</div>
             <p style={{ fontSize: '1.1rem' }}>No menu items yet.</p>
           </div>

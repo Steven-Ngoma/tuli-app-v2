@@ -118,12 +118,12 @@ const Chat = () => {
         <div style={{ background: '#102433', borderRadius: '24px', padding: '32px', width: '100%', maxWidth: '380px', border: '1px solid #244C66', textAlign: 'center' }}>
           <div style={{ fontSize: '2.5rem', marginBottom: '12px' }}>💬</div>
           <h3 style={{ color: '#FFD966', marginBottom: '8px' }}>What's your name?</h3>
-          <p style={{ color: '#9BB7D4', marginBottom: '24px', fontSize: '0.9rem' }}>So the seller knows who they're talking to</p>
+          <p style={{ color: '#2D6A4F', marginBottom: '24px', fontSize: '0.9rem' }}>So the seller knows who they're talking to</p>
           <form onSubmit={handleSetName} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             <input
               type="text" placeholder="Enter your name"
               value={buyerName} onChange={e => setBuyerName(e.target.value)} required autoFocus
-              style={{ padding: '14px 16px', borderRadius: '40px', border: '1px solid #244C66', background: '#ffffff', color: '#EFF3F8', fontSize: '1rem', outline: 'none', textAlign: 'center' }}
+              style={{ padding: '14px 16px', borderRadius: '40px', border: '1px solid #244C66', background: '#ffffff', color: '#1B4332', fontSize: '1rem', outline: 'none', textAlign: 'center' }}
             />
             <button type="submit" className="btn-primary" style={{ padding: '14px' }}>Start Chat →</button>
           </form>
@@ -154,7 +154,7 @@ const Chat = () => {
         style={{ flex: 1, overflowY: 'auto', overflowX: 'hidden', padding: '12px 16px', display: 'flex', flexDirection: 'column', gap: '10px' }}
       >
         {messages.length === 0 && (
-          <div style={{ textAlign: 'center', color: '#4A6080', marginTop: '80px' }}>
+          <div style={{ textAlign: 'center', color: '#52796F', marginTop: '80px' }}>
             <div style={{ fontSize: '3rem', marginBottom: '12px' }}>👋</div>
             <p>No messages yet. Say hi!</p>
           </div>
@@ -167,7 +167,7 @@ const Chat = () => {
                 maxWidth: '80%', padding: '10px 14px', wordBreak: 'break-word',
                 borderRadius: isMine ? '18px 18px 4px 18px' : '18px 18px 18px 4px',
                 background: isMine ? '#F39C12' : '#102433',
-                color: isMine ? '#ffffff' : '#EFF3F8',
+                color: isMine ? '#ffffff' : '#1B4332',
                 border: isMine ? 'none' : '1px solid #244C66'
               }}>
                 {!isMine && <div style={{ fontSize: '0.7rem', fontWeight: 700, marginBottom: '4px', color: '#F39C12' }}>{msg.sender}</div>}
@@ -191,22 +191,22 @@ const Chat = () => {
           ) : (
             <form onSubmit={handlePlaceOrder} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               <p style={{ color: '#FFD966', fontSize: '0.85rem', fontWeight: 600, margin: 0 }}>📦 {productName}</p>
-              {originalPrice && <p style={{ color: '#9BB7D4', fontSize: '0.78rem', margin: 0 }}>Listed price: <span style={{ color: '#F39C12', fontWeight: 700 }}>{originalPrice}</span> — change below if negotiated</p>}
+              {originalPrice && <p style={{ color: '#2D6A4F', fontSize: '0.78rem', margin: 0 }}>Listed price: <span style={{ color: '#F39C12', fontWeight: 700 }}>{originalPrice}</span> — change below if negotiated</p>}
               <input
                 placeholder="Agreed price e.g. K450"
                 value={orderForm.final_price}
                 onChange={e => setOrderForm({ ...orderForm, final_price: e.target.value })}
                 required
-                style={{ padding: '10px 14px', borderRadius: '40px', border: '1px solid #244C66', background: '#102433', color: '#EFF3F8', fontSize: '0.9rem', outline: 'none' }}
+                style={{ padding: '10px 14px', borderRadius: '40px', border: '1px solid #244C66', background: '#102433', color: '#1B4332', fontSize: '0.9rem', outline: 'none' }}
               />
               <input
                 placeholder="Your delivery address"
                 value={orderForm.delivery_address}
                 onChange={e => setOrderForm({ ...orderForm, delivery_address: e.target.value })}
-                style={{ padding: '10px 14px', borderRadius: '40px', border: '1px solid #244C66', background: '#102433', color: '#EFF3F8', fontSize: '0.9rem', outline: 'none' }}
+                style={{ padding: '10px 14px', borderRadius: '40px', border: '1px solid #244C66', background: '#102433', color: '#1B4332', fontSize: '0.9rem', outline: 'none' }}
               />
               <div style={{ display: 'flex', gap: '8px' }}>
-                <button type="button" onClick={() => setShowOrderForm(false)} style={{ flex: 1, background: 'transparent', border: '1px solid #244C66', color: '#9BB7D4', borderRadius: '40px', padding: '8px', cursor: 'pointer', fontSize: '0.85rem' }}>Cancel</button>
+                <button type="button" onClick={() => setShowOrderForm(false)} style={{ flex: 1, background: 'transparent', border: '1px solid #244C66', color: '#2D6A4F', borderRadius: '40px', padding: '8px', cursor: 'pointer', fontSize: '0.85rem' }}>Cancel</button>
                 <button type="submit" style={{ flex: 2, background: '#27AE60', color: 'white', border: 'none', borderRadius: '40px', padding: '8px', fontWeight: 700, cursor: 'pointer', fontSize: '0.85rem' }}>✓ Confirm Order</button>
               </div>
             </form>
@@ -224,7 +224,7 @@ const Chat = () => {
         <input
           type="text" placeholder="Type a message..."
           value={text} onChange={e => setText(e.target.value)}
-          style={{ flex: 1, padding: '12px 16px', borderRadius: '40px', border: '1px solid #244C66', background: '#ffffff', color: '#EFF3F8', fontSize: '1rem', outline: 'none', minWidth: 0 }}
+          style={{ flex: 1, padding: '12px 16px', borderRadius: '40px', border: '1px solid #244C66', background: '#ffffff', color: '#1B4332', fontSize: '1rem', outline: 'none', minWidth: 0 }}
         />
         <button type="submit" disabled={sending || !text.trim()} style={{
           background: text.trim() ? '#F39C12' : '#244C66', border: 'none', borderRadius: '50%',

@@ -60,7 +60,7 @@ const Marketplace = () => {
           <h1 style={{ fontSize: '2.3rem', fontWeight: 700, color: '#ffffff', marginBottom: '8px' }}>
             TULI Marketplace
           </h1>
-          <p style={{ color: '#4A6080' }}>Browse listings from sellers across Zambia. Chat directly on TULI.</p>
+          <p style={{ color: '#52796F' }}>Browse listings from sellers across Zambia. Chat directly on TULI.</p>
         </div>
 
         {/* Tabs */}
@@ -71,7 +71,7 @@ const Marketplace = () => {
               padding: '10px 28px', borderRadius: '40px', border: 'none', cursor: 'pointer',
               fontWeight: 700, fontSize: '0.95rem',
               background: tab === 'products' ? '#F39C12' : '#f5f7fa',
-              color: tab === 'products' ? '#ffffff' : '#4A6080',
+              color: tab === 'products' ? '#ffffff' : '#52796F',
               transition: '0.2s'
             }}
           >
@@ -83,7 +83,7 @@ const Marketplace = () => {
               padding: '10px 28px', borderRadius: '40px', border: 'none', cursor: 'pointer',
               fontWeight: 700, fontSize: '0.95rem',
               background: tab === 'services' ? '#F39C12' : '#f5f7fa',
-              color: tab === 'services' ? '#ffffff' : '#4A6080',
+              color: tab === 'services' ? '#ffffff' : '#52796F',
               transition: '0.2s'
             }}
           >
@@ -108,11 +108,11 @@ const Marketplace = () => {
 
         {/* Grid */}
         {loading ? (
-          <div style={{ textAlign: 'center', padding: '60px 0', color: '#4A6080' }}>
+          <div style={{ textAlign: 'center', padding: '60px 0', color: '#52796F' }}>
             <p style={{ fontSize: '1.2rem' }}>Loading...</p>
           </div>
         ) : filtered.length === 0 ? (
-          <div style={{ textAlign: 'center', padding: '60px 0', color: '#4A6080' }}>
+          <div style={{ textAlign: 'center', padding: '60px 0', color: '#52796F' }}>
             <p style={{ fontSize: '1.2rem' }}>{emptyMsg}</p>
             <p style={{ marginTop: '8px' }}>Try a different search or category.</p>
           </div>
@@ -138,7 +138,7 @@ const Marketplace = () => {
                       </span>
                     </div>
                     <p style={{ color: '#6B8CAE', fontSize: '0.75rem', marginBottom: '2px' }}>📍 {r.location}</p>
-                    <p style={{ color: '#9BB7D4', fontSize: '0.72rem', marginBottom: '8px' }}>{r.item_count || 0} items on menu</p>
+                    <p style={{ color: '#2D6A4F', fontSize: '0.72rem', marginBottom: '8px' }}>{r.item_count || 0} items on menu</p>
                     <button className="btn-primary" style={{ width: '100%', fontSize: '0.8rem', padding: '7px', marginTop: 'auto' }}>View Menu →</button>
                   </div>
                 </div>

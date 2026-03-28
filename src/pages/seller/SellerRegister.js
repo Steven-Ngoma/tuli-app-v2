@@ -37,7 +37,7 @@ const SellerRegister = () => {
       <div style={{ padding: '60px 20px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <div style={{ width: '100%', maxWidth: '560px' }}>
           <h2 style={{ color: '#FFD966', fontSize: '1.8rem', marginBottom: '8px', textAlign: 'center' }}>Open your shop on TULI</h2>
-          <p style={{ color: '#9BB7D4', marginBottom: '36px', textAlign: 'center' }}>What type of shop are you opening?</p>
+          <p style={{ color: '#2D6A4F', marginBottom: '36px', textAlign: 'center' }}>What type of shop are you opening?</p>
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
 
@@ -50,10 +50,10 @@ const SellerRegister = () => {
             >
               <div style={{ fontSize: '3rem', marginBottom: '12px' }}>📦</div>
               <h3 style={{ color: '#FFD966', marginBottom: '8px' }}>Product Shop</h3>
-              <p style={{ color: '#9BB7D4', fontSize: '0.85rem', marginBottom: '16px' }}>Sell physical products — clothes, electronics, shoes, home goods and more.</p>
+              <p style={{ color: '#2D6A4F', fontSize: '0.85rem', marginBottom: '16px' }}>Sell physical products — clothes, electronics, shoes, home goods and more.</p>
               <div style={{ background: '#F39C1220', borderRadius: '12px', padding: '10px' }}>
                 <div style={{ color: '#F39C12', fontWeight: 700, fontSize: '0.9rem' }}>Free to list</div>
-                <div style={{ color: '#9BB7D4', fontSize: '0.78rem', marginTop: '4px' }}>5% commission per sale only</div>
+                <div style={{ color: '#2D6A4F', fontSize: '0.78rem', marginTop: '4px' }}>5% commission per sale only</div>
               </div>
             </div>
 
@@ -66,16 +66,16 @@ const SellerRegister = () => {
             >
               <div style={{ fontSize: '3rem', marginBottom: '12px' }}>🤝</div>
               <h3 style={{ color: '#FFD966', marginBottom: '8px' }}>Service Shop</h3>
-              <p style={{ color: '#9BB7D4', fontSize: '0.85rem', marginBottom: '16px' }}>Offer services — restaurants, food, repairs, catering and more.</p>
+              <p style={{ color: '#2D6A4F', fontSize: '0.85rem', marginBottom: '16px' }}>Offer services — restaurants, food, repairs, catering and more.</p>
               <div style={{ background: '#27AE6020', borderRadius: '12px', padding: '10px' }}>
                 <div style={{ color: '#27AE60', fontWeight: 700, fontSize: '0.9rem' }}>1 Month FREE</div>
-                <div style={{ color: '#9BB7D4', fontSize: '0.78rem', marginTop: '4px' }}>Then K100/month rental fee</div>
+                <div style={{ color: '#2D6A4F', fontSize: '0.78rem', marginTop: '4px' }}>Then K100/month rental fee</div>
               </div>
             </div>
 
           </div>
 
-          <p style={{ color: '#4A6080', fontSize: '0.82rem', textAlign: 'center', marginTop: '24px' }}>
+          <p style={{ color: '#52796F', fontSize: '0.82rem', textAlign: 'center', marginTop: '24px' }}>
             Already registered? <span onClick={() => navigate('/seller/login')} style={{ color: '#F39C12', cursor: 'pointer' }}>Login here</span>
           </p>
         </div>
@@ -101,12 +101,12 @@ const SellerRegister = () => {
         {shopType === 'service' && (
           <div style={{ background: '#27AE6015', border: '1px solid #27AE6040', borderRadius: '16px', padding: '14px 16px', marginBottom: '20px' }}>
             <div style={{ color: '#27AE60', fontWeight: 700, fontSize: '0.9rem' }}>🎉 1 Month FREE trial</div>
-            <div style={{ color: '#9BB7D4', fontSize: '0.82rem', marginTop: '4px' }}>After your free month, a K100/month rental fee applies to keep your service shop active on TULI.</div>
+            <div style={{ color: '#2D6A4F', fontSize: '0.82rem', marginTop: '4px' }}>After your free month, a K100/month rental fee applies to keep your service shop active on TULI.</div>
           </div>
         )}
 
         {shopType === 'product' && (
-          <p style={{ color: '#9BB7D4', marginBottom: '24px', fontSize: '0.9rem' }}>Free to list. Only pay 5% commission when you sell.</p>
+          <p style={{ color: '#2D6A4F', marginBottom: '24px', fontSize: '0.9rem' }}>Free to list. Only pay 5% commission when you sell.</p>
         )}
 
         {error && (
@@ -127,7 +127,7 @@ const SellerRegister = () => {
             <input
               key={field.name} name={field.name} type={field.type} placeholder={field.placeholder}
               value={form[field.name]} onChange={handleChange} required={field.name !== 'email'}
-              style={{ padding: '14px 18px', borderRadius: '40px', border: '1px solid #244C66', background: '#ffffff', color: '#EFF3F8', fontSize: '0.95rem', outline: 'none' }}
+              style={{ padding: '14px 18px', borderRadius: '40px', border: '1px solid #244C66', background: '#ffffff', color: '#1B4332', fontSize: '0.95rem', outline: 'none' }}
             />
           ))}
 
@@ -136,7 +136,7 @@ const SellerRegister = () => {
           </button>
         </form>
 
-        <p style={{ color: '#9BB7D4', textAlign: 'center', marginTop: '20px', fontSize: '0.9rem' }}>
+        <p style={{ color: '#2D6A4F', textAlign: 'center', marginTop: '20px', fontSize: '0.9rem' }}>
           Already registered?{' '}
           <span onClick={() => navigate('/seller/login')} style={{ color: '#F39C12', cursor: 'pointer' }}>Login here</span>
         </p>

@@ -119,7 +119,7 @@ const BuyerChats = () => {
             <div style={{ width: '38px', height: '38px', background: '#F39C1230', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.1rem' }}>🏪</div>
             <div>
               <div style={{ color: '#FFD966', fontWeight: 700 }}>{activeChat.shop_name}</div>
-              <div style={{ color: '#9BB7D4', fontSize: '0.8rem' }}>Re: {activeChat.product_name}</div>
+              <div style={{ color: '#2D6A4F', fontSize: '0.8rem' }}>Re: {activeChat.product_name}</div>
             </div>
           </div>
           <div ref={msgBoxRef} style={{ flex: 1, padding: '16px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '10px', background: '#0D1F2E', minHeight: 0 }}>
@@ -131,7 +131,7 @@ const BuyerChats = () => {
                     maxWidth: '70%', padding: '10px 14px', wordBreak: 'break-word',
                     borderRadius: isMine ? '18px 18px 4px 18px' : '18px 18px 18px 4px',
                     background: isMine ? '#F39C12' : '#ffffff',
-                    color: isMine ? '#ffffff' : '#EFF3F8',
+                    color: isMine ? '#ffffff' : '#1B4332',
                     border: isMine ? 'none' : '1px solid #244C66'
                   }}>
                     <div style={{ fontSize: '0.9rem' }}>{m.message}</div>
@@ -157,15 +157,15 @@ const BuyerChats = () => {
                   <p style={{ color: '#FFD966', fontSize: '0.85rem', fontWeight: 600, margin: 0 }}>📦 {activeChat?.product_name}</p>
                   <input placeholder="Agreed price e.g. K450" value={orderForm.final_price}
                     onChange={e => setOrderForm({ ...orderForm, final_price: e.target.value })} required
-                    style={{ padding: '10px 14px', borderRadius: '40px', border: '1px solid #244C66', background: '#102433', color: '#EFF3F8', fontSize: '0.9rem', outline: 'none' }}
+                    style={{ padding: '10px 14px', borderRadius: '40px', border: '1px solid #244C66', background: '#102433', color: '#1B4332', fontSize: '0.9rem', outline: 'none' }}
                   />
                   <input placeholder="Your delivery address" value={orderForm.delivery_address}
                     onChange={e => setOrderForm({ ...orderForm, delivery_address: e.target.value })}
-                    style={{ padding: '10px 14px', borderRadius: '40px', border: '1px solid #244C66', background: '#102433', color: '#EFF3F8', fontSize: '0.9rem', outline: 'none' }}
+                    style={{ padding: '10px 14px', borderRadius: '40px', border: '1px solid #244C66', background: '#102433', color: '#1B4332', fontSize: '0.9rem', outline: 'none' }}
                   />
                   <div style={{ display: 'flex', gap: '8px' }}>
                     <button type="button" onClick={() => setShowOrderForm(false)}
-                      style={{ flex: 1, background: 'transparent', border: '1px solid #244C66', color: '#9BB7D4', borderRadius: '40px', padding: '8px', cursor: 'pointer', fontSize: '0.85rem' }}>Cancel</button>
+                      style={{ flex: 1, background: 'transparent', border: '1px solid #244C66', color: '#2D6A4F', borderRadius: '40px', padding: '8px', cursor: 'pointer', fontSize: '0.85rem' }}>Cancel</button>
                     <button type="submit"
                       style={{ flex: 2, background: '#27AE60', color: 'white', border: 'none', borderRadius: '40px', padding: '8px', fontWeight: 700, cursor: 'pointer', fontSize: '0.85rem' }}>✓ Confirm Order</button>
                   </div>
@@ -181,7 +181,7 @@ const BuyerChats = () => {
             <input
               type="text" placeholder="Type a message..."
               value={text} onChange={e => setText(e.target.value)}
-              style={{ flex: 1, padding: '12px 16px', borderRadius: '40px', border: '1px solid #244C66', background: '#ffffff', color: '#EFF3F8', fontSize: '0.95rem', outline: 'none', minWidth: 0 }}
+              style={{ flex: 1, padding: '12px 16px', borderRadius: '40px', border: '1px solid #244C66', background: '#ffffff', color: '#1B4332', fontSize: '0.95rem', outline: 'none', minWidth: 0 }}
             />
             <button type="submit" disabled={!text.trim()}
               style={{ background: text.trim() ? '#F39C12' : '#244C66', border: 'none', borderRadius: '50%', width: '44px', height: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: text.trim() ? 'pointer' : 'default', flexShrink: 0, fontSize: '1.1rem' }}
@@ -196,7 +196,7 @@ const BuyerChats = () => {
             <h2 style={{ color: '#FFD966', fontSize: '1.6rem' }}>💬 My Conversations {unreadCount > 0 && (
               <span style={{ background: '#FF5722', color: 'white', borderRadius: '50%', fontSize: '0.75rem', padding: '2px 8px', marginLeft: '8px' }}>{unreadCount}</span>
             )}</h2>
-            <p style={{ color: '#9BB7D4', marginTop: '4px' }}>All your chats with sellers</p>
+            <p style={{ color: '#2D6A4F', marginTop: '4px' }}>All your chats with sellers</p>
           </div>
 
           <div style={{ display: 'flex', gap: '12px', marginBottom: '24px' }}>
@@ -213,7 +213,7 @@ const BuyerChats = () => {
           {tab === 'chats' && (
           <div style={{ background: '#102433', borderRadius: '20px', border: '1px solid #244C66', overflow: 'hidden' }}>
             {chats.length === 0 ? (
-              <div style={{ padding: '60px', textAlign: 'center', color: '#4A6080' }}>
+              <div style={{ padding: '60px', textAlign: 'center', color: '#52796F' }}>
                 <div style={{ fontSize: '3rem', marginBottom: '12px' }}>💬</div>
                 <p>No conversations yet.</p>
                 <p style={{ fontSize: '0.85rem', marginTop: '4px' }}>Browse products and chat with sellers.</p>
@@ -233,9 +233,9 @@ const BuyerChats = () => {
               >
                 <div style={{ width: '40px', height: '40px', background: '#F39C1220', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.1rem', flexShrink: 0 }}>🏪</div>
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ color: '#EFF3F8', fontWeight: 600, fontSize: '0.95rem' }}>{c.shop_name}</div>
-                  <div style={{ color: '#9BB7D4', fontSize: '0.8rem', marginTop: '2px' }}>Re: {c.product_name}</div>
-                  <div style={{ color: '#4A6080', fontSize: '0.75rem', marginTop: '2px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{c.last_message}</div>
+                  <div style={{ color: '#1B4332', fontWeight: 600, fontSize: '0.95rem' }}>{c.shop_name}</div>
+                  <div style={{ color: '#2D6A4F', fontSize: '0.8rem', marginTop: '2px' }}>Re: {c.product_name}</div>
+                  <div style={{ color: '#52796F', fontSize: '0.75rem', marginTop: '2px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{c.last_message}</div>
                 </div>
                 {(() => {
                   const seen = readChats[c.room_id];
@@ -270,7 +270,7 @@ const BuyerOrders = ({ buyerName }) => {
   const statusColors = { pending: '#F39C12', confirmed: '#3498DB', delivered: '#27AE60', cancelled: '#E74C3C' };
 
   if (orders.length === 0) return (
-    <div style={{ textAlign: 'center', padding: '60px 0', color: '#4A6080' }}>
+    <div style={{ textAlign: 'center', padding: '60px 0', color: '#52796F' }}>
       <div style={{ fontSize: '3rem', marginBottom: '12px' }}>🛒</div>
       <p>No orders yet.</p>
       <p style={{ fontSize: '0.85rem', marginTop: '8px' }}>Place an order from a chat to see it here.</p>
@@ -284,8 +284,8 @@ const BuyerOrders = ({ buyerName }) => {
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '8px', marginBottom: '12px' }}>
             <div>
               <div style={{ color: '#FFD966', fontWeight: 700 }}>{o.product_name}</div>
-              <div style={{ color: '#9BB7D4', fontSize: '0.82rem', marginTop: '2px' }}>🏪 {o.shop_name}</div>
-              {o.delivery_address && <div style={{ color: '#9BB7D4', fontSize: '0.82rem', marginTop: '2px' }}>📍 {o.delivery_address}</div>}
+              <div style={{ color: '#2D6A4F', fontSize: '0.82rem', marginTop: '2px' }}>🏪 {o.shop_name}</div>
+              {o.delivery_address && <div style={{ color: '#2D6A4F', fontSize: '0.82rem', marginTop: '2px' }}>📍 {o.delivery_address}</div>}
             </div>
             <span style={{ background: statusColors[o.status] + '30', color: statusColors[o.status], borderRadius: '20px', padding: '4px 12px', fontSize: '0.75rem', fontWeight: 700, textTransform: 'capitalize' }}>
               {o.status}
@@ -293,10 +293,10 @@ const BuyerOrders = ({ buyerName }) => {
           </div>
           <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap' }}>
             <div style={{ background: '#ffffff', borderRadius: '12px', padding: '8px 14px' }}>
-              <div style={{ color: '#4A6080', fontSize: '0.7rem' }}>Agreed Price</div>
+              <div style={{ color: '#52796F', fontSize: '0.7rem' }}>Agreed Price</div>
               <div style={{ color: '#27AE60', fontWeight: 700 }}>{o.final_price}</div>
             </div>
-            <div style={{ color: '#4A6080', fontSize: '0.75rem', marginLeft: 'auto' }}>{new Date(o.created_at).toLocaleDateString()}</div>
+            <div style={{ color: '#52796F', fontSize: '0.75rem', marginLeft: 'auto' }}>{new Date(o.created_at).toLocaleDateString()}</div>
           </div>
         </div>
       ))}

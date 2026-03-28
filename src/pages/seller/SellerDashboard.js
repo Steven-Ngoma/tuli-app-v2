@@ -209,7 +209,7 @@ const SellerDashboard = () => {
           <button onClick={() => setActiveChat(null)} style={{ background: 'transparent', border: 'none', color: '#F39C12', fontSize: '1.4rem', cursor: 'pointer', padding: 0 }}>←</button>
           <div>
             <div style={{ color: '#FFD966', fontWeight: 700 }}>{activeChat.buyer_name}</div>
-            <div style={{ color: '#9BB7D4', fontSize: '0.8rem' }}>Re: {activeChat.product_name}</div>
+            <div style={{ color: '#2D6A4F', fontSize: '0.8rem' }}>Re: {activeChat.product_name}</div>
           </div>
         </div>
         <div ref={msgBoxRef} style={{ flex: 1, padding: '16px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '10px', background: '#0D1F2E', minHeight: 0 }}>
@@ -221,7 +221,7 @@ const SellerDashboard = () => {
                   maxWidth: '70%', padding: '10px 14px', wordBreak: 'break-word',
                   borderRadius: isMine ? '18px 18px 4px 18px' : '18px 18px 18px 4px',
                   background: isMine ? '#F39C12' : '#ffffff',
-                  color: isMine ? '#ffffff' : '#EFF3F8',
+                  color: isMine ? '#ffffff' : '#1B4332',
                   border: isMine ? 'none' : '1px solid #244C66'
                 }}>
                   <div style={{ fontSize: '0.9rem' }}>{m.message}</div>
@@ -237,7 +237,7 @@ const SellerDashboard = () => {
           <input
             type="text" placeholder="Reply..."
             value={replyText} onChange={e => setReplyText(e.target.value)}
-            style={{ flex: 1, padding: '12px 16px', borderRadius: '40px', border: '1px solid #244C66', background: '#ffffff', color: '#EFF3F8', fontSize: '0.95rem', outline: 'none', minWidth: 0 }}
+            style={{ flex: 1, padding: '12px 16px', borderRadius: '40px', border: '1px solid #244C66', background: '#ffffff', color: '#1B4332', fontSize: '0.95rem', outline: 'none', minWidth: 0 }}
           />
           <button type="submit" disabled={!replyText.trim()}
             style={{ background: replyText.trim() ? '#F39C12' : '#244C66', border: 'none', borderRadius: '50%', width: '44px', height: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: replyText.trim() ? 'pointer' : 'default', flexShrink: 0, fontSize: '1.1rem' }}
@@ -252,7 +252,7 @@ const SellerDashboard = () => {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px', marginBottom: '24px' }}>
           <div>
             <h2 style={{ color: '#FFD966', fontSize: '1.8rem' }}>👋 {seller.shop_name}</h2>
-            <p style={{ color: '#9BB7D4' }}>Manage your shop</p>
+            <p style={{ color: '#2D6A4F' }}>Manage your shop</p>
           </div>
           <button onClick={handleLogout} className="btn-outline">Logout</button>
         </div>
@@ -267,14 +267,14 @@ const SellerDashboard = () => {
           if (isExpired) return (
             <div style={{ background: '#E74C3C20', border: '1px solid #E74C3C', borderRadius: '16px', padding: '16px 20px', marginBottom: '24px' }}>
               <div style={{ color: '#E74C3C', fontWeight: 700, marginBottom: '4px' }}>⚠️ Subscription Expired</div>
-              <div style={{ color: '#9BB7D4', fontSize: '0.85rem', marginBottom: '12px' }}>Your free trial has ended. Pay K100 to renew your service shop for another month.</div>
+              <div style={{ color: '#2D6A4F', fontSize: '0.85rem', marginBottom: '12px' }}>Your free trial has ended. Pay K100 to renew your service shop for another month.</div>
               <button className="btn-primary" style={{ fontSize: '0.85rem', padding: '8px 20px', background: '#E74C3C' }}>Pay K100 Renewal →</button>
             </div>
           );
           if (isWarning) return (
             <div style={{ background: '#F39C1220', border: '1px solid #F39C12', borderRadius: '16px', padding: '16px 20px', marginBottom: '24px' }}>
               <div style={{ color: '#F39C12', fontWeight: 700, marginBottom: '4px' }}>⏰ {daysLeft} day{daysLeft !== 1 ? 's' : ''} left on your free trial</div>
-              <div style={{ color: '#9BB7D4', fontSize: '0.85rem', marginBottom: '12px' }}>After your trial ends, a K100/month rental fee applies to keep your shop active.</div>
+              <div style={{ color: '#2D6A4F', fontSize: '0.85rem', marginBottom: '12px' }}>After your trial ends, a K100/month rental fee applies to keep your shop active.</div>
               <button className="btn-primary" style={{ fontSize: '0.85rem', padding: '8px 20px' }}>Pay K100 Now →</button>
             </div>
           );
@@ -339,12 +339,12 @@ const SellerDashboard = () => {
                     <input
                       key={f.name} name={f.name} type={f.type} placeholder={f.placeholder}
                       value={form[f.name]} onChange={handleChange} required
-                      style={{ padding: '12px 16px', borderRadius: '40px', border: '1px solid #244C66', background: '#ffffff', color: '#EFF3F8', fontSize: '0.9rem', outline: 'none' }}
+                      style={{ padding: '12px 16px', borderRadius: '40px', border: '1px solid #244C66', background: '#ffffff', color: '#1B4332', fontSize: '0.9rem', outline: 'none' }}
                     />
                   ))}
                   <select
                     name="category" value={form.category} onChange={handleChange}
-                    style={{ padding: '12px 16px', borderRadius: '40px', border: '1px solid #244C66', background: '#ffffff', color: '#EFF3F8', fontSize: '0.9rem' }}
+                    style={{ padding: '12px 16px', borderRadius: '40px', border: '1px solid #244C66', background: '#ffffff', color: '#1B4332', fontSize: '0.9rem' }}
                   >
                     {(seller.shop_type === 'service'
                       ? ['Restaurant & Food']
@@ -355,7 +355,7 @@ const SellerDashboard = () => {
                   {form.category === 'Restaurant & Food' && (
                     <select
                       name="food_category" value={form.food_category} onChange={handleChange}
-                      style={{ padding: '12px 16px', borderRadius: '40px', border: '1px solid #244C66', background: '#ffffff', color: '#EFF3F8', fontSize: '0.9rem' }}
+                      style={{ padding: '12px 16px', borderRadius: '40px', border: '1px solid #244C66', background: '#ffffff', color: '#1B4332', fontSize: '0.9rem' }}
                     >
                       <option value="">Select menu section</option>
                       {foodCategories.map(c => <option key={c} value={c}>{c}</option>)}
@@ -364,7 +364,7 @@ const SellerDashboard = () => {
                   <textarea
                     name="description" placeholder="Short product description"
                     value={form.description} onChange={handleChange}
-                    style={{ padding: '12px 16px', borderRadius: '20px', border: '1px solid #244C66', background: '#ffffff', color: '#EFF3F8', fontSize: '0.9rem', resize: 'vertical', outline: 'none' }}
+                    style={{ padding: '12px 16px', borderRadius: '20px', border: '1px solid #244C66', background: '#ffffff', color: '#1B4332', fontSize: '0.9rem', resize: 'vertical', outline: 'none' }}
                   />
 
                   {/* Image Upload */}
@@ -379,8 +379,8 @@ const SellerDashboard = () => {
                         : (
                           <>
                             <span style={{ fontSize: '2.5rem' }}>📷</span>
-                            <span style={{ color: '#9BB7D4', marginTop: '8px', fontSize: '0.9rem' }}>Tap to upload photo from your device</span>
-                            <span style={{ color: '#4A6080', fontSize: '0.8rem', marginTop: '4px' }}>JPG, PNG supported</span>
+                            <span style={{ color: '#2D6A4F', marginTop: '8px', fontSize: '0.9rem' }}>Tap to upload photo from your device</span>
+                            <span style={{ color: '#52796F', fontSize: '0.8rem', marginTop: '4px' }}>JPG, PNG supported</span>
                           </>
                         )
                       }
@@ -401,7 +401,7 @@ const SellerDashboard = () => {
 
                   {/* Extra Images */}
                   <div style={{ gridColumn: '1 / -1' }}>
-                    <p style={{ color: '#9BB7D4', fontSize: '0.85rem', marginBottom: '8px' }}>📸 Add more photos (optional — up to 4)</p>
+                    <p style={{ color: '#2D6A4F', fontSize: '0.85rem', marginBottom: '8px' }}>📸 Add more photos (optional — up to 4)</p>
                     <input
                       type="file" accept="image/*" multiple
                       onChange={e => {
@@ -409,7 +409,7 @@ const SellerDashboard = () => {
                         setExtraFiles(files);
                         setExtraPreviews(files.map(f => URL.createObjectURL(f)));
                       }}
-                      style={{ color: '#9BB7D4', fontSize: '0.85rem' }}
+                      style={{ color: '#2D6A4F', fontSize: '0.85rem' }}
                     />
                     {extraPreviews.length > 0 && (
                       <div style={{ display: 'flex', gap: '8px', marginTop: '10px', flexWrap: 'wrap' }}>
@@ -428,7 +428,7 @@ const SellerDashboard = () => {
             )}
 
             {products.length === 0 ? (
-              <div style={{ textAlign: 'center', padding: '60px 0', color: '#9BB7D4' }}>
+              <div style={{ textAlign: 'center', padding: '60px 0', color: '#2D6A4F' }}>
                 <p style={{ fontSize: '1.2rem' }}>{seller.shop_type === 'service' ? 'No menu items yet.' : 'No listings yet.'}</p>
                 <p style={{ marginTop: '8px' }}>{seller.shop_type === 'service' ? 'Click "Add Menu Item" to add your first dish.' : 'Click "Add Product" to list your first product.'}</p>
               </div>
@@ -442,9 +442,9 @@ const SellerDashboard = () => {
                     <span style={{ background: '#F39C1220', color: '#F39C12', fontSize: '0.75rem', fontWeight: 600, padding: '4px 12px', borderRadius: '20px' }}>
                       {p.category}
                     </span>
-                    <h4 style={{ color: '#EFF3F8', margin: '10px 0 4px' }}>{p.name}</h4>
+                    <h4 style={{ color: '#1B4332', margin: '10px 0 4px' }}>{p.name}</h4>
                     <p style={{ color: '#F39C12', fontWeight: 700 }}>{p.price}</p>
-                    <p style={{ color: '#9BB7D4', fontSize: '0.85rem' }}>📍 {p.location}</p>
+                    <p style={{ color: '#2D6A4F', fontSize: '0.85rem' }}>📍 {p.location}</p>
                     <button
                       onClick={() => handleDelete(p.id)}
                       style={{ marginTop: '12px', background: 'transparent', border: '1px solid #FF5722', color: '#FF5722', padding: '6px 16px', borderRadius: '20px', cursor: 'pointer', fontSize: '0.85rem' }}
@@ -473,12 +473,12 @@ const SellerDashboard = () => {
               ].map(s => (
                 <div key={s.label} style={{ background: '#102433', borderRadius: '16px', padding: '16px', border: `1px solid ${s.color}40`, textAlign: 'center' }}>
                   <div style={{ color: s.color, fontSize: '1.8rem', fontWeight: 800 }}>{s.value}</div>
-                  <div style={{ color: '#9BB7D4', fontSize: '0.75rem', marginTop: '4px' }}>{s.label}</div>
+                  <div style={{ color: '#2D6A4F', fontSize: '0.75rem', marginTop: '4px' }}>{s.label}</div>
                 </div>
               ))}
             </div>
             {orders.length === 0 ? (
-              <div style={{ textAlign: 'center', padding: '60px 0', color: '#9BB7D4' }}>
+              <div style={{ textAlign: 'center', padding: '60px 0', color: '#2D6A4F' }}>
                 <div style={{ fontSize: '3rem', marginBottom: '12px' }}>🛒</div>
                 <p>No orders yet.</p>
                 <p style={{ fontSize: '0.85rem', marginTop: '8px' }}>Orders placed by buyers will appear here.</p>
@@ -494,8 +494,8 @@ const SellerDashboard = () => {
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '8px', marginBottom: '12px' }}>
                     <div>
                       <div style={{ color: '#FFD966', fontWeight: 700, fontSize: '1rem' }}>{o.product_name}</div>
-                      <div style={{ color: '#9BB7D4', fontSize: '0.82rem', marginTop: '2px' }}>👤 {o.buyer_name}</div>
-                      {o.delivery_address && <div style={{ color: '#9BB7D4', fontSize: '0.82rem', marginTop: '2px' }}>📍 {o.delivery_address}</div>}
+                      <div style={{ color: '#2D6A4F', fontSize: '0.82rem', marginTop: '2px' }}>👤 {o.buyer_name}</div>
+                      {o.delivery_address && <div style={{ color: '#2D6A4F', fontSize: '0.82rem', marginTop: '2px' }}>📍 {o.delivery_address}</div>}
                     </div>
                     <span style={{ background: statusColors[o.status] + '30', color: statusColors[o.status], borderRadius: '20px', padding: '4px 12px', fontSize: '0.75rem', fontWeight: 700, textTransform: 'capitalize' }}>
                       {o.status}
@@ -504,12 +504,12 @@ const SellerDashboard = () => {
 
                   <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap', marginBottom: '14px' }}>
                     <div style={{ background: '#ffffff', borderRadius: '12px', padding: '8px 14px' }}>
-                      <div style={{ color: '#4A6080', fontSize: '0.7rem' }}>Listed Price</div>
-                      <div style={{ color: '#9BB7D4', fontWeight: 600 }}>{o.original_price || 'N/A'}</div>
+                      <div style={{ color: '#52796F', fontSize: '0.7rem' }}>Listed Price</div>
+                      <div style={{ color: '#2D6A4F', fontWeight: 600 }}>{o.original_price || 'N/A'}</div>
                     </div>
-                    <div style={{ color: '#4A6080', fontSize: '1.2rem' }}>→</div>
+                    <div style={{ color: '#52796F', fontSize: '1.2rem' }}>→</div>
                     <div style={{ background: '#ffffff', borderRadius: '12px', padding: '8px 14px' }}>
-                      <div style={{ color: '#4A6080', fontSize: '0.7rem' }}>Agreed Price</div>
+                      <div style={{ color: '#52796F', fontSize: '0.7rem' }}>Agreed Price</div>
                       <div style={{ color: '#27AE60', fontWeight: 700 }}>{o.final_price}</div>
                     </div>
                     {hasDiscount && (
@@ -529,7 +529,7 @@ const SellerDashboard = () => {
                     {(o.status === 'pending' || o.status === 'confirmed') && (
                       <button onClick={() => updateOrderStatus(o.id, 'cancelled')} style={{ background: 'transparent', color: '#E74C3C', border: '1px solid #E74C3C', borderRadius: '20px', padding: '6px 16px', cursor: 'pointer', fontSize: '0.82rem' }}>Cancel</button>
                     )}
-                    <div style={{ color: '#4A6080', fontSize: '0.75rem', alignSelf: 'center', marginLeft: 'auto' }}>
+                    <div style={{ color: '#52796F', fontSize: '0.75rem', alignSelf: 'center', marginLeft: 'auto' }}>
                       {new Date(o.created_at).toLocaleDateString()}
                     </div>
                   </div>
@@ -549,7 +549,7 @@ const SellerDashboard = () => {
                   <h4 style={{ color: '#FFD966' }}>Conversations</h4>
                 </div>
                 {chats.length === 0 ? (
-                  <div style={{ padding: '40px', textAlign: 'center', color: '#4A6080' }}>
+                  <div style={{ padding: '40px', textAlign: 'center', color: '#52796F' }}>
                     <div style={{ fontSize: '2.5rem', marginBottom: '12px' }}>💬</div>
                     <p>No messages yet.</p>
                     <p style={{ fontSize: '0.85rem', marginTop: '4px' }}>Buyers will appear here when they message you.</p>
@@ -568,9 +568,9 @@ const SellerDashboard = () => {
                   >
                     <div style={{ width: '40px', height: '40px', background: '#F39C1220', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.1rem', flexShrink: 0 }}>👤</div>
                     <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ color: '#EFF3F8', fontWeight: 600, fontSize: '0.95rem' }}>{c.buyer_name}</div>
-                      <div style={{ color: '#9BB7D4', fontSize: '0.8rem', marginTop: '2px' }}>Re: {c.product_name}</div>
-                      <div style={{ color: '#4A6080', fontSize: '0.75rem', marginTop: '2px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{c.last_message}</div>
+                      <div style={{ color: '#1B4332', fontWeight: 600, fontSize: '0.95rem' }}>{c.buyer_name}</div>
+                      <div style={{ color: '#2D6A4F', fontSize: '0.8rem', marginTop: '2px' }}>Re: {c.product_name}</div>
+                      <div style={{ color: '#52796F', fontSize: '0.75rem', marginTop: '2px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{c.last_message}</div>
                     </div>
                     {(() => {
                       const seen = readChats[c.room_id];
