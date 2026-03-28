@@ -122,24 +122,24 @@ const Marketplace = () => {
               const online = r.last_seen && (new Date() - new Date(r.last_seen + 'Z')) / 1000 < 120;
               return (
                 <div key={r.id} onClick={() => navigate(`/restaurant/${r.id}`)}
-                  style={{ background: '#ffffff', borderRadius: '24px', border: '1px solid #e0e0e0', boxShadow: '0 2px 12px rgba(0,0,0,0.06)', overflow: 'hidden', cursor: 'pointer' }}
+                  style={{ background: '#ffffff', borderRadius: '16px', border: '1px solid #e0e0e0', boxShadow: '0 2px 8px rgba(0,0,0,0.06)', overflow: 'hidden', cursor: 'pointer', display: 'flex', flexDirection: 'column' }}
                 >
-                  <div style={{ width: '100%', height: '140px', background: '#FFF3E0', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
+                  <div style={{ width: '100%', height: '110px', background: '#FFF3E0', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', flexShrink: 0 }}>
                     {r.cover_image
                       ? <img src={r.cover_image} alt={r.shop_name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                      : <span style={{ fontSize: '4rem' }}>🍽️</span>}
+                      : <span style={{ fontSize: '3rem' }}>🍽️</span>}
                   </div>
-                  <div style={{ padding: '16px' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
-                      <h3 style={{ color: '#0A1928', fontSize: '1.05rem', fontWeight: 700 }}>{r.shop_name}</h3>
-                      <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                        <span className={online ? 'dot-online' : 'dot-offline'} style={{ width: '8px', height: '8px', borderRadius: '50%', background: online ? '#27AE60' : '#E74C3C', display: 'inline-block' }} />
-                        <span style={{ color: online ? '#27AE60' : '#E74C3C', fontSize: '0.75rem', fontWeight: 600 }}>{online ? 'Open' : 'Closed'}</span>
+                  <div style={{ padding: '10px', flex: 1, display: 'flex', flexDirection: 'column' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
+                      <h3 style={{ color: '#0A1928', fontSize: '0.9rem', fontWeight: 700, margin: 0 }}>{r.shop_name}</h3>
+                      <span style={{ display: 'flex', alignItems: 'center', gap: '3px', flexShrink: 0 }}>
+                        <span className={online ? 'dot-online' : 'dot-offline'} style={{ width: '7px', height: '7px', borderRadius: '50%', background: online ? '#27AE60' : '#E74C3C', display: 'inline-block' }} />
+                        <span style={{ color: online ? '#27AE60' : '#E74C3C', fontSize: '0.68rem', fontWeight: 600 }}>{online ? 'Open' : 'Closed'}</span>
                       </span>
                     </div>
-                    <p style={{ color: '#6B8CAE', fontSize: '0.82rem', marginBottom: '4px' }}>📍 {r.location}</p>
-                    <p style={{ color: '#9BB7D4', fontSize: '0.78rem', marginBottom: '14px' }}>🍻 {r.item_count || 0} item{r.item_count !== 1 ? 's' : ''} on menu</p>
-                    <button className="btn-primary" style={{ width: '100%', fontSize: '0.85rem', padding: '8px' }}>View Menu →</button>
+                    <p style={{ color: '#6B8CAE', fontSize: '0.75rem', marginBottom: '2px' }}>📍 {r.location}</p>
+                    <p style={{ color: '#9BB7D4', fontSize: '0.72rem', marginBottom: '8px' }}>🍻 {r.item_count || 0} items</p>
+                    <button className="btn-primary" style={{ width: '100%', fontSize: '0.78rem', padding: '6px', marginTop: 'auto' }}>View Menu →</button>
                   </div>
                 </div>
               );
