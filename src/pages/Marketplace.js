@@ -175,31 +175,6 @@ const Marketplace = () => {
           </div>
         )}
 
-        {/* Payment Methods */}
-        <div style={{ marginTop: '60px', background: '#f5f7fa', borderRadius: '32px', padding: '36px', textAlign: 'center', border: '1px solid #e0e0e0' }}>
-          <h3 style={{ color: '#0A1928', marginBottom: '8px', fontSize: '1.4rem' }}>💳 How payments work</h3>
-          <p style={{ color: '#4A6080', maxWidth: '500px', margin: '0 auto 28px' }}>
-            Pay securely using MTN MoMo or Airtel Money. Fast, safe and works across Zambia.
-          </p>
-          <div style={{ display: 'flex', gap: '20px', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <div style={{ background: '#FFF8E1', border: '2px solid #FFC107', borderRadius: '20px', padding: '20px 32px', minWidth: '180px' }}>
-              <div style={{ fontSize: '2.2rem', marginBottom: '8px' }}>📱</div>
-              <div style={{ fontWeight: 700, color: '#E65100', fontSize: '1.1rem' }}>MTN MoMo</div>
-              <div style={{ color: '#795548', fontSize: '0.9rem', marginTop: '4px' }}>Send to TULI MoMo</div>
-              <div style={{ fontWeight: 700, color: '#E65100', marginTop: '8px', fontSize: '1rem' }}>0776 987 839</div>
-            </div>
-            <div style={{ background: '#FFF3E0', border: '2px solid #FF5722', borderRadius: '20px', padding: '20px 32px', minWidth: '180px' }}>
-              <div style={{ fontSize: '2.2rem', marginBottom: '8px' }}>📲</div>
-              <div style={{ fontWeight: 700, color: '#BF360C', fontSize: '1.1rem' }}>Airtel Money</div>
-              <div style={{ color: '#795548', fontSize: '0.9rem', marginTop: '4px' }}>Send to TULI Airtel</div>
-              <div style={{ fontWeight: 700, color: '#BF360C', marginTop: '8px', fontSize: '1rem' }}>0776 987 839</div>
-            </div>
-          </div>
-          <p style={{ color: '#9E9E9E', fontSize: '0.82rem', marginTop: '20px' }}>
-            After payment, send your proof of payment via TULI chat and we'll confirm with the seller.
-          </p>
-        </div>
-
         {/* CTA */}
         <div style={{ marginTop: '32px', background: '#0A1928', borderRadius: '32px', padding: '36px', textAlign: 'center' }}>
           <h3 style={{ color: '#FFD966', marginBottom: '12px' }}>Want to list on TULI?</h3>
