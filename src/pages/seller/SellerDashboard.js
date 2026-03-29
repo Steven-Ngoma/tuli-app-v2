@@ -385,7 +385,7 @@ const SellerDashboard = () => {
                         )
                       }
                       <input
-                        type="file" accept="image/*" capture="environment"
+                        type="file" accept="image/*"
                         onChange={handleImageChange}
                         style={{ position: 'absolute', inset: 0, opacity: 0, cursor: 'pointer' }}
                       />
