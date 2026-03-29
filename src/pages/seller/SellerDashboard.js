@@ -114,13 +114,12 @@ const SellerDashboard = () => {
     const formData = new FormData();
     formData.append('file', file);
     formData.append('upload_preset', 'tuli_unsigned');
-    formData.append('cloud_name', 'daxhjv2lt');
     const res = await fetch('https://api.cloudinary.com/v1_1/daxhjv2lt/image/upload', {
       method: 'POST',
       body: formData
     });
-    if (!res.ok) throw new Error('Image upload failed');
     const data = await res.json();
+    if (!res.ok) throw new Error(data.error?.message || 'Upload failed: ' + res.status);
     return data.secure_url;
   };
 
