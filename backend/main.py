@@ -22,9 +22,9 @@ app.add_middleware(
 )
 
 cloudinary.config(
-    cloud_name=os.getenv("CLOUDINARY_CLOUD_NAME"),
-    api_key=os.getenv("CLOUDINARY_API_KEY"),
-    api_secret=os.getenv("CLOUDINARY_API_SECRET")
+    cloud_name="daxhjv2lt",
+    api_key="293552771997197",
+    api_secret="sQXIy0tkDChOeewN4kuDSIMD1gk"
 )
 
 DATABASE_URL = os.getenv("DATABASE_URL")
