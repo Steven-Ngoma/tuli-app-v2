@@ -56,8 +56,10 @@ const RestaurantMenu = () => {
             ← Back
           </button>
           <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap' }}>
-            <div style={{ width: '64px', height: '64px', background: '#F39C1220', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2rem', flexShrink: 0 }}>
-              🍽️
+            <div style={{ width: '64px', height: '64px', background: '#F39C1220', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2rem', flexShrink: 0, overflow: 'hidden', border: '3px solid #F39C12' }}>
+              {restaurant.logo_url
+                ? <img src={restaurant.logo_url} alt={restaurant.shop_name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                : '🍽️'}
             </div>
             <div>
               <h1 style={{ color: '#FFD966', fontSize: '1.8rem', fontWeight: 800 }}>{restaurant.shop_name}</h1>

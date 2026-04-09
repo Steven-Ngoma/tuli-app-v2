@@ -80,7 +80,9 @@ const Marketplace = () => {
             {filtered.map(shop => {
               const online = shop.last_seen && (new Date() - new Date(shop.last_seen + 'Z')) / 1000 < 120;
               const isService = tab === 'services';
-              const coverImg = isService ? shop.cover_image : (shop.cover_image || shop.logo_url);
+              const coverImg = isService
+                ? (shop.logo_url || shop.cover_image)
+                : (shop.cover_image || shop.logo_url);
               return (
                 <div key={shop.id}
                   onClick={() => navigate(isService ? `/restaurant/${shop.id}` : `/shop/${shop.id}`)}

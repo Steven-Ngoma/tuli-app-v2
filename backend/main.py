@@ -314,7 +314,7 @@ def get_restaurants():
     conn = get_db()
     cur = conn.cursor()
     cur.execute("""
-        SELECT s.id, s.shop_name, s.location, s.last_seen,
+        SELECT s.id, s.shop_name, s.location, s.last_seen, s.logo_url,
                COUNT(p.id) as item_count,
                MAX(p.image_url) as cover_image
         FROM sellers s
@@ -331,7 +331,7 @@ def get_restaurants():
 def get_menu(seller_id: int):
     conn = get_db()
     cur = conn.cursor()
-    cur.execute("SELECT id, shop_name, location, last_seen FROM sellers WHERE id = %s", (seller_id,))
+    cur.execute("SELECT id, shop_name, location, last_seen, logo_url FROM sellers WHERE id = %s", (seller_id,))
     seller = fetchone(cur)
     if not seller:
         raise HTTPException(status_code=404, detail="Restaurant not found")
