@@ -248,9 +248,32 @@ const SellerDashboard = () => {
 
         {/* Header */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px', marginBottom: '24px' }}>
-          <div>
-            <h2 style={{ color: '#FFD966', fontSize: '1.8rem' }}>👋 {seller.shop_name}</h2>
-            <p style={{ color: '#9BB7D4' }}>Manage your shop</p>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+            <label style={{ cursor: 'pointer', position: 'relative' }}>
+              <div style={{ width: '56px', height: '56px', borderRadius: '50%', background: '#F39C1220', border: '2px solid #F39C12', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.6rem' }}>
+                {seller.logo_url
+                  ? <img src={seller.logo_url} alt="logo" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  : '🏪'}
+              </div>
+              <input type="file" accept="image/*" style={{ display: 'none' }} onChange={async e => {
+                const file = e.target.files[0];
+                if (!file) return;
+                const fd = new FormData();
+                fd.append('file', file);
+                const res = await fetch(`https://tuli-backend-44vd.onrender.com/sellers/${seller.id}/logo`, { method: 'POST', body: fd });
+                const data = await res.json();
+                if (data.logo_url) {
+                  const updated = { ...seller, logo_url: data.logo_url };
+                  localStorage.setItem('seller', JSON.stringify(updated));
+                  window.location.reload();
+                }
+              }} />
+              <span style={{ position: 'absolute', bottom: 0, right: 0, background: '#F39C12', borderRadius: '50%', width: '18px', height: '18px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.6rem', color: '#1B4332', fontWeight: 700 }}>✎</span>
+            </label>
+            <div>
+              <h2 style={{ color: '#FFD966', fontSize: '1.8rem' }}>👋 {seller.shop_name}</h2>
+              <p style={{ color: '#9BB7D4', fontSize: '0.8rem' }}>Tap logo to update • Manage your shop</p>
+            </div>
           </div>
           <button onClick={handleLogout} className="btn-outline">Logout</button>
         </div>

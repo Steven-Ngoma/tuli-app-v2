@@ -51,8 +51,10 @@ def init_db():
             shop_type TEXT DEFAULT 'product',
             subscription_expires TIMESTAMP,
             last_seen TIMESTAMP,
+            logo_url TEXT,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );
+        ALTER TABLE sellers ADD COLUMN IF NOT EXISTS logo_url TEXT;
         CREATE TABLE IF NOT EXISTS products (
             id SERIAL PRIMARY KEY,
             seller_id INTEGER NOT NULL REFERENCES sellers(id),
@@ -359,7 +361,61 @@ def debug_env():
         "api_secret_start": (os.getenv("CLOUDINARY_API_SECRET") or '')[:4]
     }
 
-@app.get("/")
+@app.get("/shops")
+def get_shops():
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT s.id, s.shop_name, s.location, s.last_seen, s.logo_url,
+               COUNT(p.id) as product_count
+        FROM sellers s
+        LEFT JOIN products p ON p.seller_id = s.id AND p.active = 1
+        WHERE s.shop_type = 'product'
+        GROUP BY s.id
+    """)
+    rows = fetchall(cur)
+    cur.close()
+    conn.close()
+    return rows
+
+@app.get("/shops/{seller_id}")
+def get_shop(seller_id: int):
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute("SELECT id, shop_name, location, last_seen, logo_url FROM sellers WHERE id = %s", (seller_id,))
+    seller = fetchone(cur)
+    if not seller:
+        raise HTTPException(status_code=404, detail="Shop not found")
+    cur.execute("""
+        SELECT p.*, s.shop_name, s.last_seen FROM products p
+        JOIN sellers s ON p.seller_id = s.id
+        WHERE p.seller_id = %s AND p.active = 1 ORDER BY p.created_at DESC
+    """, (seller_id,))
+    products = fetchall(cur)
+    for p in products:
+        cur.execute("SELECT url FROM product_images WHERE product_id = %s", (p['id'],))
+        imgs = [r[0] for r in cur.fetchall()]
+        p['images'] = ([p['image_url']] if p['image_url'] else []) + imgs
+    cur.close()
+    conn.close()
+    return {"shop": seller, "products": products}
+
+@app.post("/sellers/{seller_id}/logo")
+async def update_logo(seller_id: int, file: UploadFile = File(...)):
+    try:
+        contents = await file.read()
+        result = cloudinary.uploader.upload(contents, folder="tuli", resource_type="image")
+        logo_url = result["secure_url"]
+        conn = get_db()
+        cur = conn.cursor()
+        cur.execute("UPDATE sellers SET logo_url = %s WHERE id = %s", (logo_url, seller_id))
+        conn.commit()
+        cur.close()
+        conn.close()
+        return {"logo_url": logo_url}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
 def root():
     return {"message": "TULI API is running"}
 

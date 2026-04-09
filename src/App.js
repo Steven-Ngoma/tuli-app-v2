@@ -15,6 +15,7 @@ import Chat from './pages/Chat';
 import BuyerChats from './pages/BuyerChats';
 import Services from './pages/Services';
 import RestaurantMenu from './pages/RestaurantMenu';
+import ShopPage from './pages/ShopPage';
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -72,6 +73,7 @@ function App() {
           <Route path="/marketplace" element={<Marketplace />} />
           <Route path="/services" element={<Services />} />
           <Route path="/restaurant/:sellerId" element={<RestaurantMenu />} />
+          <Route path="/shop/:sellerId" element={<ShopPage />} />
           <Route path="/seller/register" element={<SellerRegister />} />
           <Route path="/seller/login" element={<SellerLogin />} />
           <Route path="/seller/dashboard" element={<SellerDashboard />} />

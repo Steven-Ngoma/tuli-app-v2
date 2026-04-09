@@ -2,25 +2,35 @@ import React, { useState, useRef } from 'react';
 
 const ImageCarousel = ({ images, height = '120px' }) => {
   const [current, setCurrent] = useState(0);
-  const touchStartX = useRef(null);
+  const dragStartX = useRef(null);
+  const isDragging = useRef(false);
 
   if (!images || images.length === 0) return null;
 
   const prev = e => { e.stopPropagation(); setCurrent(i => (i - 1 + images.length) % images.length); };
   const next = e => { e.stopPropagation(); setCurrent(i => (i + 1) % images.length); };
 
-  const onTouchStart = e => { touchStartX.current = e.touches[0].clientX; };
-  const onTouchEnd = e => {
-    if (touchStartX.current === null) return;
-    const diff = touchStartX.current - e.changedTouches[0].clientX;
-    if (diff > 40) setCurrent(i => (i + 1) % images.length);
-    else if (diff < -40) setCurrent(i => (i - 1 + images.length) % images.length);
-    touchStartX.current = null;
+  const onDragStart = e => {
+    dragStartX.current = e.type === 'touchstart' ? e.touches[0].clientX : e.clientX;
+    isDragging.current = false;
+  };
+  const onDragEnd = e => {
+    if (dragStartX.current === null) return;
+    const endX = e.type === 'touchend' ? e.changedTouches[0].clientX : e.clientX;
+    const diff = dragStartX.current - endX;
+    if (Math.abs(diff) > 40) {
+      isDragging.current = true;
+      if (diff > 0) setCurrent(i => (i + 1) % images.length);
+      else setCurrent(i => (i - 1 + images.length) % images.length);
+    }
+    dragStartX.current = null;
   };
 
   return (
-    <div style={{ position: 'relative', width: '100%', height, overflow: 'hidden', borderRadius: '16px 16px 0 0' }}
-      onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}
+    <div
+      style={{ position: 'relative', width: '100%', height, overflow: 'hidden', borderRadius: '16px 16px 0 0', cursor: 'grab', userSelect: 'none' }}
+      onMouseDown={onDragStart} onMouseUp={onDragEnd} onMouseLeave={() => { dragStartX.current = null; }}
+      onTouchStart={onDragStart} onTouchEnd={onDragEnd}
     >
       {images.map((src, i) => (
         <img key={i} src={src} alt={`slide-${i}`} style={{
