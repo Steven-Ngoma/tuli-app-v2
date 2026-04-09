@@ -221,7 +221,7 @@ def register_seller(data: SellerRegister):
     if data.shop_type == 'service':
         sub_expires = datetime.utcnow() + timedelta(days=30)
     cur.execute(
-        "INSERT INTO sellers (name, shop_name, phone, email, location, password, shop_type, subscription_expires) VALUES (%s,%s,%s,%s,%s,%s,%s,%s) RETURNING id, name, shop_name, phone, location, shop_type, subscription_expires",
+        "INSERT INTO sellers (name, shop_name, phone, email, location, password, shop_type, subscription_expires) VALUES (%s,%s,%s,%s,%s,%s,%s,%s) RETURNING id, name, shop_name, phone, location, shop_type, subscription_expires, logo_url",
         (data.name, data.shop_name, data.phone, data.email, data.location, hash_password(data.password), data.shop_type, sub_expires)
     )
     seller = fetchone(cur)
@@ -235,7 +235,7 @@ def login_seller(data: SellerLogin):
     conn = get_db()
     cur = conn.cursor()
     cur.execute(
-        "SELECT id, name, shop_name, phone, location, shop_type, subscription_expires FROM sellers WHERE phone = %s AND password = %s",
+        "SELECT id, name, shop_name, phone, location, shop_type, subscription_expires, logo_url FROM sellers WHERE phone = %s AND password = %s",
         (data.phone, hash_password(data.password))
     )
     seller = fetchone(cur)

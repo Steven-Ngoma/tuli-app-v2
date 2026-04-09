@@ -263,7 +263,7 @@ const SellerDashboard = () => {
                 const res = await fetch(`https://tuli-backend-44vd.onrender.com/sellers/${seller.id}/logo`, { method: 'POST', body: fd });
                 const data = await res.json();
                 if (data.logo_url) {
-                  const updated = { ...seller, logo_url: data.logo_url };
+                  const updated = { ...JSON.parse(localStorage.getItem('seller')), logo_url: data.logo_url };
                   localStorage.setItem('seller', JSON.stringify(updated));
                   window.location.reload();
                 }
