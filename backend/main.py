@@ -163,9 +163,12 @@ def fetchall(cur):
 
 @app.post("/upload")
 async def upload_image(file: UploadFile = File(...)):
-    contents = await file.read()
-    result = cloudinary.uploader.upload(contents, folder="tuli", resource_type="image")
-    return {"url": result["secure_url"]}
+    try:
+        contents = await file.read()
+        result = cloudinary.uploader.upload(contents, folder="tuli", resource_type="image")
+        return {"url": result["secure_url"]}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.post("/upload-multiple")
 async def upload_multiple(files: list[UploadFile] = File(...)):
