@@ -367,9 +367,10 @@ def get_shops():
     cur = conn.cursor()
     cur.execute("""
         SELECT s.id, s.shop_name, s.location, s.last_seen, s.logo_url,
-               COUNT(p.id) as product_count
+               COUNT(p.id) as product_count,
+               MAX(p.image_url) as cover_image
         FROM sellers s
-        LEFT JOIN products p ON p.seller_id = s.id AND p.active = 1
+        LEFT JOIN products p ON p.seller_id = s.id AND p.active = 1 AND p.image_url IS NOT NULL AND p.image_url != ''
         WHERE s.shop_type = 'product'
         GROUP BY s.id
     """)
