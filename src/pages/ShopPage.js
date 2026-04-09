@@ -44,7 +44,10 @@ const ShopPage = () => {
             <div style={{ width: '72px', height: '72px', borderRadius: '50%', overflow: 'hidden', background: '#F39C1220', border: '3px solid #F39C12', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2rem' }}>
               {shop.logo_url
                 ? <img src={shop.logo_url} alt={shop.shop_name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                : '🏪'}
+                : products[0]?.image_url
+                  ? <img src={products[0].image_url} alt={shop.shop_name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  : '🏪'}
+            </div>
             </div>
             <div>
               <h1 style={{ color: '#FFD966', fontSize: '1.8rem', fontWeight: 800 }}>{shop.shop_name}</h1>
