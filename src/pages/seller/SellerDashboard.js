@@ -113,14 +113,13 @@ const SellerDashboard = () => {
   const uploadToCloudinary = async (file) => {
     const formData = new FormData();
     formData.append('file', file);
-    formData.append('upload_preset', 'tuli_unsigned');
-    const res = await fetch('https://api.cloudinary.com/v1_1/daxhjv2lt/image/upload', {
+    const res = await fetch('https://tuli-backend-44vd.onrender.com/upload', {
       method: 'POST',
       body: formData
     });
     const data = await res.json();
-    if (!res.ok) throw new Error(data.error?.message || 'Upload failed: ' + res.status);
-    return data.secure_url;
+    if (!res.ok) throw new Error(data.detail || 'Upload failed: ' + res.status);
+    return data.url;
   };
 
   const handleChange = e => setForm({ ...form, [e.target.name]: e.target.value });

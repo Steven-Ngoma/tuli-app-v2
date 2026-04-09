@@ -350,6 +350,15 @@ def get_menu(seller_id: int):
     conn.close()
     return {"restaurant": seller, "menu": result}
 
+@app.get("/debug-env")
+def debug_env():
+    return {
+        "cloud_name": os.getenv("CLOUDINARY_CLOUD_NAME"),
+        "api_key": os.getenv("CLOUDINARY_API_KEY"),
+        "api_secret_len": len(os.getenv("CLOUDINARY_API_SECRET") or ''),
+        "api_secret_start": (os.getenv("CLOUDINARY_API_SECRET") or '')[:4]
+    }
+
 @app.get("/")
 def root():
     return {"message": "TULI API is running"}
