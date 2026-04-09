@@ -39,10 +39,11 @@ const Marketplace = () => {
   }, [tab]);
 
   const filtered = items.filter(item => {
-    const name = tab === 'services' ? item.shop_name : item.name;
+    const name = (tab === 'services' ? item.shop_name : item.name) || '';
+    const loc = item.location || '';
     const matchSearch =
       name.toLowerCase().includes(search.toLowerCase()) ||
-      item.location.toLowerCase().includes(search.toLowerCase());
+      loc.toLowerCase().includes(search.toLowerCase());
     const matchCat = category === 'All' || item.category === category;
     return matchSearch && matchCat;
   });
