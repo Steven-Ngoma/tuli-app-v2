@@ -403,11 +403,11 @@ section {
 
 /* Footer */
 footer {
-  background: #05131F;
+  background: #0D2B1E;
   color: #A6C1E0;
   padding: 48px 0 28px;
   margin-top: 40px;
-  border-top: 1px solid #1E3A4D;
+  border-top: 1px solid #1B4332;
 }
 
 .footer-grid {
@@ -421,7 +421,7 @@ footer {
   text-align: center;
   margin-top: 48px;
   padding-top: 24px;
-  border-top: 1px solid #1E3A4D;
+  border-top: 1px solid #1B4332;
   font-size: 0.85rem;
 }
 
