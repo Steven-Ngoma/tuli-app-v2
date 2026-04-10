@@ -70,9 +70,9 @@ const ShopPage = () => {
             <p style={{ fontSize: '1.1rem' }}>No products listed yet.</p>
           </div>
         ) : (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '16px' }} className="products-grid">
+          <div style={{ display: 'flex', gap: '16px', overflowX: 'auto', paddingBottom: '12px', scrollSnapType: 'x mandatory', WebkitOverflowScrolling: 'touch' }}>
             {products.map(item => (
-              <div key={item.id} style={{ background: '#ffffff', borderRadius: '16px', border: '1px solid #e0e0e0', boxShadow: '0 2px 8px rgba(0,0,0,0.06)', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+              <div key={item.id} style={{ minWidth: '200px', maxWidth: '200px', background: '#ffffff', borderRadius: '16px', border: '1px solid #e0e0e0', boxShadow: '0 2px 8px rgba(0,0,0,0.06)', overflow: 'hidden', display: 'flex', flexDirection: 'column', scrollSnapAlign: 'start', flexShrink: 0 }}>
                 <ImageCarousel images={item.images || (item.image_url ? [item.image_url] : [])} height="140px" />
                 <div style={{ padding: '12px', flex: 1, display: 'flex', flexDirection: 'column' }}>
                   <h3 style={{ color: '#1B4332', fontSize: '0.95rem', fontWeight: 700, marginBottom: '4px' }}>{item.name}</h3>
