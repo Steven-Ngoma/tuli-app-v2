@@ -113,8 +113,8 @@ const BuyerChats = () => {
   return (
     <>
       {activeChat && (
-        <div style={{ position: 'fixed', inset: 0, background: '#1B4332', zIndex: 200, display: 'flex', flexDirection: 'column', height: '100vh' }}>
-          <div style={{ background: '#102433', padding: '14px 20px', borderBottom: '1px solid #244C66', display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0 }}>
+        <div style={{ position: 'fixed', inset: 0, background: '#f5f7fa', zIndex: 200, display: 'flex', flexDirection: 'column', height: '100vh' }}>
+          <div style={{ background: '#1B4332', padding: '14px 20px', borderBottom: '1px solid #2D6A4F', display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0 }}>
             <button onClick={() => setActiveChat(null)} style={{ background: 'transparent', border: 'none', color: '#F39C12', fontSize: '1.4rem', cursor: 'pointer', padding: 0 }}>←</button>
             <div style={{ width: '38px', height: '38px', background: '#F39C1230', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.1rem' }}>🏪</div>
             <div>
@@ -122,7 +122,7 @@ const BuyerChats = () => {
               <div style={{ color: '#9BB7D4', fontSize: '0.8rem' }}>Re: {activeChat.product_name}</div>
             </div>
           </div>
-          <div ref={msgBoxRef} style={{ flex: 1, padding: '16px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '10px', background: '#0D1F2E', minHeight: 0 }}>
+          <div ref={msgBoxRef} style={{ flex: 1, padding: '16px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '10px', background: '#f5f7fa', minHeight: 0 }}>
             {messages.map(m => {
               const isMine = !m.is_seller;
               return (
@@ -130,12 +130,13 @@ const BuyerChats = () => {
                   <div style={{
                     maxWidth: '70%', padding: '10px 14px', wordBreak: 'break-word',
                     borderRadius: isMine ? '18px 18px 4px 18px' : '18px 18px 18px 4px',
-                    background: isMine ? '#F39C12' : '#1B4332',
-                    color: isMine ? '#1B4332' : '#EFF3F8',
-                    border: isMine ? 'none' : '1px solid #244C66'
+                    background: isMine ? '#F39C12' : '#ffffff',
+                    color: '#1B4332',
+                    border: isMine ? 'none' : '1px solid #e0e0e0',
+                    boxShadow: '0 1px 4px rgba(0,0,0,0.06)'
                   }}>
                     <div style={{ fontSize: '0.9rem' }}>{m.message}</div>
-                    <div style={{ fontSize: '0.65rem', marginTop: '4px', opacity: 0.6, textAlign: 'right' }}>
+                    <div style={{ fontSize: '0.65rem', marginTop: '4px', opacity: 0.5, textAlign: 'right' }}>
                       {new Date(m.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </div>
                   </div>
@@ -146,7 +147,7 @@ const BuyerChats = () => {
 
           {/* Place Order */}
           {!orderPlaced[activeChat?.room_id] ? (
-            <div style={{ padding: '8px 12px', background: '#1B4332', borderTop: '1px solid #1A3A50', flexShrink: 0 }}>
+            <div style={{ padding: '8px 12px', background: '#fff', borderTop: '1px solid #e0e0e0', flexShrink: 0 }}>
               {!showOrderForm ? (
                 <button onClick={() => { setShowOrderForm(true); setOrderForm({ final_price: '', delivery_address: '' }); }}
                   style={{ width: '100%', background: '#27AE60', color: 'white', border: 'none', borderRadius: '40px', padding: '10px', fontWeight: 700, fontSize: '0.9rem', cursor: 'pointer' }}>
@@ -154,18 +155,18 @@ const BuyerChats = () => {
                 </button>
               ) : (
                 <form onSubmit={handlePlaceOrder} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                  <p style={{ color: '#FFD966', fontSize: '0.85rem', fontWeight: 600, margin: 0 }}>📦 {activeChat?.product_name}</p>
+                  <p style={{ color: '#1B4332', fontSize: '0.85rem', fontWeight: 600, margin: 0 }}>📦 {activeChat?.product_name}</p>
                   <input placeholder="Agreed price e.g. K450" value={orderForm.final_price}
                     onChange={e => setOrderForm({ ...orderForm, final_price: e.target.value })} required
-                    style={{ padding: '10px 14px', borderRadius: '40px', border: '1px solid #244C66', background: '#102433', color: '#EFF3F8', fontSize: '0.9rem', outline: 'none' }}
+                    style={{ padding: '10px 14px', borderRadius: '40px', border: '1px solid #ccc', background: '#f5f7fa', color: '#1B4332', fontSize: '0.9rem', outline: 'none' }}
                   />
                   <input placeholder="Your delivery address" value={orderForm.delivery_address}
                     onChange={e => setOrderForm({ ...orderForm, delivery_address: e.target.value })}
-                    style={{ padding: '10px 14px', borderRadius: '40px', border: '1px solid #244C66', background: '#102433', color: '#EFF3F8', fontSize: '0.9rem', outline: 'none' }}
+                    style={{ padding: '10px 14px', borderRadius: '40px', border: '1px solid #ccc', background: '#f5f7fa', color: '#1B4332', fontSize: '0.9rem', outline: 'none' }}
                   />
                   <div style={{ display: 'flex', gap: '8px' }}>
                     <button type="button" onClick={() => setShowOrderForm(false)}
-                      style={{ flex: 1, background: 'transparent', border: '1px solid #244C66', color: '#9BB7D4', borderRadius: '40px', padding: '8px', cursor: 'pointer', fontSize: '0.85rem' }}>Cancel</button>
+                      style={{ flex: 1, background: 'transparent', border: '1px solid #ccc', color: '#6B8CAE', borderRadius: '40px', padding: '8px', cursor: 'pointer', fontSize: '0.85rem' }}>Cancel</button>
                     <button type="submit"
                       style={{ flex: 2, background: '#27AE60', color: 'white', border: 'none', borderRadius: '40px', padding: '8px', fontWeight: 700, cursor: 'pointer', fontSize: '0.85rem' }}>✓ Confirm Order</button>
                   </div>
@@ -173,18 +174,18 @@ const BuyerChats = () => {
               )}
             </div>
           ) : (
-            <div style={{ padding: '10px 16px', background: '#27AE6020', borderTop: '1px solid #27AE60', flexShrink: 0, textAlign: 'center' }}>
+            <div style={{ padding: '10px 16px', background: '#27AE6015', borderTop: '1px solid #27AE60', flexShrink: 0, textAlign: 'center' }}>
               <span style={{ color: '#27AE60', fontWeight: 700, fontSize: '0.9rem' }}>✅ Order placed!</span>
             </div>
           )}
-          <form onSubmit={handleSend} style={{ padding: '10px 12px', borderTop: '1px solid #244C66', display: 'flex', gap: '8px', alignItems: 'center', background: '#102433', flexShrink: 0 }}>
+          <form onSubmit={handleSend} style={{ padding: '10px 12px', borderTop: '1px solid #e0e0e0', display: 'flex', gap: '8px', alignItems: 'center', background: '#fff', flexShrink: 0 }}>
             <input
               type="text" placeholder="Type a message..."
               value={text} onChange={e => setText(e.target.value)}
-              style={{ flex: 1, padding: '12px 16px', borderRadius: '40px', border: '1px solid #244C66', background: '#1B4332', color: '#EFF3F8', fontSize: '0.95rem', outline: 'none', minWidth: 0 }}
+              style={{ flex: 1, padding: '12px 16px', borderRadius: '40px', border: '1px solid #ccc', background: '#f5f7fa', color: '#1B4332', fontSize: '0.95rem', outline: 'none', minWidth: 0 }}
             />
             <button type="submit" disabled={!text.trim()}
-              style={{ background: text.trim() ? '#F39C12' : '#244C66', border: 'none', borderRadius: '50%', width: '44px', height: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: text.trim() ? 'pointer' : 'default', flexShrink: 0, fontSize: '1.1rem' }}
+              style={{ background: text.trim() ? '#F39C12' : '#e0e0e0', border: 'none', borderRadius: '50%', width: '44px', height: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: text.trim() ? 'pointer' : 'default', flexShrink: 0, fontSize: '1.1rem' }}
             >➤</button>
           </form>
         </div>
