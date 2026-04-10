@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import ProductBanner from '../components/ProductBanner';
 
@@ -45,7 +45,7 @@ const Marketplace = () => {
         </div>
 
         {/* Product Advertisement Banner */}
-        <ProductBanner />
+        <ProductBanner tab={tab} />
 
         {/* Tabs */}
         <div style={{ display: 'flex', gap: '10px', marginBottom: '28px' }}>
