@@ -5,7 +5,7 @@ import TuliLogo from './TuliLogo';
 const Navbar = () => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
-  const isHome = pathname === '/';
+  const isHome = pathname === '/home';
   const seller = JSON.parse(localStorage.getItem('seller') || 'null');
   const buyerName = localStorage.getItem('buyer_name');
   const [buyerUnread, setBuyerUnread] = useState(0);
@@ -52,7 +52,7 @@ const Navbar = () => {
     <div className="container">
       <div className="navbar">
         {/* Logo — far left */}
-        <Link to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '10px' }}>
+        <Link to="/home" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '10px' }}>
           <TuliLogo size={44} />
           <div>
             <h1 style={{
@@ -69,7 +69,7 @@ const Navbar = () => {
 
         {/* Nav links — far right */}
         <div className="nav-links">
-          <Link to="/" style={{ color: isHome ? '#F39C12' : '#CDE5F7' }}>Home</Link>
+          <Link to="/home" style={{ color: isHome ? '#F39C12' : '#CDE5F7' }}>Home</Link>
           <Link to="/marketplace" style={{ color: pathname === '/marketplace' ? '#F39C12' : '#CDE5F7' }}>
             🛒 Products
           </Link>

@@ -54,7 +54,7 @@ const HomePage = () => {
 const Layout = ({ children }) => {
   const { pathname } = useLocation();
   const isChat = pathname.startsWith('/chat');
-  const isHome = pathname === '/';
+  const isHome = pathname === '/home';
   return (
     <div className="App">
       {!isChat && <Navbar />}
@@ -70,7 +70,8 @@ function App() {
       <ScrollToTop />
       <Layout>
         <Routes>
-          <Route path="/" element={<HomePage />} />
+          <Route path="/" element={<Marketplace />} />
+          <Route path="/home" element={<HomePage />} />
           <Route path="/marketplace" element={<Marketplace />} />
           <Route path="/services" element={<Services />} />
           <Route path="/restaurant/:sellerId" element={<RestaurantMenu />} />
