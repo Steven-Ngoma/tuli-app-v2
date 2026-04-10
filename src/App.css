@@ -215,12 +215,12 @@ body {
 
 .hero-right {
   flex: 1;
-  background: #112B3C;
+  background: #FFD966;
   border-radius: 48px;
   padding: 36px 24px;
   text-align: center;
   box-shadow: 0 20px 30px -10px rgba(0,0,0,0.3);
-  border: 1px solid #2A4B66;
+  border: 1px solid #F39C12;
 }
 
 .badge-icon {
@@ -256,13 +256,13 @@ section {
 }
 
 .unit-card {
-  background: #102433;
+  background: #FFD966;
   border-radius: 40px;
   padding: 36px 28px;
   flex: 1;
   min-width: 280px;
   box-shadow: 0 12px 28px rgba(0,0,0,0.3);
-  border: 1px solid #244C66;
+  border: 1px solid #F39C12;
   transition: all 0.2s;
 }
 
@@ -279,7 +279,7 @@ section {
 .unit-card h3 {
   font-size: 1.9rem;
   margin-bottom: 12px;
-  color: #FFD966;
+  color: #1B4332;
 }
 
 .price-tag {
@@ -299,7 +299,7 @@ section {
   display: flex;
   align-items: center;
   gap: 12px;
-  color: #CCE2F5;
+  color: #1B4332;
 }
 
 /* Steps */
@@ -312,13 +312,13 @@ section {
 }
 
 .step-item {
-  background: #102433;
+  background: #FFD966;
   border-radius: 32px;
   padding: 28px 20px;
   text-align: center;
   flex: 1;
   min-width: 200px;
-  border: 1px solid #244C66;
+  border: 1px solid #F39C12;
 }
 
 .step-num {
@@ -336,7 +336,7 @@ section {
 }
 
 .step-item h3 {
-  color: #FFD966;
+  color: #1B4332;
 }
 
 /* Feature Grid */
