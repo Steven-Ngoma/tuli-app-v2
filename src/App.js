@@ -54,11 +54,12 @@ const HomePage = () => {
 const Layout = ({ children }) => {
   const { pathname } = useLocation();
   const isChat = pathname.startsWith('/chat');
+  const isHome = pathname === '/';
   return (
     <div className="App">
       {!isChat && <Navbar />}
       {children}
-      {!isChat && <Footer />}
+      {isHome && <Footer />}
     </div>
   );
 };
