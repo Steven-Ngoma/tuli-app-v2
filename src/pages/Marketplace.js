@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import ProductBanner from '../components/ProductBanner';
 
 const Marketplace = () => {
   const [tab, setTab] = useState('products');
@@ -42,6 +43,9 @@ const Marketplace = () => {
           <h1 style={{ fontSize: '2.3rem', fontWeight: 700, color: '#1B4332', marginBottom: '8px' }}>TULI Marketplace</h1>
           <p style={{ color: '#4A6080' }}>Browse listings from sellers across Zambia. Chat directly on TULI.</p>
         </div>
+
+        {/* Product Advertisement Banner */}
+        <ProductBanner />
 
         {/* Tabs */}
         <div style={{ display: 'flex', gap: '10px', marginBottom: '28px' }}>
