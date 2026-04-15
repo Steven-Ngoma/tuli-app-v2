@@ -80,7 +80,7 @@ const Marketplace = () => {
             <p style={{ fontSize: '1.2rem' }}>No {tab === 'products' ? 'shops' : 'services'} found.</p>
           </div>
         ) : (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '16px' }} className="products-grid">
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '16px' }} className="products-grid">
             {filtered.map(shop => {
               const online = shop.last_seen && (new Date() - new Date(shop.last_seen + 'Z')) / 1000 < 120;
               const isService = tab === 'services';
@@ -111,7 +111,7 @@ const Marketplace = () => {
               // Products — Chowdeck style
               return (
                 <div key={shop.id} onClick={() => navigate(`/shop/${shop.id}`)}
-                  style={{ position: 'relative', borderRadius: '20px', overflow: 'hidden', cursor: 'pointer', height: '200px', boxShadow: '0 4px 16px rgba(0,0,0,0.12)', background: '#1B4332' }}
+                  style={{ position: 'relative', borderRadius: '20px', overflow: 'hidden', cursor: 'pointer', height: '160px', boxShadow: '0 4px 16px rgba(0,0,0,0.12)', background: '#1B4332' }}
                 >
                   {coverImg
                     ? <img src={coverImg} alt={shop.shop_name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
