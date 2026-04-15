@@ -25,7 +25,7 @@ const Marketplace = () => {
       : 'https://tuli-backend-44vd.onrender.com/shops';
     fetch(url)
       .then(res => res.json())
-      .then(data => setItems(data))
+      .then(data => setItems(Array.isArray(data) ? data : []))
       .catch(() => setItems([]))
       .finally(() => setLoading(false));
   }, [tab]);
