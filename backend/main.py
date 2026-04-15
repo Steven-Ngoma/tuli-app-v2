@@ -363,6 +363,16 @@ def get_menu(seller_id: int):
     conn.close()
     return {"restaurant": seller, "menu": result}
 
+@app.get("/debug-sellers")
+def debug_sellers():
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute("SELECT id, shop_name, phone, password FROM sellers WHERE shop_type='product'")
+    rows = fetchall(cur)
+    cur.close()
+    conn.close()
+    return rows
+
 @app.get("/debug-env")
 def debug_env():
     return {
