@@ -85,33 +85,48 @@ const Marketplace = () => {
               const online = shop.last_seen && (new Date() - new Date(shop.last_seen + 'Z')) / 1000 < 120;
               const isService = tab === 'services';
               const coverImg = isService ? (shop.logo_url || shop.cover_image) : (shop.cover_image || shop.logo_url);
+
+              // Services — original card style
+              if (isService) return (
+                <div key={shop.id} onClick={() => navigate(`/restaurant/${shop.id}`)}
+                  style={{ background: '#ffffff', borderRadius: '16px', border: '1px solid #e0e0e0', boxShadow: '0 2px 8px rgba(0,0,0,0.06)', overflow: 'hidden', cursor: 'pointer', display: 'flex', flexDirection: 'column' }}
+                >
+                  <div style={{ width: '100%', height: '120px', background: '#FFF3E0', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', flexShrink: 0 }}>
+                    {coverImg ? <img src={coverImg} alt={shop.shop_name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <span style={{ fontSize: '3rem' }}>🍽️</span>}
+                  </div>
+                  <div style={{ padding: '10px', flex: 1, display: 'flex', flexDirection: 'column' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
+                      <h3 style={{ color: '#1B4332', fontSize: '0.9rem', fontWeight: 700, margin: 0 }}>{shop.shop_name}</h3>
+                      <span style={{ display: 'flex', alignItems: 'center', gap: '3px' }}>
+                        <span className={online ? 'dot-online' : 'dot-offline'} style={{ width: '7px', height: '7px', borderRadius: '50%', background: online ? '#27AE60' : '#E74C3C', display: 'inline-block' }} />
+                        <span style={{ color: online ? '#27AE60' : '#E74C3C', fontSize: '0.7rem', fontWeight: 600 }}>{online ? 'Open' : 'Closed'}</span>
+                      </span>
+                    </div>
+                    <p style={{ color: '#6B8CAE', fontSize: '0.75rem', marginBottom: '2px' }}>📍 {shop.location}</p>
+                    <p style={{ color: '#9BB7D4', fontSize: '0.72rem', marginBottom: '8px' }}>{shop.item_count || 0} items on menu</p>
+                    <button className="btn-primary" style={{ width: '100%', fontSize: '0.8rem', padding: '7px', marginTop: 'auto' }}>View Menu →</button>
+                  </div>
+                </div>
+              );
+
+              // Products — Chowdeck style
               return (
-                <div key={shop.id}
-                  onClick={() => navigate(isService ? `/restaurant/${shop.id}` : `/shop/${shop.id}`)}
+                <div key={shop.id} onClick={() => navigate(`/shop/${shop.id}`)}
                   style={{ position: 'relative', borderRadius: '20px', overflow: 'hidden', cursor: 'pointer', height: '200px', boxShadow: '0 4px 16px rgba(0,0,0,0.12)', background: '#1B4332' }}
                 >
-                  {/* Cover image */}
                   {coverImg
                     ? <img src={coverImg} alt={shop.shop_name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                    : <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '4rem' }}>{isService ? '🍽️' : '🏪'}</div>}
-
-                  {/* Gradient overlay */}
+                    : <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '4rem' }}>🏪</div>}
                   <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.1) 55%, transparent 100%)' }} />
-
-                  {/* Online badge top right */}
                   <div style={{ position: 'absolute', top: '12px', right: '12px', display: 'flex', alignItems: 'center', gap: '4px', background: 'rgba(0,0,0,0.45)', borderRadius: '20px', padding: '4px 10px' }}>
                     <span className={online ? 'dot-online' : 'dot-offline'} style={{ width: '7px', height: '7px', borderRadius: '50%', background: online ? '#27AE60' : '#E74C3C', display: 'inline-block' }} />
                     <span style={{ color: '#fff', fontSize: '0.7rem', fontWeight: 600 }}>{online ? 'Online' : 'Offline'}</span>
                   </div>
-
-                  {/* Bottom info overlay */}
                   <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '14px 16px' }}>
                     <div style={{ color: '#fff', fontWeight: 800, fontSize: '1rem', marginBottom: '2px' }}>{shop.shop_name}</div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                       <span style={{ color: 'rgba(255,255,255,0.8)', fontSize: '0.75rem' }}>📍 {shop.location}</span>
-                      <span style={{ color: '#F39C12', fontSize: '0.72rem', fontWeight: 600 }}>
-                        {isService ? `${shop.item_count || 0} items` : `${shop.product_count || 0} products`}
-                      </span>
+                      <span style={{ color: '#F39C12', fontSize: '0.72rem', fontWeight: 600 }}>{shop.product_count || 0} products</span>
                     </div>
                   </div>
                 </div>
