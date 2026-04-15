@@ -297,6 +297,16 @@ def add_product(data: ProductCreate):
     conn.close()
     return product
 
+@app.patch("/products/{product_id}/image")
+def update_product_image(product_id: int, data: dict):
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute("UPDATE products SET image_url = %s WHERE id = %s", (data.get('image_url'), product_id))
+    conn.commit()
+    cur.close()
+    conn.close()
+    return {"status": "updated"}
+
 @app.delete("/products/{product_id}")
 def delete_product(product_id: int):
     conn = get_db()
