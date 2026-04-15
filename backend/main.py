@@ -311,7 +311,8 @@ def update_product_image(product_id: int, data: dict):
 def delete_product(product_id: int):
     conn = get_db()
     cur = conn.cursor()
-    cur.execute("UPDATE products SET active = 0 WHERE id = %s", (product_id,))
+    cur.execute("DELETE FROM product_images WHERE product_id = %s", (product_id,))
+    cur.execute("DELETE FROM products WHERE id = %s", (product_id,))
     conn.commit()
     cur.close()
     conn.close()
