@@ -80,7 +80,7 @@ const Marketplace = () => {
             <p style={{ fontSize: '1.2rem' }}>No {tab === 'products' ? 'shops' : 'services'} found.</p>
           </div>
         ) : (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '16px' }} className="products-grid">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             {filtered.map(shop => {
               const online = shop.last_seen && (new Date() - new Date(shop.last_seen + 'Z')) / 1000 < 120;
               const isService = tab === 'services';
@@ -108,24 +108,24 @@ const Marketplace = () => {
                 </div>
               );
 
-              // Products — Chowdeck style
+              // Products — full width Chowdeck style
               return (
                 <div key={shop.id} onClick={() => navigate(`/shop/${shop.id}`)}
-                  style={{ position: 'relative', borderRadius: '20px', overflow: 'hidden', cursor: 'pointer', height: '160px', boxShadow: '0 4px 16px rgba(0,0,0,0.12)', background: '#1B4332' }}
+                  style={{ position: 'relative', borderRadius: '20px', overflow: 'hidden', cursor: 'pointer', width: '100%', height: '180px', boxShadow: '0 4px 16px rgba(0,0,0,0.12)', background: '#1B4332' }}
                 >
                   {coverImg
                     ? <img src={coverImg} alt={shop.shop_name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                     : <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '4rem' }}>🏪</div>}
-                  <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.1) 55%, transparent 100%)' }} />
-                  <div style={{ position: 'absolute', top: '12px', right: '12px', display: 'flex', alignItems: 'center', gap: '4px', background: 'rgba(0,0,0,0.45)', borderRadius: '20px', padding: '4px 10px' }}>
+                  <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.1) 60%, transparent 100%)' }} />
+                  <div style={{ position: 'absolute', top: '14px', right: '14px', display: 'flex', alignItems: 'center', gap: '4px', background: 'rgba(0,0,0,0.5)', borderRadius: '20px', padding: '4px 12px' }}>
                     <span className={online ? 'dot-online' : 'dot-offline'} style={{ width: '7px', height: '7px', borderRadius: '50%', background: online ? '#27AE60' : '#E74C3C', display: 'inline-block' }} />
-                    <span style={{ color: '#fff', fontSize: '0.7rem', fontWeight: 600 }}>{online ? 'Online' : 'Offline'}</span>
+                    <span style={{ color: '#fff', fontSize: '0.75rem', fontWeight: 600 }}>{online ? 'Online' : 'Offline'}</span>
                   </div>
-                  <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '14px 16px' }}>
-                    <div style={{ color: '#fff', fontWeight: 800, fontSize: '1rem', marginBottom: '2px' }}>{shop.shop_name}</div>
+                  <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '16px 20px' }}>
+                    <div style={{ color: '#fff', fontWeight: 800, fontSize: '1.2rem', marginBottom: '4px' }}>{shop.shop_name}</div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span style={{ color: 'rgba(255,255,255,0.8)', fontSize: '0.75rem' }}>📍 {shop.location}</span>
-                      <span style={{ color: '#F39C12', fontSize: '0.72rem', fontWeight: 600 }}>{shop.product_count || 0} products</span>
+                      <span style={{ color: 'rgba(255,255,255,0.85)', fontSize: '0.85rem' }}>📍 {shop.location}</span>
+                      <span style={{ color: '#F39C12', fontSize: '0.82rem', fontWeight: 700 }}>{shop.product_count || 0} products</span>
                     </div>
                   </div>
                 </div>
