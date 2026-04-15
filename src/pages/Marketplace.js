@@ -80,13 +80,12 @@ const Marketplace = () => {
             <p style={{ fontSize: '1.2rem' }}>No {tab === 'products' ? 'shops' : 'services'} found.</p>
           </div>
         ) : (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '20px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '16px' }} className="products-grid">
             {filtered.map(shop => {
               const online = shop.last_seen && (new Date() - new Date(shop.last_seen + 'Z')) / 1000 < 120;
               const isService = tab === 'services';
               const coverImg = isService ? (shop.logo_url || shop.cover_image) : (shop.cover_image || shop.logo_url);
 
-              // Services — original card style
               if (isService) return (
                 <div key={shop.id} onClick={() => navigate(`/restaurant/${shop.id}`)}
                   style={{ background: '#ffffff', borderRadius: '16px', border: '1px solid #e0e0e0', boxShadow: '0 2px 8px rgba(0,0,0,0.06)', overflow: 'hidden', cursor: 'pointer', display: 'flex', flexDirection: 'column' }}
