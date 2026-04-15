@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const categories = ['Electronics', 'Shoes', 'Clothes', 'Home Goods', 'Books & Stationery', 'Restaurant & Food', 'Other'];
+const categories = ['Electronics', 'Shoes', 'Clothes', 'Home Goods', 'Hardware', 'Books & Stationery', 'Restaurant & Food', 'Other'];
 const foodCategories = ['Starters', 'Main Course', 'Sides', 'Drinks', 'Desserts', 'Other'];
 const emptyForm = { name: '', category: 'Electronics', price: '', location: '', description: '', food_category: '' };
 
