@@ -382,7 +382,47 @@ def debug_env():
         "api_secret_start": (os.getenv("CLOUDINARY_API_SECRET") or '')[:4]
     }
 
-@app.get("/shops")
+@app.get("/markets")
+def get_markets():
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT s.id, s.shop_name, s.location, s.last_seen, s.logo_url,
+               COUNT(p.id) as product_count,
+               MAX(p.image_url) as cover_image
+        FROM sellers s
+        LEFT JOIN products p ON p.seller_id = s.id AND p.active = 1 AND p.image_url IS NOT NULL AND p.image_url != ''
+        WHERE s.shop_type = 'market'
+        GROUP BY s.id
+    """)
+    rows = fetchall(cur)
+    cur.close()
+    conn.close()
+    return rows
+
+@app.get("/market/{seller_id}")
+def get_market(seller_id: int):
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute("SELECT id, shop_name, location, last_seen, logo_url FROM sellers WHERE id = %s", (seller_id,))
+    seller = fetchone(cur)
+    if not seller:
+        raise HTTPException(status_code=404, detail="Market stall not found")
+    cur.execute("""
+        SELECT p.*, s.shop_name, s.last_seen FROM products p
+        JOIN sellers s ON p.seller_id = s.id
+        WHERE p.seller_id = %s AND p.active = 1 ORDER BY p.category, p.name
+    """, (seller_id,))
+    products = fetchall(cur)
+    for p in products:
+        cur.execute("SELECT url FROM product_images WHERE product_id = %s", (p['id'],))
+        imgs = [r[0] for r in cur.fetchall()]
+        p['images'] = ([p['image_url']] if p['image_url'] else []) + imgs
+    cur.close()
+    conn.close()
+    return {"shop": seller, "products": products}
+
+
 def get_shops():
     conn = get_db()
     cur = conn.cursor()

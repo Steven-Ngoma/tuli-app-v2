@@ -2,13 +2,14 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const categories = ['Electronics', 'Shoes', 'Clothes', 'Home Goods', 'Hardware', 'Books & Stationery', 'Restaurant & Food', 'Other'];
+const marketCategories = ['Vegetables', 'Fruits', 'Meat & Fish', 'Grains & Mealie Meal', 'Cooking Oil & Spices', 'Eggs & Dairy', 'Other'];
 const foodCategories = ['Starters', 'Main Course', 'Sides', 'Drinks', 'Desserts', 'Other'];
 const emptyForm = { name: '', category: 'Electronics', price: '', location: '', description: '', food_category: '' };
 
 const SellerDashboard = () => {
   const navigate = useNavigate();
   const seller = JSON.parse(localStorage.getItem('seller') || 'null');
-  const defaultCategory = seller?.shop_type === 'service' ? 'Restaurant & Food' : 'Electronics';
+  const defaultCategory = seller?.shop_type === 'service' ? 'Restaurant & Food' : seller?.shop_type === 'market' ? 'Vegetables' : 'Electronics';
   const [tab, setTab] = useState('listings');
   const [products, setProducts] = useState([]);
   const [form, setForm] = useState({ ...emptyForm, category: defaultCategory });
@@ -370,6 +371,8 @@ const SellerDashboard = () => {
                   >
                     {(seller.shop_type === 'service'
                       ? ['Restaurant & Food']
+                      : seller.shop_type === 'market'
+                      ? marketCategories
                       : categories.filter(c => c !== 'Restaurant & Food')
                     ).map(c => <option key={c} value={c}>{c}</option>)}
                   </select>

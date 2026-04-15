@@ -20,6 +20,8 @@ const Marketplace = () => {
     setSearch('');
     const url = tab === 'services'
       ? 'https://tuli-backend-44vd.onrender.com/restaurants'
+      : tab === 'market'
+      ? 'https://tuli-backend-44vd.onrender.com/markets'
       : 'https://tuli-backend-44vd.onrender.com/shops';
     fetch(url)
       .then(res => res.json())
@@ -48,15 +50,15 @@ const Marketplace = () => {
         <ProductBanner tab={tab} />
 
         {/* Tabs */}
-        <div style={{ display: 'flex', gap: '10px', marginBottom: '28px' }}>
-          {['products', 'services'].map(t => (
+        <div style={{ display: 'flex', gap: '10px', marginBottom: '28px', flexWrap: 'wrap' }}>
+          {['products', 'services', 'market'].map(t => (
             <button key={t} onClick={() => setTab(t)} style={{
-              padding: '10px 28px', borderRadius: '40px', border: 'none', cursor: 'pointer',
+              padding: '10px 24px', borderRadius: '40px', border: 'none', cursor: 'pointer',
               fontWeight: 700, fontSize: '0.95rem',
               background: tab === t ? '#F39C12' : '#f5f7fa',
               color: tab === t ? '#1B4332' : '#4A6080', transition: '0.2s'
             }}>
-              {t === 'products' ? '📦 Products' : '🤝 Services'}
+              {t === 'products' ? '📦 Products' : t === 'services' ? '🤝 Services' : '🛒 Local Market'}
             </button>
           ))}
         </div>
@@ -84,6 +86,7 @@ const Marketplace = () => {
             {filtered.map(shop => {
               const online = shop.last_seen && (new Date() - new Date(shop.last_seen + 'Z')) / 1000 < 120;
               const isService = tab === 'services';
+              const isMarket = tab === 'market';
               const coverImg = isService ? (shop.logo_url || shop.cover_image) : (shop.cover_image || shop.logo_url);
 
               if (isService) return (
@@ -110,7 +113,7 @@ const Marketplace = () => {
 
               // Products — full width Chowdeck style
               return (
-                <div key={shop.id} onClick={() => navigate(`/shop/${shop.id}`)}
+                <div key={shop.id} onClick={() => navigate(isMarket ? `/market/${shop.id}` : `/shop/${shop.id}`)}
                   style={{ position: 'relative', borderRadius: '20px', overflow: 'hidden', cursor: 'pointer', width: '100%', height: '180px', boxShadow: '0 4px 16px rgba(0,0,0,0.12)', background: '#1B4332' }}
                 >
                   {coverImg
@@ -125,7 +128,7 @@ const Marketplace = () => {
                     <div style={{ color: '#fff', fontWeight: 800, fontSize: '1.2rem', marginBottom: '4px' }}>{shop.shop_name}</div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                       <span style={{ color: 'rgba(255,255,255,0.85)', fontSize: '0.85rem' }}>📍 {shop.location}</span>
-                      <span style={{ color: '#F39C12', fontSize: '0.82rem', fontWeight: 700 }}>{shop.product_count || 0} products</span>
+                      <span style={{ color: '#F39C12', fontSize: '0.82rem', fontWeight: 700 }}>{isMarket ? `${shop.product_count || 0} items` : `${shop.product_count || 0} products`}</span>
                     </div>
                   </div>
                 </div>
