@@ -48,7 +48,6 @@ const ShopPage = () => {
                   ? <img src={products[0].image_url} alt={shop.shop_name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                   : '🏪'}
             </div>
-            </div>
             <div>
               <h1 style={{ color: '#FFD966', fontSize: '1.8rem', fontWeight: 800 }}>{shop.shop_name}</h1>
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '6px', flexWrap: 'wrap' }}>
