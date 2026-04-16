@@ -1,125 +1,231 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import ImageCarousel from '../components/ImageCarousel';
+
+const API = 'https://tuli-backend-44vd.onrender.com';
+
+const CATEGORIES = [
+  { label: 'All', icon: '🛍️' },
+  { label: 'Food & Drinks', icon: '🍛' },
+  { label: 'Clothes', icon: '👗' },
+  { label: 'Shoes', icon: '👟' },
+  { label: 'Electronics', icon: '📱' },
+  { label: 'Home Goods', icon: '🛋️' },
+  { label: 'Other', icon: '📦' },
+];
 
 const Marketplace = () => {
+  const [products, setProducts] = useState([]);
+  const [shops, setShops] = useState([]);
   const [tab, setTab] = useState('products');
-  const [items, setItems] = useState([]);
+  const [category, setCategory] = useState('All');
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-  const location = useLocation();
-
-  useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    if (params.get('tab') === 'services') setTab('services');
-  }, []);
 
   useEffect(() => {
     setLoading(true);
-    setSearch('');
-    const url = tab === 'services'
-      ? 'https://tuli-backend-44vd.onrender.com/restaurants'
-      : 'https://tuli-backend-44vd.onrender.com/shops';
+    const url = tab === 'shops'
+      ? `${API}/shops`
+      : tab === 'food'
+      ? `${API}/restaurants`
+      : `${API}/products`;
     fetch(url)
-      .then(res => res.json())
-      .then(data => setItems(data))
-      .catch(() => setItems([]))
+      .then(r => r.json())
+      .then(data => {
+        if (tab === 'products') setProducts(Array.isArray(data) ? data : []);
+        else setShops(Array.isArray(data) ? data : []);
+      })
+      .catch(() => { setProducts([]); setShops([]); })
       .finally(() => setLoading(false));
   }, [tab]);
 
-  const filtered = items.filter(item => {
-    const name = item.shop_name || '';
-    const loc = item.location || '';
-    return name.toLowerCase().includes(search.toLowerCase()) ||
-      loc.toLowerCase().includes(search.toLowerCase());
+  const filteredProducts = products.filter(p => {
+    const matchSearch = p.name?.toLowerCase().includes(search.toLowerCase()) ||
+      p.shop_name?.toLowerCase().includes(search.toLowerCase()) ||
+      p.location?.toLowerCase().includes(search.toLowerCase());
+    const matchCat = category === 'All' ||
+      (category === 'Food & Drinks' ? p.category === 'Restaurant & Food' : p.category === category);
+    return matchSearch && matchCat;
   });
 
+  const filteredShops = shops.filter(s =>
+    s.shop_name?.toLowerCase().includes(search.toLowerCase()) ||
+    s.location?.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
-    <div style={{ padding: '40px 0', background: '#ffffff' }}>
-      <div className="container">
+    <div style={{ background: '#f5f5f5', minHeight: '100vh' }}>
 
-        <div style={{ marginBottom: '24px' }}>
-          <h1 style={{ fontSize: '2.3rem', fontWeight: 700, color: '#1B4332', marginBottom: '8px' }}>TULI Marketplace</h1>
-          <p style={{ color: '#4A6080' }}>Browse listings from sellers across Zambia. Chat directly on TULI.</p>
-        </div>
+      {/* Header */}
+      <div style={{ background: '#1B4332', padding: '24px 0 0' }}>
+        <div className="container">
+          <h1 style={{ color: '#FFD966', fontSize: '1.8rem', fontWeight: 800, marginBottom: '4px' }}>
+            🛒 TULI Marketplace
+          </h1>
+          <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem', marginBottom: '16px' }}>
+            Browse listings from sellers across Zambia
+          </p>
 
-        {/* Tabs */}
-        <div style={{ display: 'flex', gap: '10px', marginBottom: '28px' }}>
-          {['products', 'services'].map(t => (
-            <button key={t} onClick={() => setTab(t)} style={{
-              padding: '10px 28px', borderRadius: '40px', border: 'none', cursor: 'pointer',
-              fontWeight: 700, fontSize: '0.95rem',
-              background: tab === t ? '#F39C12' : '#f5f7fa',
-              color: tab === t ? '#1B4332' : '#4A6080', transition: '0.2s'
-            }}>
-              {t === 'products' ? '📦 Products' : '🤝 Services'}
-            </button>
-          ))}
-        </div>
-
-        {/* Search */}
-        <div style={{ marginBottom: '28px' }}>
-          <input
-            type="text" placeholder="Search by shop name or location..."
-            value={search} onChange={e => setSearch(e.target.value)}
-            style={{ width: '100%', padding: '12px 16px', borderRadius: '40px', border: '1px solid #ccc', background: '#f5f7fa', color: '#1B4332', fontSize: '0.95rem', outline: 'none', boxSizing: 'border-box' }}
-          />
-        </div>
-
-        {/* Grid */}
-        {loading ? (
-          <div style={{ textAlign: 'center', padding: '60px 0', color: '#4A6080' }}>
-            <p style={{ fontSize: '1.2rem' }}>Loading...</p>
+          {/* Search */}
+          <div style={{ position: 'relative', marginBottom: '16px' }}>
+            <span style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', fontSize: '1rem' }}>🔍</span>
+            <input
+              type="text"
+              placeholder="Search products, shops, location..."
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              style={{ width: '100%', padding: '12px 16px 12px 40px', borderRadius: '40px', border: 'none', background: 'rgba(255,255,255,0.15)', color: '#fff', fontSize: '0.95rem', outline: 'none', boxSizing: 'border-box' }}
+            />
           </div>
-        ) : filtered.length === 0 ? (
-          <div style={{ textAlign: 'center', padding: '60px 0', color: '#4A6080' }}>
-            <p style={{ fontSize: '1.2rem' }}>No {tab === 'products' ? 'shops' : 'services'} found.</p>
+
+          {/* Tabs */}
+          <div style={{ display: 'flex', gap: '0', borderBottom: '2px solid rgba(255,255,255,0.1)' }}>
+            {[
+              { key: 'products', label: '📦 Products' },
+              { key: 'shops', label: '🏪 Shops' },
+              { key: 'food', label: '🍛 Food' },
+            ].map(t => (
+              <button key={t.key} onClick={() => { setTab(t.key); setSearch(''); setCategory('All'); }}
+                style={{
+                  padding: '10px 20px', border: 'none', cursor: 'pointer', fontWeight: 700,
+                  fontSize: '0.88rem', background: 'transparent',
+                  color: tab === t.key ? '#F39C12' : 'rgba(255,255,255,0.6)',
+                  borderBottom: tab === t.key ? '3px solid #F39C12' : '3px solid transparent',
+                  transition: '0.2s', marginBottom: '-2px'
+                }}>
+                {t.label}
+              </button>
+            ))}
           </div>
-        ) : (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '16px' }} className="products-grid">
-            {filtered.map(shop => {
-              const online = shop.last_seen && (new Date() - new Date(shop.last_seen + 'Z')) / 1000 < 120;
-              const isService = tab === 'services';
-              const coverImg = isService
-                ? (shop.logo_url || shop.cover_image)
-                : (shop.cover_image || shop.logo_url);
-              return (
-                <div key={shop.id}
-                  onClick={() => navigate(isService ? `/restaurant/${shop.id}` : `/shop/${shop.id}`)}
-                  style={{ background: '#ffffff', borderRadius: '16px', border: '1px solid #e0e0e0', boxShadow: '0 2px 8px rgba(0,0,0,0.06)', overflow: 'hidden', cursor: 'pointer', display: 'flex', flexDirection: 'column' }}
-                >
-                  <div style={{ width: '100%', height: '100px', background: '#1B4332', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                    {coverImg
-                      ? <img src={coverImg} alt={shop.shop_name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                      : <span style={{ fontSize: '2.5rem' }}>{isService ? '🍽️' : '🏪'}</span>}
-                  </div>
-                  <div style={{ padding: '10px', flex: 1, display: 'flex', flexDirection: 'column' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
-                      <h3 style={{ color: '#1B4332', fontSize: '0.9rem', fontWeight: 700, margin: 0 }}>{shop.shop_name}</h3>
-                      <span style={{ display: 'flex', alignItems: 'center', gap: '3px' }}>
-                        <span className={online ? 'dot-online' : 'dot-offline'} style={{ width: '7px', height: '7px', borderRadius: '50%', background: online ? '#27AE60' : '#E74C3C', display: 'inline-block' }} />
-                        <span style={{ color: online ? '#27AE60' : '#E74C3C', fontSize: '0.7rem', fontWeight: 600 }}>{online ? 'Online' : 'Offline'}</span>
-                      </span>
-                    </div>
-                    <p style={{ color: '#6B8CAE', fontSize: '0.75rem', marginBottom: '2px' }}>📍 {shop.location}</p>
-                    <p style={{ color: '#9BB7D4', fontSize: '0.72rem', marginBottom: '8px' }}>
-                      {isService ? `${shop.item_count || 0} items on menu` : `${shop.product_count || 0} product${shop.product_count !== 1 ? 's' : ''}`}
-                    </p>
-                    <button className="btn-primary" style={{ width: '100%', fontSize: '0.8rem', padding: '7px', marginTop: 'auto' }}>
-                      {isService ? 'View Menu →' : 'View Products →'}
-                    </button>
-                  </div>
-                </div>
-              );
-            })}
+        </div>
+      </div>
+
+      <div className="container" style={{ padding: '16px 28px' }}>
+
+        {/* Category Filter - only for products tab */}
+        {tab === 'products' && (
+          <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '8px', marginBottom: '16px', scrollbarWidth: 'none' }}>
+            {CATEGORIES.map(cat => (
+              <button key={cat.label} onClick={() => setCategory(cat.label)}
+                style={{
+                  padding: '8px 16px', borderRadius: '40px', border: 'none', cursor: 'pointer',
+                  fontWeight: 600, fontSize: '0.82rem', whiteSpace: 'nowrap',
+                  background: category === cat.label ? '#1B4332' : '#fff',
+                  color: category === cat.label ? '#FFD966' : '#4A6080',
+                  boxShadow: '0 1px 4px rgba(0,0,0,0.08)', transition: '0.2s'
+                }}>
+                {cat.icon} {cat.label}
+              </button>
+            ))}
           </div>
         )}
 
-        {/* CTA */}
-        <div style={{ marginTop: '32px', background: '#1B4332', borderRadius: '32px', padding: '36px', textAlign: 'center' }}>
-          <h3 style={{ color: '#FFD966', marginBottom: '12px' }}>Want to list on TULI?</h3>
-          <p style={{ color: '#B8D0E7', marginBottom: '24px' }}>Register as a seller and list your products or services for free.</p>
-          <a href="/seller/register" className="btn-primary">Start Selling →</a>
+        {loading ? (
+          <div style={{ textAlign: 'center', padding: '60px 0', color: '#4A6080' }}>
+            <div style={{ fontSize: '2rem', marginBottom: '8px' }}>⏳</div>
+            <p>Loading...</p>
+          </div>
+        ) : tab === 'products' ? (
+          <>
+            <p style={{ color: '#888', fontSize: '0.82rem', marginBottom: '12px' }}>
+              {filteredProducts.length} item{filteredProducts.length !== 1 ? 's' : ''} found
+            </p>
+            {filteredProducts.length === 0 ? (
+              <div style={{ textAlign: 'center', padding: '60px 0', color: '#4A6080' }}>
+                <div style={{ fontSize: '3rem', marginBottom: '12px' }}>🔍</div>
+                <p style={{ fontSize: '1.1rem' }}>No products found</p>
+                <p style={{ fontSize: '0.85rem', marginTop: '8px' }}>Try a different search or category</p>
+              </div>
+            ) : (
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px' }}>
+                {filteredProducts.map(product => {
+                  const online = product.last_seen && (new Date() - new Date(product.last_seen + 'Z')) / 1000 < 120;
+                  return (
+                    <div key={product.id}
+                      onClick={() => navigate(`/shop/${product.seller_id}`)}
+                      style={{ background: '#fff', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 2px 8px rgba(0,0,0,0.07)', cursor: 'pointer', display: 'flex', flexDirection: 'column' }}>
+                      <div style={{ position: 'relative' }}>
+                        <ImageCarousel images={product.images || (product.image_url ? [product.image_url] : [])} height="130px" />
+                        <span style={{
+                          position: 'absolute', top: '8px', left: '8px',
+                          background: online ? '#27AE60' : '#E74C3C',
+                          color: '#fff', fontSize: '0.65rem', fontWeight: 700,
+                          padding: '2px 8px', borderRadius: '20px'
+                        }}>
+                          {online ? '● Online' : '● Offline'}
+                        </span>
+                      </div>
+                      <div style={{ padding: '10px', flex: 1, display: 'flex', flexDirection: 'column' }}>
+                        <p style={{ color: '#1B4332', fontWeight: 700, fontSize: '0.88rem', marginBottom: '2px' }}>{product.name}</p>
+                        <p style={{ color: '#E67E22', fontWeight: 800, fontSize: '1rem', marginBottom: '4px' }}>{product.price}</p>
+                        <p style={{ color: '#888', fontSize: '0.72rem', marginBottom: '2px' }}>🏪 {product.shop_name}</p>
+                        <p style={{ color: '#888', fontSize: '0.72rem', marginBottom: '10px' }}>📍 {product.location}</p>
+                        <button
+                          onClick={e => { e.stopPropagation(); navigate(`/chat/${product.seller_id}/${product.id}?product=${encodeURIComponent(product.name)}&shop=${encodeURIComponent(product.shop_name)}&price=${encodeURIComponent(product.price)}`); }}
+                          style={{ background: '#1B4332', color: '#FFD966', border: 'none', borderRadius: '20px', padding: '7px', fontWeight: 700, fontSize: '0.78rem', cursor: 'pointer', marginTop: 'auto' }}>
+                          💬 Chat Seller
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </>
+        ) : (
+          <>
+            <p style={{ color: '#888', fontSize: '0.82rem', marginBottom: '12px' }}>
+              {filteredShops.length} {tab === 'food' ? 'restaurant' : 'shop'}{filteredShops.length !== 1 ? 's' : ''} found
+            </p>
+            {filteredShops.length === 0 ? (
+              <div style={{ textAlign: 'center', padding: '60px 0', color: '#4A6080' }}>
+                <div style={{ fontSize: '3rem', marginBottom: '12px' }}>{tab === 'food' ? '🍛' : '🏪'}</div>
+                <p style={{ fontSize: '1.1rem' }}>No {tab === 'food' ? 'restaurants' : 'shops'} found</p>
+              </div>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                {filteredShops.map(shop => {
+                  const online = shop.last_seen && (new Date() - new Date(shop.last_seen + 'Z')) / 1000 < 120;
+                  const coverImg = shop.cover_image || shop.logo_url;
+                  return (
+                    <div key={shop.id}
+                      onClick={() => navigate(tab === 'food' ? `/restaurant/${shop.id}` : `/shop/${shop.id}`)}
+                      style={{ position: 'relative', borderRadius: '20px', overflow: 'hidden', cursor: 'pointer', height: '160px', boxShadow: '0 4px 16px rgba(0,0,0,0.12)', background: '#1B4332' }}>
+                      {coverImg
+                        ? <img src={coverImg} alt={shop.shop_name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        : <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '4rem' }}>{tab === 'food' ? '🍛' : '🏪'}</div>}
+                      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 60%)' }} />
+                      <div style={{ position: 'absolute', top: '12px', right: '12px', background: online ? '#27AE60' : 'rgba(0,0,0,0.5)', borderRadius: '20px', padding: '3px 10px' }}>
+                        <span style={{ color: '#fff', fontSize: '0.72rem', fontWeight: 700 }}>{online ? '● Open' : '● Closed'}</span>
+                      </div>
+                      <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '14px 16px' }}>
+                        <p style={{ color: '#fff', fontWeight: 800, fontSize: '1.1rem', marginBottom: '4px' }}>{shop.shop_name}</p>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                          <span style={{ color: 'rgba(255,255,255,0.8)', fontSize: '0.8rem' }}>📍 {shop.location}</span>
+                          <span style={{ color: '#F39C12', fontSize: '0.8rem', fontWeight: 700 }}>
+                            {tab === 'food' ? `${shop.item_count || 0} items` : `${shop.product_count || 0} products`}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </>
+        )}
+
+        {/* Sell CTA */}
+        <div style={{ marginTop: '32px', background: '#1B4332', borderRadius: '24px', padding: '28px 24px', textAlign: 'center' }}>
+          <div style={{ fontSize: '2rem', marginBottom: '8px' }}>💼</div>
+          <h3 style={{ color: '#FFD966', marginBottom: '8px', fontSize: '1.2rem' }}>Want to list on TULI?</h3>
+          <p style={{ color: 'rgba(255,255,255,0.75)', marginBottom: '20px', fontSize: '0.88rem' }}>
+            Register for free and start selling your products or food to customers across Zambia
+          </p>
+          <a href="/seller/register" className="btn-primary" style={{ fontSize: '0.9rem', padding: '10px 28px' }}>
+            Start Selling →
+          </a>
         </div>
 
       </div>
