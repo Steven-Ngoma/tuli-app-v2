@@ -191,22 +191,24 @@ const Marketplace = () => {
                   return (
                     <div key={shop.id}
                       onClick={() => navigate(tab === 'food' ? `/restaurant/${shop.id}` : `/shop/${shop.id}`)}
-                      style={{ position: 'relative', borderRadius: '20px', overflow: 'hidden', cursor: 'pointer', height: '160px', boxShadow: '0 4px 16px rgba(0,0,0,0.12)', background: '#1B4332' }}>
-                      {coverImg
-                        ? <img src={coverImg} alt={shop.shop_name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                        : <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '4rem' }}>{tab === 'food' ? '🍛' : '🏪'}</div>}
-                      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 60%)' }} />
-                      <div style={{ position: 'absolute', top: '12px', right: '12px', background: online ? '#27AE60' : 'rgba(0,0,0,0.5)', borderRadius: '20px', padding: '3px 10px' }}>
-                        <span style={{ color: '#fff', fontSize: '0.72rem', fontWeight: 700 }}>{online ? '● Open' : '● Closed'}</span>
+                      style={{ background: '#fff', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 2px 8px rgba(0,0,0,0.07)', cursor: 'pointer', display: 'flex', flexDirection: 'column' }}>
+                      <div style={{ position: 'relative', height: '130px', background: '#1B4332', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                        {coverImg
+                          ? <img src={coverImg} alt={shop.shop_name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                          : <span style={{ fontSize: '3rem' }}>{tab === 'food' ? '🍛' : '🏪'}</span>}
+                        <span style={{ position: 'absolute', top: '8px', left: '8px', background: online ? '#27AE60' : '#E74C3C', color: '#fff', fontSize: '0.65rem', fontWeight: 700, padding: '2px 8px', borderRadius: '20px' }}>
+                          {online ? '● Open' : '● Closed'}
+                        </span>
                       </div>
-                      <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '14px 16px' }}>
-                        <p style={{ color: '#fff', fontWeight: 800, fontSize: '1.1rem', marginBottom: '4px' }}>{shop.shop_name}</p>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                          <span style={{ color: 'rgba(255,255,255,0.8)', fontSize: '0.8rem' }}>📍 {shop.location}</span>
-                          <span style={{ color: '#F39C12', fontSize: '0.8rem', fontWeight: 700 }}>
-                            {tab === 'food' ? `${shop.item_count || 0} items` : `${shop.product_count || 0} products`}
-                          </span>
-                        </div>
+                      <div style={{ padding: '10px', flex: 1, display: 'flex', flexDirection: 'column' }}>
+                        <p style={{ color: '#1B4332', fontWeight: 700, fontSize: '0.88rem', marginBottom: '4px' }}>{shop.shop_name}</p>
+                        <p style={{ color: '#888', fontSize: '0.72rem', marginBottom: '2px' }}>📍 {shop.location}</p>
+                        <p style={{ color: '#E67E22', fontWeight: 700, fontSize: '0.78rem', marginBottom: '10px' }}>
+                          {tab === 'food' ? `${shop.item_count || 0} items on menu` : `${shop.product_count || 0} products`}
+                        </p>
+                        <button style={{ background: '#1B4332', color: '#FFD966', border: 'none', borderRadius: '20px', padding: '7px', fontWeight: 700, fontSize: '0.78rem', cursor: 'pointer', marginTop: 'auto' }}>
+                          {tab === 'food' ? 'View Menu →' : 'View Shop →'}
+                        </button>
                       </div>
                     </div>
                   );
