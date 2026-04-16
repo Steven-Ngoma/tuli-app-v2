@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ImageCarousel from '../components/ImageCarousel';
 
@@ -13,6 +13,55 @@ const CATEGORIES = [
   { label: 'Home Goods', icon: '🛋️' },
   { label: 'Other', icon: '📦' },
 ];
+
+const SLIDES = [
+  { title: 'Fresh Products', desc: 'Quality items from local sellers', price: 'From K25', shop: 'TULI Marketplace', img: 'https://res.cloudinary.com/daxhjv2lt/image/upload/v1774699822/tuli/na12kdzy4wkob5u8trwj.jpg' },
+  { title: 'Nike Sneakers', desc: 'Fresh sneakers size 40-45', price: 'K350', shop: 'MK Shop', img: 'https://res.cloudinary.com/daxhjv2lt/image/upload/v1774783290/tuli/yemnqjrlmzjivl2mnrbu.jpg' },
+  { title: 'Smart TV 43"', desc: 'Brand new smart TV', price: 'K4500', shop: 'MK Shop', img: 'https://res.cloudinary.com/daxhjv2lt/image/upload/v1774699830/tuli/z75ssexasynbnytxocgn.jpg' },
+  { title: 'Grilled Chicken', desc: 'Juicy grilled chicken', price: 'K85', shop: 'Flavour Foods', img: 'https://res.cloudinary.com/daxhjv2lt/image/upload/v1774699114/tuli/gpbqs8cwpkltovzyz9rp.jpg' },
+  { title: 'Gift Hamper', desc: 'Perfect gift for that special someone', price: 'K599', shop: 'Deshana', img: 'https://res.cloudinary.com/daxhjv2lt/image/upload/v1775730086/tuli/onxafnbsjjmfzn2efgjj.jpg' },
+];
+
+const Banner = () => {
+  const [current, setCurrent] = useState(0);
+  const timerRef = useRef(null);
+
+  const startTimer = () => {
+    clearInterval(timerRef.current);
+    timerRef.current = setInterval(() => setCurrent(p => (p + 1) % SLIDES.length), 4000);
+  };
+
+  useEffect(() => { startTimer(); return () => clearInterval(timerRef.current); }, []);
+
+  const go = (i) => { setCurrent(i); startTimer(); };
+
+  return (
+    <div style={{ position: 'relative', width: '100%', height: '200px', borderRadius: '20px', overflow: 'hidden', marginBottom: '16px', boxShadow: '0 4px 20px rgba(0,0,0,0.15)' }}>
+      {SLIDES.map((s, i) => (
+        <div key={i} style={{ position: 'absolute', inset: 0, opacity: i === current ? 1 : 0, transition: 'opacity 0.6s ease', backgroundImage: `url(${s.img})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, rgba(27,67,50,0.85) 0%, rgba(27,67,50,0.3) 100%)' }} />
+          <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '16px 20px' }}>
+            <span style={{ background: '#F39C12', color: '#1B4332', padding: '3px 10px', borderRadius: '20px', fontSize: '0.72rem', fontWeight: 700 }}>{s.shop}</span>
+            <p style={{ color: '#fff', fontWeight: 800, fontSize: '1.3rem', margin: '6px 0 2px', textShadow: '1px 1px 4px rgba(0,0,0,0.4)' }}>{s.title}</p>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <p style={{ color: 'rgba(255,255,255,0.85)', fontSize: '0.82rem', margin: 0 }}>{s.desc}</p>
+              <span style={{ color: '#FFD966', fontWeight: 800, fontSize: '1rem' }}>{s.price}</span>
+            </div>
+          </div>
+        </div>
+      ))}
+      {/* Arrows */}
+      <button onClick={() => go((current - 1 + SLIDES.length) % SLIDES.length)} style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', background: 'rgba(0,0,0,0.35)', border: 'none', color: '#fff', width: '32px', height: '32px', borderRadius: '50%', cursor: 'pointer', fontSize: '1.1rem', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 3 }}>‹</button>
+      <button onClick={() => go((current + 1) % SLIDES.length)} style={{ position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)', background: 'rgba(0,0,0,0.35)', border: 'none', color: '#fff', width: '32px', height: '32px', borderRadius: '50%', cursor: 'pointer', fontSize: '1.1rem', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 3 }}>›</button>
+      {/* Dots */}
+      <div style={{ position: 'absolute', bottom: '10px', right: '16px', display: 'flex', gap: '5px', zIndex: 3 }}>
+        {SLIDES.map((_, i) => (
+          <span key={i} onClick={() => go(i)} style={{ width: i === current ? '20px' : '7px', height: '7px', borderRadius: '10px', background: i === current ? '#F39C12' : 'rgba(255,255,255,0.6)', cursor: 'pointer', transition: 'all 0.3s' }} />
+        ))}
+      </div>
+    </div>
+  );
+};
 
 const Marketplace = () => {
   const [products, setProducts] = useState([]);
@@ -102,6 +151,9 @@ const Marketplace = () => {
       </div>
 
       <div className="container" style={{ padding: '16px 28px' }}>
+
+        {/* Sliding Banner */}
+        <Banner />
 
         {/* Category Filter - only for products tab */}
         {tab === 'products' && (
