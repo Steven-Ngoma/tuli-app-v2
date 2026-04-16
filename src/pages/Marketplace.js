@@ -184,7 +184,7 @@ const Marketplace = () => {
                 <p style={{ fontSize: '1.1rem' }}>No {tab === 'food' ? 'restaurants' : 'shops'} found</p>
               </div>
             ) : (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px' }}>
                 {filteredShops.map(shop => {
                   const online = shop.last_seen && (new Date() - new Date(shop.last_seen + 'Z')) / 1000 < 120;
                   const coverImg = shop.cover_image || shop.logo_url;
