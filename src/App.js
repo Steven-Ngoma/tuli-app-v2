@@ -16,7 +16,6 @@ import BuyerChats from './pages/BuyerChats';
 import Services from './pages/Services';
 import RestaurantMenu from './pages/RestaurantMenu';
 import ShopPage from './pages/ShopPage';
-import LocalMarketPage from './pages/LocalMarketPage';
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -55,12 +54,11 @@ const HomePage = () => {
 const Layout = ({ children }) => {
   const { pathname } = useLocation();
   const isChat = pathname.startsWith('/chat');
-  const isHome = pathname === '/home';
   return (
     <div className="App">
       {!isChat && <Navbar />}
       {children}
-      {isHome && <Footer />}
+      {!isChat && <Footer />}
     </div>
   );
 };
@@ -71,13 +69,11 @@ function App() {
       <ScrollToTop />
       <Layout>
         <Routes>
-          <Route path="/" element={<Marketplace />} />
-          <Route path="/home" element={<HomePage />} />
+          <Route path="/" element={<HomePage />} />
           <Route path="/marketplace" element={<Marketplace />} />
           <Route path="/services" element={<Services />} />
           <Route path="/restaurant/:sellerId" element={<RestaurantMenu />} />
           <Route path="/shop/:sellerId" element={<ShopPage />} />
-          <Route path="/market/:sellerId" element={<LocalMarketPage />} />
           <Route path="/seller/register" element={<SellerRegister />} />
           <Route path="/seller/login" element={<SellerLogin />} />
           <Route path="/seller/dashboard" element={<SellerDashboard />} />

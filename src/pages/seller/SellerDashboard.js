@@ -1,15 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const categories = ['Electronics', 'Shoes', 'Clothes', 'Home Goods', 'Hardware', 'Books & Stationery', 'Restaurant & Food', 'Other'];
-const marketCategories = ['Vegetables', 'Fruits', 'Meat & Fish', 'Grains & Mealie Meal', 'Cooking Oil & Spices', 'Eggs & Dairy', 'Other'];
+const categories = ['Electronics', 'Shoes', 'Clothes', 'Home Goods', 'Books & Stationery', 'Restaurant & Food', 'Other'];
 const foodCategories = ['Starters', 'Main Course', 'Sides', 'Drinks', 'Desserts', 'Other'];
 const emptyForm = { name: '', category: 'Electronics', price: '', location: '', description: '', food_category: '' };
 
 const SellerDashboard = () => {
   const navigate = useNavigate();
   const seller = JSON.parse(localStorage.getItem('seller') || 'null');
-  const defaultCategory = seller?.shop_type === 'service' ? 'Restaurant & Food' : seller?.shop_type === 'market' ? 'Vegetables' : 'Electronics';
+  const defaultCategory = seller?.shop_type === 'service' ? 'Restaurant & Food' : 'Electronics';
   const [tab, setTab] = useState('listings');
   const [products, setProducts] = useState([]);
   const [form, setForm] = useState({ ...emptyForm, category: defaultCategory });
@@ -203,15 +202,15 @@ const SellerDashboard = () => {
   return (
     <>
     {activeChat && (
-      <div style={{ position: 'fixed', inset: 0, background: '#f5f7fa', zIndex: 200, display: 'flex', flexDirection: 'column', height: '100vh' }}>
-        <div style={{ background: '#1B4332', padding: '14px 20px', borderBottom: '1px solid #2D6A4F', display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0 }}>
+      <div style={{ position: 'fixed', inset: 0, background: '#1B4332', zIndex: 200, display: 'flex', flexDirection: 'column', height: '100vh' }}>
+        <div style={{ background: '#102433', padding: '14px 20px', borderBottom: '1px solid #244C66', display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0 }}>
           <button onClick={() => setActiveChat(null)} style={{ background: 'transparent', border: 'none', color: '#F39C12', fontSize: '1.4rem', cursor: 'pointer', padding: 0 }}>←</button>
           <div>
             <div style={{ color: '#FFD966', fontWeight: 700 }}>{activeChat.buyer_name}</div>
             <div style={{ color: '#9BB7D4', fontSize: '0.8rem' }}>Re: {activeChat.product_name}</div>
           </div>
         </div>
-        <div ref={msgBoxRef} style={{ flex: 1, padding: '16px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '10px', background: '#f5f7fa', minHeight: 0 }}>
+        <div ref={msgBoxRef} style={{ flex: 1, padding: '16px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '10px', background: '#0D1F2E', minHeight: 0 }}>
           {chatMessages.map(m => {
             const isMine = m.is_seller;
             return (
@@ -219,13 +218,12 @@ const SellerDashboard = () => {
                 <div style={{
                   maxWidth: '70%', padding: '10px 14px', wordBreak: 'break-word',
                   borderRadius: isMine ? '18px 18px 4px 18px' : '18px 18px 18px 4px',
-                  background: isMine ? '#F39C12' : '#ffffff',
-                  color: '#1B4332',
-                  border: isMine ? 'none' : '1px solid #e0e0e0',
-                  boxShadow: '0 1px 4px rgba(0,0,0,0.06)'
+                  background: isMine ? '#F39C12' : '#1B4332',
+                  color: isMine ? '#1B4332' : '#EFF3F8',
+                  border: isMine ? 'none' : '1px solid #244C66'
                 }}>
                   <div style={{ fontSize: '0.9rem' }}>{m.message}</div>
-                  <div style={{ fontSize: '0.65rem', marginTop: '4px', opacity: 0.5, textAlign: 'right' }}>
+                  <div style={{ fontSize: '0.65rem', marginTop: '4px', opacity: 0.6, textAlign: 'right' }}>
                     {new Date(m.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                   </div>
                 </div>
@@ -233,14 +231,14 @@ const SellerDashboard = () => {
             );
           })}
         </div>
-        <form onSubmit={handleReply} style={{ padding: '10px 12px', borderTop: '1px solid #e0e0e0', display: 'flex', gap: '8px', alignItems: 'center', background: '#fff', flexShrink: 0 }}>
+        <form onSubmit={handleReply} style={{ padding: '10px 12px', borderTop: '1px solid #244C66', display: 'flex', gap: '8px', alignItems: 'center', background: '#102433', flexShrink: 0 }}>
           <input
             type="text" placeholder="Reply..."
             value={replyText} onChange={e => setReplyText(e.target.value)}
-            style={{ flex: 1, padding: '12px 16px', borderRadius: '40px', border: '1px solid #ccc', background: '#f5f7fa', color: '#1B4332', fontSize: '0.95rem', outline: 'none', minWidth: 0 }}
+            style={{ flex: 1, padding: '12px 16px', borderRadius: '40px', border: '1px solid #244C66', background: '#1B4332', color: '#EFF3F8', fontSize: '0.95rem', outline: 'none', minWidth: 0 }}
           />
           <button type="submit" disabled={!replyText.trim()}
-            style={{ background: replyText.trim() ? '#F39C12' : '#e0e0e0', border: 'none', borderRadius: '50%', width: '44px', height: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: replyText.trim() ? 'pointer' : 'default', flexShrink: 0, fontSize: '1.1rem' }}
+            style={{ background: replyText.trim() ? '#F39C12' : '#244C66', border: 'none', borderRadius: '50%', width: '44px', height: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: replyText.trim() ? 'pointer' : 'default', flexShrink: 0, fontSize: '1.1rem' }}
           >➤</button>
         </form>
       </div>
@@ -371,8 +369,6 @@ const SellerDashboard = () => {
                   >
                     {(seller.shop_type === 'service'
                       ? ['Restaurant & Food']
-                      : seller.shop_type === 'market'
-                      ? marketCategories
                       : categories.filter(c => c !== 'Restaurant & Food')
                     ).map(c => <option key={c} value={c}>{c}</option>)}
                   </select>

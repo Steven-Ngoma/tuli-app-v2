@@ -25,10 +25,10 @@ const Hero = () => (
         </div>
         <div className="hero-right">
           <div className="badge-icon">🛍️📦</div>
-          <p style={{ fontWeight: 600, margin: '16px 0', color: '#1B4332' }}>
+          <p style={{ fontWeight: 600, margin: '16px 0', color: '#EFF3F8' }}>
             Products &amp; Services
           </p>
-          <p style={{ color: '#1B4332', fontSize: '0.9rem' }}>
+          <p style={{ color: '#9BB7D4', fontSize: '0.9rem' }}>
             A marketplace built for Zambian entrepreneurs
           </p>
         </div>

@@ -1,10 +1,5 @@
 {
   "rewrites": [
     { "source": "/(.*)", "destination": "/" }
-  ],
-  "build": {
-    "env": {
-      "DISABLE_ESLINT_PLUGIN": "true"
-    }
-  }
+  ]
 }

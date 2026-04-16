@@ -73,22 +73,6 @@ const SellerRegister = () => {
               </div>
             </div>
 
-            {/* Local Market */}
-            <div
-              onClick={() => setShopType('market')}
-              style={{ background: '#102433', borderRadius: '24px', padding: '28px 20px', border: '2px solid #244C66', cursor: 'pointer', textAlign: 'center', transition: '0.2s', gridColumn: '1 / -1' }}
-              onMouseEnter={e => e.currentTarget.style.borderColor = '#F39C12'}
-              onMouseLeave={e => e.currentTarget.style.borderColor = '#244C66'}
-            >
-              <div style={{ fontSize: '3rem', marginBottom: '12px' }}>🛒</div>
-              <h3 style={{ color: '#FFD966', marginBottom: '8px' }}>Local Market Stall</h3>
-              <p style={{ color: '#9BB7D4', fontSize: '0.85rem', marginBottom: '16px' }}>Sell fresh produce, vegetables, fruits, meat, grains and daily essentials. Buyers order and get delivery to their homes.</p>
-              <div style={{ background: '#F39C1220', borderRadius: '12px', padding: '10px' }}>
-                <div style={{ color: '#F39C12', fontWeight: 700, fontSize: '0.9rem' }}>🚚 Delivery to homes</div>
-                <div style={{ color: '#9BB7D4', fontSize: '0.78rem', marginTop: '4px' }}>Free to list · 5% commission per order</div>
-              </div>
-            </div>
-
           </div>
 
           <p style={{ color: '#4A6080', fontSize: '0.82rem', textAlign: 'center', marginTop: '24px' }}>
@@ -107,8 +91,8 @@ const SellerRegister = () => {
         {/* Shop type badge */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px' }}>
           <button onClick={() => setShopType('')} style={{ background: 'transparent', border: 'none', color: '#F39C12', fontSize: '1.2rem', cursor: 'pointer', padding: 0 }}>←</button>
-          <span style={{ background: shopType === 'service' ? '#27AE6020' : shopType === 'market' ? '#F39C1220' : '#F39C1220', color: shopType === 'service' ? '#27AE60' : '#F39C12', borderRadius: '20px', padding: '4px 14px', fontSize: '0.85rem', fontWeight: 700 }}>
-            {shopType === 'service' ? '🤝 Service Shop' : shopType === 'market' ? '🛒 Local Market Stall' : '📦 Product Shop'}
+          <span style={{ background: shopType === 'service' ? '#27AE6020' : '#F39C1220', color: shopType === 'service' ? '#27AE60' : '#F39C12', borderRadius: '20px', padding: '4px 14px', fontSize: '0.85rem', fontWeight: 700 }}>
+            {shopType === 'service' ? '🤝 Service Shop' : '📦 Product Shop'}
           </span>
         </div>
 
