@@ -280,6 +280,121 @@ def get_products(seller_id: Optional[int] = None, category: Optional[str] = None
 def add_product(data: ProductCreate):
     conn = get_db()
     cur = conn.cursor()
+    cur.execute(
+        "INSERT INTO products (seller_id, name, category, price, location, description, image_url, food_category) VALUES (%s,%s,%s,%s,%s,%s,%s,%s) RETURNING *",
+        (data.seller_id, data.name, data.category, data.price, data.location, data.description, data.image_url, data.food_category)
+    )
+    product = fetchone(cur)
+    if data.extra_images:
+        for img_url in data.extra_images:
+            cur.execute("INSERT INTO product_images (product_id, url) VALUES (%s, %s)", (product['id'], img_url))
+    conn.commit()
+    cur.close()
+    conn.close()
+    return product
+
+@app.delete("/products/{product_id}")
+def delete_product(product_id: int):
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute("UPDATE products SET active = 0 WHERE id = %s", (product_id,))
+    conn.commit()
+    cur.close()
+    conn.close()
+    return {"status": "deleted"}
+
+# ── Message Routes ───────────────────────────────────────────────────────────
+
+@app.get("/messages/{room_id}")
+def get_messages(room_id: str):
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute(
+        "SELECT * FROM messages WHERE room_id = %s ORDER BY created_at ASC",
+        (room_id,)
+    )
+    messages = fetchall(cur)
+    cur.close()
+    conn.close()
+    return messages
+
+@app.post("/messages")
+def send_message(data: MessageCreate):
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute(
+        "SELECT seller_id FROM products WHERE id = (SELECT product_id FROM messages WHERE room_id = %s LIMIT 1)",
+        (data.room_id,)
+    )
+    row = cur.fetchone()
+    seller_id = row[0] if row else 1
+    
+    cur.execute(
+        "INSERT INTO messages (room_id, seller_id, product_id, sender, message, is_seller) VALUES (%s,%s,%s,%s,%s,%s) RETURNING *",
+        (data.room_id, seller_id, 1, data.sender, data.message, data.is_seller)
+    )
+    message = fetchone(cur)
+    conn.commit()
+    cur.close()
+    conn.close()
+    return message
+
+# ── Order Routes ─────────────────────────────────────────────────────────────
+
+@app.get("/orders")
+def get_orders(seller_id: Optional[int] = None):
+    conn = get_db()
+    cur = conn.cursor()
+    query = "SELECT o.*, p.name as product_name FROM orders o JOIN products p ON o.product_id = p.id"
+    params = []
+    if seller_id:
+        query += " WHERE o.seller_id = %s"
+        params.append(seller_id)
+    query += " ORDER BY o.created_at DESC"
+    cur.execute(query, params)
+    orders = fetchall(cur)
+    cur.close()
+    conn.close()
+    return orders
+
+@app.post("/orders")
+def create_order(data: OrderCreate):
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute(
+        "INSERT INTO orders (product_id, seller_id, buyer_name, original_price, final_price, delivery_address) VALUES (%s,%s,%s,%s,%s,%s) RETURNING *",
+        (data.product_id, data.seller_id, data.buyer_name, data.original_price, data.final_price, data.delivery_address)
+    )
+    order = fetchone(cur)
+    conn.commit()
+    cur.close()
+    conn.close()
+    return order
+
+@app.put("/orders/{order_id}/status")
+def update_order_status(order_id: int, data: OrderStatusUpdate):
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute("UPDATE orders SET status = %s WHERE id = %s", (data.status, order_id))
+    conn.commit()
+    cur.close()
+    conn.close()
+    return {"status": "updated"}
+
+@app.put("/sellers/{seller_id}/logo")
+def update_seller_logo(seller_id: int, logo_url: str):
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute("UPDATE sellers SET logo_url = %s WHERE id = %s", (logo_url, seller_id))
+    conn.commit()
+    cur.close()
+    conn.close()
+    return {"status": "updated"}
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)
+    cur = conn.cursor()
     cur.execute("SELECT id FROM sellers WHERE id = %s", (data.seller_id,))
     if not cur.fetchone():
         cur.close()

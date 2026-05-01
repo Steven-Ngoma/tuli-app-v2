@@ -36,37 +36,37 @@ const SellerRegister = () => {
     return (
       <div style={{ padding: '60px 20px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <div style={{ width: '100%', maxWidth: '560px' }}>
-          <h2 style={{ color: '#FFD966', fontSize: '1.8rem', marginBottom: '8px', textAlign: 'center' }}>Open your shop on TULI</h2>
-          <p style={{ color: '#9BB7D4', marginBottom: '36px', textAlign: 'center' }}>What type of shop are you opening?</p>
+          <h2 style={{ color: '#FFD966', fontSize: '1.8rem', marginBottom: '8px', textAlign: 'center' }}>Join TULI</h2>
+          <p style={{ color: '#9BB7D4', marginBottom: '36px', textAlign: 'center' }}>Are you a market vendor or a restaurant?</p>
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
 
-            {/* Product Shop */}
+            {/* Market Vendor */}
             <div
               onClick={() => setShopType('product')}
               style={{ background: '#102433', borderRadius: '24px', padding: '28px 20px', border: '2px solid #244C66', cursor: 'pointer', textAlign: 'center', transition: '0.2s' }}
               onMouseEnter={e => e.currentTarget.style.borderColor = '#F39C12'}
               onMouseLeave={e => e.currentTarget.style.borderColor = '#244C66'}
             >
-              <div style={{ fontSize: '3rem', marginBottom: '12px' }}>📦</div>
-              <h3 style={{ color: '#FFD966', marginBottom: '8px' }}>Product Shop</h3>
-              <p style={{ color: '#9BB7D4', fontSize: '0.85rem', marginBottom: '16px' }}>Sell physical products — clothes, electronics, shoes, home goods and more.</p>
+              <div style={{ fontSize: '3rem', marginBottom: '12px' }}>🥬</div>
+              <h3 style={{ color: '#FFD966', marginBottom: '8px' }}>Market Vendor</h3>
+              <p style={{ color: '#9BB7D4', fontSize: '0.85rem', marginBottom: '16px' }}>Sell fresh produce — tomatoes, vegetables, fruits and more from your market stall.</p>
               <div style={{ background: '#F39C1220', borderRadius: '12px', padding: '10px' }}>
                 <div style={{ color: '#F39C12', fontWeight: 700, fontSize: '0.9rem' }}>Free to list</div>
                 <div style={{ color: '#9BB7D4', fontSize: '0.78rem', marginTop: '4px' }}>5% commission per sale only</div>
               </div>
             </div>
 
-            {/* Service Shop */}
+            {/* Restaurant */}
             <div
               onClick={() => setShopType('service')}
               style={{ background: '#102433', borderRadius: '24px', padding: '28px 20px', border: '2px solid #244C66', cursor: 'pointer', textAlign: 'center', transition: '0.2s' }}
               onMouseEnter={e => e.currentTarget.style.borderColor = '#27AE60'}
               onMouseLeave={e => e.currentTarget.style.borderColor = '#244C66'}
             >
-              <div style={{ fontSize: '3rem', marginBottom: '12px' }}>🤝</div>
-              <h3 style={{ color: '#FFD966', marginBottom: '8px' }}>Service Shop</h3>
-              <p style={{ color: '#9BB7D4', fontSize: '0.85rem', marginBottom: '16px' }}>Offer services — restaurants, food, repairs, catering and more.</p>
+              <div style={{ fontSize: '3rem', marginBottom: '12px' }}>🍽️</div>
+              <h3 style={{ color: '#FFD966', marginBottom: '8px' }}>Restaurant</h3>
+              <p style={{ color: '#9BB7D4', fontSize: '0.85rem', marginBottom: '16px' }}>Register your restaurant on TULI's Service Unit and start receiving food orders.</p>
               <div style={{ background: '#27AE6020', borderRadius: '12px', padding: '10px' }}>
                 <div style={{ color: '#27AE60', fontWeight: 700, fontSize: '0.9rem' }}>1 Month FREE</div>
                 <div style={{ color: '#9BB7D4', fontSize: '0.78rem', marginTop: '4px' }}>Then K100/month rental fee</div>
@@ -92,7 +92,7 @@ const SellerRegister = () => {
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px' }}>
           <button onClick={() => setShopType('')} style={{ background: 'transparent', border: 'none', color: '#F39C12', fontSize: '1.2rem', cursor: 'pointer', padding: 0 }}>←</button>
           <span style={{ background: shopType === 'service' ? '#27AE6020' : '#F39C1220', color: shopType === 'service' ? '#27AE60' : '#F39C12', borderRadius: '20px', padding: '4px 14px', fontSize: '0.85rem', fontWeight: 700 }}>
-            {shopType === 'service' ? '🤝 Service Shop' : '📦 Product Shop'}
+            {shopType === 'service' ? '🍽️ Restaurant' : '🥬 Market Vendor'}
           </span>
         </div>
 
@@ -118,7 +118,7 @@ const SellerRegister = () => {
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
           {[
             { name: 'name', placeholder: 'Your full name', type: 'text' },
-            { name: 'shop_name', placeholder: shopType === 'service' ? 'Restaurant / business name' : 'Shop / business name', type: 'text' },
+            { name: 'shop_name', placeholder: shopType === 'service' ? 'Restaurant name' : 'Market stall / vendor name', type: 'text' },
             { name: 'phone', placeholder: 'Phone number e.g. 0976123456', type: 'tel' },
             { name: 'email', placeholder: 'Email address (optional)', type: 'email' },
             { name: 'location', placeholder: 'Your location e.g. Lusaka - Kamwala', type: 'text' },

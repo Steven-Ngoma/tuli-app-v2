@@ -1,25 +1,24 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import ImageCarousel from '../components/ImageCarousel';
 
 const API = 'https://tuli-backend-44vd.onrender.com';
 
 const CATEGORIES = [
-  { label: 'All', icon: '🛍️' },
-  { label: 'Food & Drinks', icon: '🍛' },
-  { label: 'Clothes', icon: '👗' },
-  { label: 'Shoes', icon: '👟' },
-  { label: 'Electronics', icon: '📱' },
-  { label: 'Home Goods', icon: '🛋️' },
-  { label: 'Other', icon: '📦' },
+  { label: 'All', icon: '🛒' },
+  { label: 'Tomatoes', icon: '🍅' },
+  { label: 'Vegetables', icon: '🥬' },
+  { label: 'Fruits', icon: '🍊' },
+  { label: 'Onions & Garlic', icon: '🧅' },
+  { label: 'Leafy Greens', icon: '🥦' },
+  { label: 'Other', icon: '🌽' },
 ];
 
+// Restaurant-only ad slides
 const SLIDES = [
-  { title: 'Fresh Products', desc: 'Quality items from local sellers', price: 'From K25', shop: 'TULI Marketplace', img: 'https://res.cloudinary.com/daxhjv2lt/image/upload/v1774699822/tuli/na12kdzy4wkob5u8trwj.jpg' },
-  { title: 'Nike Sneakers', desc: 'Fresh sneakers size 40-45', price: 'K350', shop: 'MK Shop', img: 'https://res.cloudinary.com/daxhjv2lt/image/upload/v1774783290/tuli/yemnqjrlmzjivl2mnrbu.jpg' },
-  { title: 'Smart TV 43"', desc: 'Brand new smart TV', price: 'K4500', shop: 'MK Shop', img: 'https://res.cloudinary.com/daxhjv2lt/image/upload/v1774699830/tuli/z75ssexasynbnytxocgn.jpg' },
-  { title: 'Grilled Chicken', desc: 'Juicy grilled chicken', price: 'K85', shop: 'Flavour Foods', img: 'https://res.cloudinary.com/daxhjv2lt/image/upload/v1774699114/tuli/gpbqs8cwpkltovzyz9rp.jpg' },
-  { title: 'Gift Hamper', desc: 'Perfect gift for that special someone', price: 'K599', shop: 'Deshana', img: 'https://res.cloudinary.com/daxhjv2lt/image/upload/v1775730086/tuli/onxafnbsjjmfzn2efgjj.jpg' },
+  { title: 'Grilled Chicken Platter', desc: 'Juicy grilled chicken with nshima & relish', price: 'K85', shop: 'Flavour Foods', img: 'https://res.cloudinary.com/daxhjv2lt/image/upload/v1774699114/tuli/gpbqs8cwpkltovzyz9rp.jpg' },
+  { title: 'Special Lunch Deal', desc: 'Full meal + drink every weekday', price: 'K65', shop: 'Lusaka Grill House', img: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&q=80' },
+  { title: 'Fresh Breakfast', desc: 'Start your day right — served from 7am', price: 'K45', shop: 'Morning Bites Café', img: 'https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?w=600&q=80' },
+  { title: 'Family Dinner Special', desc: 'Feed the whole family for less', price: 'K250', shop: "Mama's Kitchen", img: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80' },
 ];
 
 const Banner = () => {
@@ -70,15 +69,16 @@ const Marketplace = () => {
   const [category, setCategory] = useState('All');
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(true);
+  const [quantities, setQuantities] = useState({}); // productId -> qty
+  const [orderModal, setOrderModal] = useState(null);
+  const [orderForm, setOrderForm] = useState({ buyer_name: '', delivery_address: '', delivery_time: '' });
+  const [ordering, setOrdering] = useState(false);
+  const [orderDone, setOrderDone] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     setLoading(true);
-    const url = tab === 'shops'
-      ? `${API}/shops`
-      : tab === 'food'
-      ? `${API}/restaurants`
-      : `${API}/products`;
+    const url = tab === 'vendors' ? `${API}/shops` : tab === 'restaurants' ? `${API}/restaurants` : `${API}/products`;
     fetch(url)
       .then(r => r.json())
       .then(data => {
@@ -89,12 +89,50 @@ const Marketplace = () => {
       .finally(() => setLoading(false));
   }, [tab]);
 
+  const getQty = (id) => quantities[id] || 0;
+
+  const changeQty = (product, delta) => {
+    const max = product.stock_limit || 20;
+    const current = getQty(product.id);
+    const next = Math.max(0, Math.min(max, current + delta));
+    setQuantities(q => ({ ...q, [product.id]: next }));
+  };
+
+  const openOrder = (product) => {
+    setOrderModal({ product, qty: getQty(product.id) || 1 });
+    setOrderForm({ buyer_name: localStorage.getItem('buyer_name') || '', delivery_address: '', delivery_time: '' });
+    setOrderDone(false);
+  };
+
+  const submitOrder = async (e) => {
+    e.preventDefault();
+    setOrdering(true);
+    try {
+      const { product, qty } = orderModal;
+      const note = `Qty: ${qty}` + (orderForm.delivery_time ? ` | Delivery time: ${orderForm.delivery_time}` : '');
+      await fetch(`${API}/orders`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          product_id: product.id,
+          seller_id: product.seller_id,
+          buyer_name: orderForm.buyer_name,
+          original_price: product.price,
+          final_price: product.price,
+          delivery_address: orderForm.delivery_address + ' | ' + note,
+        })
+      });
+      localStorage.setItem('buyer_name', orderForm.buyer_name);
+      setQuantities(q => ({ ...q, [product.id]: 0 }));
+      setOrderDone(true);
+    } catch { } finally { setOrdering(false); }
+  };
+
   const filteredProducts = products.filter(p => {
     const matchSearch = p.name?.toLowerCase().includes(search.toLowerCase()) ||
       p.shop_name?.toLowerCase().includes(search.toLowerCase()) ||
       p.location?.toLowerCase().includes(search.toLowerCase());
-    const matchCat = category === 'All' ||
-      (category === 'Food & Drinks' ? p.category === 'Restaurant & Food' : p.category === category);
+    const matchCat = category === 'All' || p.category === category;
     return matchSearch && matchCat;
   });
 
@@ -106,14 +144,73 @@ const Marketplace = () => {
   return (
     <div style={{ background: '#f5f5f5', minHeight: '100vh' }}>
 
+      {/* Order Modal */}
+      {orderModal && (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.6)', zIndex: 999, display: 'flex', alignItems: 'flex-end', justifyContent: 'center' }}>
+          <div style={{ background: '#fff', borderRadius: '24px 24px 0 0', padding: '28px 24px', width: '100%', maxWidth: '480px', boxShadow: '0 -8px 40px rgba(0,0,0,0.2)' }}>
+            {orderDone ? (
+              <div style={{ textAlign: 'center', padding: '20px 0' }}>
+                <div style={{ fontSize: '3rem', marginBottom: '12px' }}>✅</div>
+                <h3 style={{ color: '#1B4332', marginBottom: '8px' }}>Order Placed!</h3>
+                <p style={{ color: '#666', fontSize: '0.9rem', marginBottom: '20px' }}>The seller has been notified and will confirm your order shortly.</p>
+                <button onClick={() => setOrderModal(null)} className="btn-primary" style={{ width: '100%' }}>Done</button>
+              </div>
+            ) : (
+              <>
+                {/* Product row */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
+                  <div style={{ width: '60px', height: '60px', borderRadius: '12px', background: '#fff', border: '1px solid #eee', overflow: 'hidden', flexShrink: 0 }}>
+                    {orderModal.product.image_url
+                      ? <img src={orderModal.product.image_url} alt={orderModal.product.name} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                      : <span style={{ fontSize: '2rem', display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>🥬</span>}
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <h3 style={{ color: '#1B4332', fontSize: '1rem', marginBottom: '2px' }}>{orderModal.product.name}</h3>
+                    <p style={{ color: '#E67E22', fontWeight: 700 }}>{orderModal.product.price}</p>
+                  </div>
+                  <button onClick={() => setOrderModal(null)} style={{ background: 'transparent', border: 'none', fontSize: '1.4rem', cursor: 'pointer', color: '#888' }}>✕</button>
+                </div>
+
+                {/* Quantity selector */}
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: '#f5f5f5', borderRadius: '16px', padding: '12px 16px', marginBottom: '16px' }}>
+                  <span style={{ color: '#1B4332', fontWeight: 600, fontSize: '0.95rem' }}>Quantity</span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                    <button onClick={() => setOrderModal(m => ({ ...m, qty: Math.max(1, m.qty - 1) }))}
+                      style={{ width: '32px', height: '32px', borderRadius: '50%', border: '2px solid #1B4332', background: '#fff', color: '#1B4332', fontSize: '1.2rem', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>-</button>
+                    <span style={{ color: '#1B4332', fontWeight: 800, fontSize: '1.1rem', minWidth: '24px', textAlign: 'center' }}>{orderModal.qty}</span>
+                    <button onClick={() => setOrderModal(m => ({ ...m, qty: Math.min(orderModal.product.stock_limit || 20, m.qty + 1) }))}
+                      style={{ width: '32px', height: '32px', borderRadius: '50%', border: 'none', background: '#1B4332', color: '#FFD966', fontSize: '1.2rem', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>+</button>
+                  </div>
+                </div>
+
+                <form onSubmit={submitOrder} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                  <input placeholder="Your name *" value={orderForm.buyer_name}
+                    onChange={e => setOrderForm({ ...orderForm, buyer_name: e.target.value })} required
+                    style={{ padding: '12px 16px', borderRadius: '40px', border: '1px solid #ddd', fontSize: '0.95rem', outline: 'none' }} />
+                  <input placeholder="Delivery address *" value={orderForm.delivery_address}
+                    onChange={e => setOrderForm({ ...orderForm, delivery_address: e.target.value })} required
+                    style={{ padding: '12px 16px', borderRadius: '40px', border: '1px solid #ddd', fontSize: '0.95rem', outline: 'none' }} />
+                  <input placeholder="Preferred delivery time e.g. Today 3pm" value={orderForm.delivery_time}
+                    onChange={e => setOrderForm({ ...orderForm, delivery_time: e.target.value })}
+                    style={{ padding: '12px 16px', borderRadius: '40px', border: '1px solid #ddd', fontSize: '0.95rem', outline: 'none' }} />
+                  <button type="submit" className="btn-primary" disabled={ordering} style={{ width: '100%', marginTop: '4px' }}>
+                    {ordering ? 'Placing order...' : `Place Order • ${orderModal.qty} item${orderModal.qty > 1 ? 's' : ''}`}
+                  </button>
+                </form>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* Header */}
       <div style={{ background: '#1B4332', padding: '24px 0 0' }}>
         <div className="container">
           <h1 style={{ color: '#FFD966', fontSize: '1.8rem', fontWeight: 800, marginBottom: '4px' }}>
-            🛒 TULI Marketplace
+            🛒 Local Market
           </h1>
           <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem', marginBottom: '16px' }}>
-            Browse listings from sellers across Zambia
+            Fresh tomatoes, vegetables & fruits from Lusaka's local markets
           </p>
 
           {/* Search */}
@@ -131,9 +228,9 @@ const Marketplace = () => {
           {/* Tabs */}
           <div style={{ display: 'flex', gap: '0', borderBottom: '2px solid rgba(255,255,255,0.1)' }}>
             {[
-              { key: 'products', label: '📦 Products' },
-              { key: 'shops', label: '🏪 Shops' },
-              { key: 'food', label: '🍛 Food' },
+              { key: 'products', label: 'Produce' },
+              { key: 'restaurants', label: 'Restaurants' },
+              { key: 'vendors', label: 'Vendors' },
             ].map(t => (
               <button key={t.key} onClick={() => { setTab(t.key); setSearch(''); setCategory('All'); }}
                 style={{
@@ -152,7 +249,7 @@ const Marketplace = () => {
 
       <div className="container" style={{ padding: '16px 28px' }}>
 
-        {/* Sliding Banner */}
+        <p style={{ color: '#888', fontSize: '0.72rem', marginBottom: '6px', fontWeight: 600, letterSpacing: '0.5px', textTransform: 'uppercase' }}>🍽️ Restaurant Deals Near You</p>
         <Banner />
 
         {/* Category Filter - only for products tab */}
@@ -192,32 +289,43 @@ const Marketplace = () => {
             ) : (
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px' }}>
                 {filteredProducts.map(product => {
-                  const online = product.last_seen && (new Date() - new Date(product.last_seen + 'Z')) / 1000 < 120;
+                  const qty = getQty(product.id);
+                  const max = product.stock_limit || 20;
                   return (
                     <div key={product.id}
-                      onClick={() => navigate(`/shop/${product.seller_id}`)}
-                      style={{ background: '#fff', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 2px 8px rgba(0,0,0,0.07)', cursor: 'pointer', display: 'flex', flexDirection: 'column' }}>
-                      <div style={{ position: 'relative' }}>
-                        <ImageCarousel images={product.images || (product.image_url ? [product.image_url] : [])} height="130px" />
-                        <span style={{
-                          position: 'absolute', top: '8px', left: '8px',
-                          background: online ? '#27AE60' : '#E74C3C',
-                          color: '#fff', fontSize: '0.65rem', fontWeight: 700,
-                          padding: '2px 8px', borderRadius: '20px'
-                        }}>
-                          {online ? '● Online' : '● Offline'}
-                        </span>
+                      style={{ background: '#fff', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 2px 8px rgba(0,0,0,0.07)', display: 'flex', flexDirection: 'column' }}>
+                      {/* White background image area */}
+                      <div style={{ background: '#fff', height: '130px', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', borderBottom: '1px solid #f0f0f0' }}>
+                        {product.image_url
+                          ? <img src={product.image_url} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                          : <span style={{ fontSize: '3rem' }}>🥬</span>}
                       </div>
                       <div style={{ padding: '10px', flex: 1, display: 'flex', flexDirection: 'column' }}>
                         <p style={{ color: '#1B4332', fontWeight: 700, fontSize: '0.88rem', marginBottom: '2px' }}>{product.name}</p>
-                        <p style={{ color: '#E67E22', fontWeight: 800, fontSize: '1rem', marginBottom: '4px' }}>{product.price}</p>
-                        <p style={{ color: '#888', fontSize: '0.72rem', marginBottom: '2px' }}>🏪 {product.shop_name}</p>
-                        <p style={{ color: '#888', fontSize: '0.72rem', marginBottom: '10px' }}>📍 {product.location}</p>
-                        <button
-                          onClick={e => { e.stopPropagation(); navigate(`/chat/${product.seller_id}/${product.id}?product=${encodeURIComponent(product.name)}&shop=${encodeURIComponent(product.shop_name)}&price=${encodeURIComponent(product.price)}`); }}
-                          style={{ background: '#1B4332', color: '#FFD966', border: 'none', borderRadius: '20px', padding: '7px', fontWeight: 700, fontSize: '0.78rem', cursor: 'pointer', marginTop: 'auto' }}>
-                          💬 Chat Seller
-                        </button>
+                        {/* Price row + quantity stepper */}
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '4px' }}>
+                          <p style={{ color: '#E67E22', fontWeight: 800, fontSize: '1rem', margin: 0 }}>{product.price}</p>
+                          {qty === 0 ? (
+                            <button
+                              onClick={e => { e.stopPropagation(); changeQty(product, 1); }}
+                              style={{ width: '30px', height: '30px', borderRadius: '50%', border: 'none', background: '#1B4332', color: '#FFD966', fontSize: '1.3rem', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>+</button>
+                          ) : (
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                              <button onClick={e => { e.stopPropagation(); changeQty(product, -1); }}
+                                style={{ width: '26px', height: '26px', borderRadius: '50%', border: '2px solid #1B4332', background: '#fff', color: '#1B4332', fontSize: '1rem', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>-</button>
+                              <span style={{ color: '#1B4332', fontWeight: 800, fontSize: '0.95rem', minWidth: '16px', textAlign: 'center' }}>{qty}</span>
+                              <button onClick={e => { e.stopPropagation(); changeQty(product, 1); }}
+                                style={{ width: '26px', height: '26px', borderRadius: '50%', border: 'none', background: '#1B4332', color: '#FFD966', fontSize: '1rem', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>+</button>
+                            </div>
+                          )}
+                        </div>
+                        {qty > 0 && (
+                          <button
+                            onClick={e => { e.stopPropagation(); openOrder(product); }}
+                            style={{ background: '#1B4332', color: '#FFD966', border: 'none', borderRadius: '20px', padding: '7px', fontWeight: 700, fontSize: '0.78rem', cursor: 'pointer', marginTop: '8px' }}>
+                            Order {qty} item{qty > 1 ? 's' : ''} →
+                          </button>
+                        )}
                       </div>
                     </div>
                   );
@@ -228,12 +336,12 @@ const Marketplace = () => {
         ) : (
           <>
             <p style={{ color: '#888', fontSize: '0.82rem', marginBottom: '12px' }}>
-              {filteredShops.length} {tab === 'food' ? 'restaurant' : 'shop'}{filteredShops.length !== 1 ? 's' : ''} found
+              {filteredShops.length} {tab === 'restaurants' ? 'restaurant' : 'vendor'}{filteredShops.length !== 1 ? 's' : ''} found
             </p>
             {filteredShops.length === 0 ? (
               <div style={{ textAlign: 'center', padding: '60px 0', color: '#4A6080' }}>
-                <div style={{ fontSize: '3rem', marginBottom: '12px' }}>{tab === 'food' ? '🍛' : '🏪'}</div>
-                <p style={{ fontSize: '1.1rem' }}>No {tab === 'food' ? 'restaurants' : 'shops'} found</p>
+                <div style={{ fontSize: '3rem', marginBottom: '12px' }}>{tab === 'restaurants' ? '🍽️' : '🏪'}</div>
+                <p style={{ fontSize: '1.1rem' }}>No {tab === 'restaurants' ? 'restaurants' : 'market vendors'} found</p>
               </div>
             ) : (
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px' }}>
@@ -242,24 +350,24 @@ const Marketplace = () => {
                   const coverImg = shop.cover_image || shop.logo_url;
                   return (
                     <div key={shop.id}
-                      onClick={() => navigate(tab === 'food' ? `/restaurant/${shop.id}` : `/shop/${shop.id}`)}
+                      onClick={() => navigate(tab === 'restaurants' ? `/restaurant/${shop.id}` : `/shop/${shop.id}`)}
                       style={{ background: '#fff', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 2px 8px rgba(0,0,0,0.07)', cursor: 'pointer', display: 'flex', flexDirection: 'column' }}>
                       <div style={{ position: 'relative', height: '130px', background: '#1B4332', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                         {coverImg
                           ? <img src={coverImg} alt={shop.shop_name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                          : <span style={{ fontSize: '3rem' }}>{tab === 'food' ? '🍛' : '🏪'}</span>}
+                          : <span style={{ fontSize: '3rem' }}>{tab === 'restaurants' ? '🍽️' : '🥬'}</span>}
                         <span style={{ position: 'absolute', top: '8px', left: '8px', background: online ? '#27AE60' : '#E74C3C', color: '#fff', fontSize: '0.65rem', fontWeight: 700, padding: '2px 8px', borderRadius: '20px' }}>
-                          {online ? '● Open' : '● Closed'}
+                          {tab === 'restaurants' ? (online ? '● Open' : '● Closed') : (online ? '● Active' : '● Away')}
                         </span>
                       </div>
                       <div style={{ padding: '10px', flex: 1, display: 'flex', flexDirection: 'column' }}>
                         <p style={{ color: '#1B4332', fontWeight: 700, fontSize: '0.88rem', marginBottom: '4px' }}>{shop.shop_name}</p>
                         <p style={{ color: '#888', fontSize: '0.72rem', marginBottom: '2px' }}>📍 {shop.location}</p>
                         <p style={{ color: '#E67E22', fontWeight: 700, fontSize: '0.78rem', marginBottom: '10px' }}>
-                          {tab === 'food' ? `${shop.item_count || 0} items on menu` : `${shop.product_count || 0} products`}
+                          {tab === 'restaurants' ? `${shop.item_count || 0} items on menu` : `${shop.product_count || 0} produce items`}
                         </p>
                         <button style={{ background: '#1B4332', color: '#FFD966', border: 'none', borderRadius: '20px', padding: '7px', fontWeight: 700, fontSize: '0.78rem', cursor: 'pointer', marginTop: 'auto' }}>
-                          {tab === 'food' ? 'View Menu →' : 'View Shop →'}
+                          {tab === 'restaurants' ? 'View Menu →' : 'View Stall →'}
                         </button>
                       </div>
                     </div>
@@ -272,13 +380,13 @@ const Marketplace = () => {
 
         {/* Sell CTA */}
         <div style={{ marginTop: '32px', background: '#1B4332', borderRadius: '24px', padding: '28px 24px', textAlign: 'center' }}>
-          <div style={{ fontSize: '2rem', marginBottom: '8px' }}>💼</div>
-          <h3 style={{ color: '#FFD966', marginBottom: '8px', fontSize: '1.2rem' }}>Want to list on TULI?</h3>
+          <div style={{ fontSize: '2rem', marginBottom: '8px' }}>🛒</div>
+          <h3 style={{ color: '#FFD966', marginBottom: '8px', fontSize: '1.2rem' }}>Sell your produce on TULI</h3>
           <p style={{ color: 'rgba(255,255,255,0.75)', marginBottom: '20px', fontSize: '0.88rem' }}>
-            Register for free and start selling your products or food to customers across Zambia
+            Market vendor in Lusaka? List your tomatoes, vegetables & fruits — reach customers across the city
           </p>
           <a href="/seller/register" className="btn-primary" style={{ fontSize: '0.9rem', padding: '10px 28px' }}>
-            Start Selling →
+            Register as Vendor →
           </a>
         </div>
 

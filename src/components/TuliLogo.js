@@ -16,8 +16,8 @@ const TuliLogo = ({ size = 44 }) => (
     <rect x="20.25" y="13" width="3.5" height="13" rx="1.75" fill="#F39C12" />
 
     {/* Two dots below T - represent buyer & seller connecting */}
-    <circle cx="16" cy="30" r="2.5" fill="#FFB347" />
-    <circle cx="28" cy="30" r="2.5" fill="#FFB347" />
+    <circle cx="16" cy="30" r="2.5" fill="#F39C12" />
+    <circle cx="28" cy="30" r="2.5" fill="#F39C12" />
 
     {/* Connecting line between the two dots */}
     <line x1="18.5" y1="30" x2="25.5" y2="30" stroke="#F39C12" strokeWidth="1.5" strokeLinecap="round" strokeDasharray="2 2" />

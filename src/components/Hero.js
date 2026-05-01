@@ -6,30 +6,30 @@ const Hero = () => (
       <div className="hero">
         <div className="hero-left">
           <h2>
-            Buy & Sell in Zambia.<br />
-            <span style={{ color: '#F39C12' }}>No shop needed.</span>
+            Order Fresh Produce.<br />
+            <span style={{ color: '#F39C12' }}>Eat at Lusaka's best restaurants.</span>
           </h2>
           <p>
-            TULI connects buyers and sellers in one place. Post your products or services,
-            reach customers, and grow — without needing a physical store.
+            TULI connects you to local market vendors selling fresh tomatoes, vegetables & fruits,
+            and to registered restaurants in Lusaka — all in one place.
           </p>
           <div className="hero-buttons">
-            <a href="/seller/register" className="btn-primary">Start Selling →</a>
-            <a href="#units" className="btn-outline">See how it works</a>
+            <a href="/marketplace" className="btn-primary">Browse Market →</a>
+            <a href="/services" className="btn-outline">View Restaurants</a>
           </div>
           <div className="hero-feature">
-            <span>📱 Mobile money payments</span>
-            <span>💬 In-app chat</span>
-            <span>🏪 No physical shop required</span>
+            <span>📱 Order via chat</span>
+            <span>🍅 Fresh daily produce</span>
+            <span>🍽️ Lusaka restaurants</span>
           </div>
         </div>
         <div className="hero-right">
-          <div className="badge-icon">🛍️📦</div>
-          <p style={{ fontWeight: 600, margin: '16px 0', color: '#EFF3F8' }}>
-            Products &amp; Services
+          <div className="badge-icon">🍽️</div>
+          <p style={{ fontWeight: 600, margin: '16px 0', color: '#1B4332' }}>
+            Local Market &amp; Restaurants
           </p>
-          <p style={{ color: '#9BB7D4', fontSize: '0.9rem' }}>
-            A marketplace built for Zambian entrepreneurs
+          <p style={{ color: '#2d6a4f', fontSize: '0.9rem' }}>
+            Fresh produce &amp; food from Lusaka
           </p>
         </div>
       </div>

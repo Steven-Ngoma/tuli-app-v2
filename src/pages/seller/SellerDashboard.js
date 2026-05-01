@@ -1,17 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const categories = ['Electronics', 'Shoes', 'Clothes', 'Home Goods', 'Books & Stationery', 'Restaurant & Food', 'Other'];
+const marketCategories = ['Tomatoes', 'Vegetables', 'Fruits', 'Onions & Garlic', 'Leafy Greens', 'Other'];
 const foodCategories = ['Starters', 'Main Course', 'Sides', 'Drinks', 'Desserts', 'Other'];
-const emptyForm = { name: '', category: 'Electronics', price: '', location: '', description: '', food_category: '' };
+const emptyForm = { name: '', category: 'Tomatoes', price: '', location: '', description: '', food_category: '' };
 
 const SellerDashboard = () => {
   const navigate = useNavigate();
   const seller = JSON.parse(localStorage.getItem('seller') || 'null');
-  const defaultCategory = seller?.shop_type === 'service' ? 'Restaurant & Food' : 'Electronics';
+  const defaultCategory = seller?.shop_type === 'service' ? 'Restaurant & Food' : 'Tomatoes';
   const [tab, setTab] = useState('listings');
   const [products, setProducts] = useState([]);
-  const [form, setForm] = useState({ ...emptyForm, category: defaultCategory });
+  const [form, setForm] = useState({ ...emptyForm, category: defaultCategory || 'Tomatoes' });
   const [showForm, setShowForm] = useState(false);
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState('');
@@ -368,20 +368,10 @@ const SellerDashboard = () => {
                     style={{ padding: '12px 16px', borderRadius: '40px', border: '1px solid #244C66', background: '#1B4332', color: '#EFF3F8', fontSize: '0.9rem' }}
                   >
                     {(seller.shop_type === 'service'
-                      ? ['Restaurant & Food']
-                      : categories.filter(c => c !== 'Restaurant & Food')
+                      ? foodCategories
+                      : marketCategories
                     ).map(c => <option key={c} value={c}>{c}</option>)}
                   </select>
-
-                  {form.category === 'Restaurant & Food' && (
-                    <select
-                      name="food_category" value={form.food_category} onChange={handleChange}
-                      style={{ padding: '12px 16px', borderRadius: '40px', border: '1px solid #244C66', background: '#1B4332', color: '#EFF3F8', fontSize: '0.9rem' }}
-                    >
-                      <option value="">Select menu section</option>
-                      {foodCategories.map(c => <option key={c} value={c}>{c}</option>)}
-                    </select>
-                  )}
                   <textarea
                     name="description" placeholder="Short product description"
                     value={form.description} onChange={handleChange}

@@ -71,7 +71,7 @@ const Navbar = () => {
         <div className="nav-links">
           <Link to="/" style={{ color: isHome ? '#F39C12' : '#CDE5F7' }}>Home</Link>
           <Link to="/marketplace" style={{ color: pathname === '/marketplace' ? '#F39C12' : '#CDE5F7' }}>
-            🛒 Products
+            Local Market
           </Link>
           {isHome && <a href="#how-it-works">How it works</a>}
           {seller
