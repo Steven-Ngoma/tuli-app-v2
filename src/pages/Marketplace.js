@@ -357,8 +357,9 @@ const Marketplace = () => {
                           : <span style={{ fontSize: '3rem' }}>{tab === 'restaurants' ? '🍽️' : '🥬'}</span>}
                         {tab === 'restaurants' ? (
                           online ? (
-                            <span style={{ position: 'absolute', top: '8px', left: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '14px', height: '14px' }}>
-                              <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#27AE60', display: 'block', boxShadow: '0 0 0 0 rgba(39,174,96,0.7)', animation: 'pulseOnline 1.5s ease-in-out infinite' }} />
+                            <span style={{ position: 'absolute', top: '8px', left: '8px', display: 'flex', alignItems: 'center', gap: '5px', background: 'rgba(0,0,0,0.35)', borderRadius: '20px', padding: '3px 8px' }}>
+                              <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#27AE60', display: 'block', animation: 'pulseOnline 1.5s ease-in-out infinite', flexShrink: 0 }} />
+                              <span style={{ color: '#fff', fontSize: '0.65rem', fontWeight: 700 }}>Open</span>
                             </span>
                           ) : (
                             <span style={{ position: 'absolute', top: '8px', left: '8px', background: '#E74C3C', color: '#fff', fontSize: '0.65rem', fontWeight: 700, padding: '2px 8px', borderRadius: '20px' }}>● Closed</span>
