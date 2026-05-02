@@ -349,7 +349,7 @@ const Marketplace = () => {
             ) : (
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px' }}>
                 {filteredShops.map(shop => {
-                  const online = shop.last_seen && (new Date() - new Date(shop.last_seen + 'Z')) / 1000 < 120;
+                  const online = shop.last_seen && (new Date() - new Date(shop.last_seen + 'Z')) / 1000 < 600;
                   const coverImg = shop.cover_image || shop.logo_url;
                   return (
                     <div key={shop.id}
