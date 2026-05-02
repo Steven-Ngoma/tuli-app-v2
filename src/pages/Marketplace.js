@@ -128,9 +128,13 @@ const Marketplace = () => {
   };
 
   const filteredProducts = products.filter(p => {
-    const matchSearch = p.name?.toLowerCase().includes(search.toLowerCase()) ||
-      p.shop_name?.toLowerCase().includes(search.toLowerCase()) ||
-      p.location?.toLowerCase().includes(search.toLowerCase());
+    const q = search.trim().toLowerCase();
+    const matchSearch = !q ||
+      p.name?.toLowerCase().includes(q) ||
+      p.category?.toLowerCase().includes(q) ||
+      p.description?.toLowerCase().includes(q) ||
+      p.shop_name?.toLowerCase().includes(q) ||
+      p.location?.toLowerCase().includes(q);
     const matchCat = category === 'All' || p.category === category;
     return matchSearch && matchCat;
   });
@@ -231,7 +235,7 @@ const Marketplace = () => {
               { key: 'restaurants', label: 'Restaurants' },
               { key: 'vendors', label: 'Vendors' },
             ].map(t => (
-              <button key={t.key} onClick={() => { setTab(t.key); setSearch(''); setCategory('All'); }}
+              <button key={t.key} onClick={() => { setTab(t.key); setCategory('All'); }}
                 style={{
                   padding: '10px 20px', border: 'none', cursor: 'pointer', fontWeight: 700,
                   fontSize: '0.88rem', background: 'transparent',
