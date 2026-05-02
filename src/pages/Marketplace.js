@@ -355,9 +355,19 @@ const Marketplace = () => {
                         {coverImg
                           ? <img src={coverImg} alt={shop.shop_name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                           : <span style={{ fontSize: '3rem' }}>{tab === 'restaurants' ? '🍽️' : '🥬'}</span>}
-                        <span style={{ position: 'absolute', top: '8px', left: '8px', background: online ? '#27AE60' : '#E74C3C', color: '#fff', fontSize: '0.65rem', fontWeight: 700, padding: '2px 8px', borderRadius: '20px' }}>
-                          {tab === 'restaurants' ? (online ? '● Open' : '● Closed') : (online ? '● Active' : '● Away')}
-                        </span>
+                        {tab === 'restaurants' ? (
+                          online ? (
+                            <span style={{ position: 'absolute', top: '8px', left: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '14px', height: '14px' }}>
+                              <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#27AE60', display: 'block', boxShadow: '0 0 0 0 rgba(39,174,96,0.7)', animation: 'pulseOnline 1.5s ease-in-out infinite' }} />
+                            </span>
+                          ) : (
+                            <span style={{ position: 'absolute', top: '8px', left: '8px', background: '#E74C3C', color: '#fff', fontSize: '0.65rem', fontWeight: 700, padding: '2px 8px', borderRadius: '20px' }}>● Closed</span>
+                          )
+                        ) : (
+                          <span style={{ position: 'absolute', top: '8px', left: '8px', background: online ? '#27AE60' : '#E74C3C', color: '#fff', fontSize: '0.65rem', fontWeight: 700, padding: '2px 8px', borderRadius: '20px' }}>
+                            {online ? '● Active' : '● Away'}
+                          </span>
+                        )}
                       </div>
                       <div style={{ padding: '10px', flex: 1, display: 'flex', flexDirection: 'column' }}>
                         <p style={{ color: '#1B4332', fontWeight: 700, fontSize: '0.88rem', marginBottom: '4px' }}>{shop.shop_name}</p>
