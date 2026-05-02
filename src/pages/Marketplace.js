@@ -294,7 +294,7 @@ const Marketplace = () => {
                     <div key={product.id}
                       style={{ background: '#fff', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 2px 8px rgba(0,0,0,0.07)', display: 'flex', flexDirection: 'column' }}>
                       {/* White background image area */}
-                      <div style={{ background: '#fff', height: '130px', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', borderBottom: '1px solid #f0f0f0' }}>
+                      <div style={{ background: '#fff', height: '130px', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
                         {product.image_url
                           ? <img src={product.image_url} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
                           : <span style={{ fontSize: '3rem' }}>🥬</span>}
