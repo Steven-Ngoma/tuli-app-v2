@@ -39,7 +39,7 @@ const SellerRegister = () => {
           <h2 style={{ color: '#FFD966', fontSize: '1.8rem', marginBottom: '8px', textAlign: 'center' }}>Join TULI</h2>
           <p style={{ color: '#9BB7D4', marginBottom: '36px', textAlign: 'center' }}>Are you a market vendor or a restaurant?</p>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '20px' }}>
 
             {/* Market Vendor */}
             <div
