@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import './App.css';
+import TuliLogo from './components/TuliLogo';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Units from './components/Units';
@@ -65,6 +66,36 @@ const Layout = ({ children }) => {
 };
 
 function App() {
+  const [splash, setSplash] = useState(true);
+  const [fadeOut, setFadeOut] = useState(false);
+
+  useEffect(() => {
+    const t1 = setTimeout(() => setFadeOut(true), 1800);
+    const t2 = setTimeout(() => setSplash(false), 2400);
+    return () => { clearTimeout(t1); clearTimeout(t2); };
+  }, []);
+
+  if (splash) return (
+    <div style={{
+      position: 'fixed', inset: 0,
+      background: '#1B4332',
+      display: 'flex', flexDirection: 'column',
+      alignItems: 'center', justifyContent: 'center',
+      gap: 16,
+      opacity: fadeOut ? 0 : 1,
+      transition: 'opacity 0.6s ease',
+      zIndex: 9999
+    }}>
+      <TuliLogo size={80} />
+      <span style={{
+        fontSize: '2.8rem', fontWeight: 800,
+        background: 'linear-gradient(135deg, #F39C12, #FFB347)',
+        WebkitBackgroundClip: 'text', backgroundClip: 'text',
+        color: 'transparent', letterSpacing: '-0.5px'
+      }}>TULI</span>
+    </div>
+  );
+
   return (
     <BrowserRouter>
       <ScrollToTop />
