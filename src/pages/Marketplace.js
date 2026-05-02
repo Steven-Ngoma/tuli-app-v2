@@ -220,7 +220,7 @@ const Marketplace = () => {
               placeholder="Search products, shops, location..."
               value={search}
               onChange={e => setSearch(e.target.value)}
-              style={{ width: '100%', padding: '12px 16px 12px 40px', borderRadius: '40px', border: 'none', background: 'rgba(255,255,255,0.15)', color: '#fff', fontSize: '0.95rem', outline: 'none', boxSizing: 'border-box' }}
+              style={{ width: '100%', padding: '12px 16px 12px 40px', borderRadius: '40px', border: 'none', background: 'rgba(255,255,255,0.95)', color: '#1B4332', fontSize: '0.95rem', outline: 'none', boxSizing: 'border-box' }}
             />
           </div>
 
