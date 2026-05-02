@@ -42,7 +42,7 @@ const SellerDashboard = () => {
     ping();
     const interval = setInterval(fetchChats, 3000);
     const pingInterval = setInterval(ping, 30000);
-    return () => { clearInterval(interval); clearInterval(pingInterval); };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

@@ -53,6 +53,7 @@ const Chat = () => {
     const interval = setInterval(() => fetchMessages(), 3000);
     const onlineInterval = setInterval(checkOnline, 15000);
     return () => { clearInterval(interval); clearInterval(onlineInterval); };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [roomId]);
 
   const handlePlaceOrder = async e => {

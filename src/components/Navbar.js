@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import TuliLogo from './TuliLogo';
 
 const Navbar = () => {
   const { pathname } = useLocation();
-  const navigate = useNavigate();
   const isHome = pathname === '/';
   const seller = JSON.parse(localStorage.getItem('seller') || 'null');
   const buyerName = localStorage.getItem('buyer_name');
@@ -46,6 +45,7 @@ const Navbar = () => {
       const interval = setInterval(calc, 5000);
       return () => clearInterval(interval);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [buyerName, seller?.id]);
 
   return (

@@ -26,6 +26,7 @@ const BuyerChats = () => {
     fetchChats();
     const interval = setInterval(fetchChats, 3000);
     return () => clearInterval(interval);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -33,6 +34,7 @@ const BuyerChats = () => {
     fetchMessages(activeChat.room_id, true);
     const interval = setInterval(() => fetchMessages(activeChat.room_id), 3000);
     return () => clearInterval(interval);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeChat]);
 
   useEffect(() => {

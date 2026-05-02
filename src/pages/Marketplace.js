@@ -92,9 +92,8 @@ const Marketplace = () => {
   const getQty = (id) => quantities[id] || 0;
 
   const changeQty = (product, delta) => {
-    const max = product.stock_limit || 20;
     const current = getQty(product.id);
-    const next = Math.max(0, Math.min(max, current + delta));
+    const next = Math.max(0, Math.min(product.stock_limit || 20, current + delta));
     setQuantities(q => ({ ...q, [product.id]: next }));
   };
 
