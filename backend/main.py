@@ -55,6 +55,19 @@ def init_db():
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );
         ALTER TABLE sellers ADD COLUMN IF NOT EXISTS logo_url TEXT;
+        CREATE TABLE IF NOT EXISTS drivers (
+            id SERIAL PRIMARY KEY,
+            name TEXT NOT NULL,
+            phone TEXT UNIQUE NOT NULL,
+            zone TEXT NOT NULL,
+            vehicle TEXT DEFAULT 'Motorbike',
+            password TEXT NOT NULL,
+            online INTEGER DEFAULT 0,
+            last_seen TIMESTAMP,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+        ALTER TABLE orders ADD COLUMN IF NOT EXISTS driver_id INTEGER REFERENCES drivers(id);
+        ALTER TABLE orders ADD COLUMN IF NOT EXISTS driver_status TEXT DEFAULT 'pending';
         CREATE TABLE IF NOT EXISTS products (
             id SERIAL PRIMARY KEY,
             seller_id INTEGER NOT NULL REFERENCES sellers(id),
@@ -143,6 +156,20 @@ class OrderCreate(BaseModel):
 
 class OrderStatusUpdate(BaseModel):
     status: str
+
+class DriverRegister(BaseModel):
+    name: str
+    phone: str
+    zone: str
+    vehicle: str = 'Motorbike'
+    password: str
+
+class DriverLogin(BaseModel):
+    phone: str
+    password: str
+
+class DriverStatusUpdate(BaseModel):
+    online: bool
 
 # ── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -534,6 +561,94 @@ async def update_logo(seller_id: int, file: UploadFile = File(...)):
 
 def root():
     return {"message": "TULI API is running"}
+
+# ── Driver Routes ────────────────────────────────────────────────────────────
+
+@app.post("/drivers/register")
+def register_driver(data: DriverRegister):
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute("SELECT id FROM drivers WHERE phone = %s", (data.phone,))
+    if cur.fetchone():
+        cur.close(); conn.close()
+        raise HTTPException(status_code=400, detail="Phone already registered")
+    cur.execute(
+        "INSERT INTO drivers (name, phone, zone, vehicle, password) VALUES (%s,%s,%s,%s,%s) RETURNING id, name, phone, zone, vehicle",
+        (data.name, data.phone, data.zone, data.vehicle, hash_password(data.password))
+    )
+    driver = fetchone(cur)
+    conn.commit(); cur.close(); conn.close()
+    return driver
+
+@app.post("/drivers/login")
+def login_driver(data: DriverLogin):
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute(
+        "SELECT id, name, phone, zone, vehicle FROM drivers WHERE phone = %s AND password = %s",
+        (data.phone, hash_password(data.password))
+    )
+    driver = fetchone(cur)
+    cur.close(); conn.close()
+    if not driver:
+        raise HTTPException(status_code=401, detail="Invalid phone or password")
+    return driver
+
+@app.post("/drivers/{driver_id}/ping")
+def ping_driver(driver_id: int):
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute("UPDATE drivers SET last_seen = CURRENT_TIMESTAMP, online = 1 WHERE id = %s", (driver_id,))
+    conn.commit(); cur.close(); conn.close()
+    return {"status": "ok"}
+
+@app.patch("/drivers/{driver_id}/status")
+def update_driver_status(driver_id: int, data: DriverStatusUpdate):
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute("UPDATE drivers SET online = %s WHERE id = %s", (int(data.online), driver_id))
+    conn.commit(); cur.close(); conn.close()
+    return {"status": "updated"}
+
+@app.get("/drivers/available-orders")
+def get_available_orders():
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT o.*, p.name as product_name, s.shop_name, s.location as shop_location
+        FROM orders o
+        JOIN products p ON o.product_id = p.id
+        JOIN sellers s ON o.seller_id = s.id
+        WHERE o.status = 'confirmed' AND (o.driver_id IS NULL)
+        ORDER BY o.created_at DESC
+    """)
+    rows = fetchall(cur)
+    cur.close(); conn.close()
+    return rows
+
+@app.post("/drivers/{driver_id}/accept/{order_id}")
+def accept_order(driver_id: int, order_id: int):
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute("UPDATE orders SET driver_id = %s, driver_status = 'accepted' WHERE id = %s AND driver_id IS NULL", (driver_id, order_id))
+    conn.commit(); cur.close(); conn.close()
+    return {"status": "accepted"}
+
+@app.get("/drivers/{driver_id}/deliveries")
+def get_driver_deliveries(driver_id: int):
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT o.*, p.name as product_name, s.shop_name
+        FROM orders o
+        JOIN products p ON o.product_id = p.id
+        JOIN sellers s ON o.seller_id = s.id
+        WHERE o.driver_id = %s
+        ORDER BY o.created_at DESC
+    """, (driver_id,))
+    rows = fetchall(cur)
+    cur.close(); conn.close()
+    return rows
 
 # ── Order Routes ────────────────────────────────────────────────────────────
 

@@ -73,6 +73,7 @@ const Navbar = () => {
           <Link to="/marketplace" style={{ color: pathname === '/marketplace' ? '#F39C12' : '#CDE5F7' }}>
             Local Market
           </Link>
+          <Link to="/driver/register" style={{ color: pathname.startsWith('/driver') ? '#F39C12' : '#CDE5F7' }}>🛵 Drive</Link>
           {isHome && <a href="#how-it-works">How it works</a>}
           {seller
             ? <Link to="/seller/dashboard" className="btn-outline btn-outline-pulse" style={{ padding: '8px 24px', position: 'relative' }}>

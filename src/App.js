@@ -17,6 +17,9 @@ import BuyerChats from './pages/BuyerChats';
 import Services from './pages/Services';
 import RestaurantMenu from './pages/RestaurantMenu';
 import ShopPage from './pages/ShopPage';
+import DriverRegister from './pages/driver/DriverRegister';
+import DriverLogin from './pages/driver/DriverLogin';
+import DriverDashboard from './pages/driver/DriverDashboard';
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -111,6 +114,9 @@ function App() {
           <Route path="/seller/dashboard" element={<SellerDashboard />} />
           <Route path="/chat/:sellerId/:productId" element={<Chat />} />
           <Route path="/buyer/chats" element={<BuyerChats />} />
+          <Route path="/driver/register" element={<DriverRegister />} />
+          <Route path="/driver/login" element={<DriverLogin />} />
+          <Route path="/driver/dashboard" element={<DriverDashboard />} />
         </Routes>
       </Layout>
     </BrowserRouter>
