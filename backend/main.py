@@ -532,10 +532,14 @@ async def update_logo(seller_id: int, file: UploadFile = File(...)):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+@app.get("/")
 def root():
-    return {"message": "TULI API is running"}
-
-# ── Driver Routes ────────────────────────────────────────────────────────────
+    return {
+        "message": "TULI API is running",
+        "commit": "3bd419f",
+        "drivers": "available",
+        "notes": "Deploy this commit to enable driver endpoints"
+    }
 
 @app.post("/drivers/register")
 def register_driver(data: DriverRegister):
