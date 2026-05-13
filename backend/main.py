@@ -421,33 +421,6 @@ def update_seller_logo(seller_id: int, logo_url: str):
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
-    cur = conn.cursor()
-    cur.execute("SELECT id FROM sellers WHERE id = %s", (data.seller_id,))
-    if not cur.fetchone():
-        cur.close()
-        conn.close()
-        raise HTTPException(status_code=404, detail="Seller not found")
-    cur.execute(
-        "INSERT INTO products (seller_id, name, category, price, location, description, image_url, food_category) VALUES (%s,%s,%s,%s,%s,%s,%s,%s) RETURNING *",
-        (data.seller_id, data.name, data.category, data.price, data.location, data.description, data.image_url, data.food_category)
-    )
-    product = fetchone(cur)
-    for url in (data.extra_images or []):
-        cur.execute("INSERT INTO product_images (product_id, url) VALUES (%s,%s)", (product['id'], url))
-    conn.commit()
-    cur.close()
-    conn.close()
-    return product
-
-@app.delete("/products/{product_id}")
-def delete_product(product_id: int):
-    conn = get_db()
-    cur = conn.cursor()
-    cur.execute("UPDATE products SET active = 0 WHERE id = %s", (product_id,))
-    conn.commit()
-    cur.close()
-    conn.close()
-    return {"message": "Product removed"}
 
 # ── Restaurant Routes ─────────────────────────────────────────────────────────
 
@@ -776,5 +749,5 @@ def get_seller_chats(seller_id: int):
     cur.close()
     conn.close()
     return rows
-#   r e d e p l o y      
- 
+# redeploy  
+
