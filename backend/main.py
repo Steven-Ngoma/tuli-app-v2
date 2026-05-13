@@ -536,7 +536,7 @@ async def update_logo(seller_id: int, file: UploadFile = File(...)):
 def root():
     return {
         "message": "TULI API is running",
-        "commit": "3bd419f",
+        "commit": os.getenv("GIT_COMMIT", "6f9e0a6"),
         "drivers": "available",
         "notes": "Deploy this commit to enable driver endpoints"
     }
