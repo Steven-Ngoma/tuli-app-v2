@@ -74,6 +74,7 @@ const Marketplace = () => {
   const [orderForm, setOrderForm] = useState({ buyer_name: '', delivery_address: '', delivery_time: '' });
   const [ordering, setOrdering] = useState(false);
   const [orderDone, setOrderDone] = useState(false);
+  const [placedOrderId, setPlacedOrderId] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -109,7 +110,7 @@ const Marketplace = () => {
     try {
       const { product, qty } = orderModal;
       const note = `Qty: ${qty}` + (orderForm.delivery_time ? ` | Delivery time: ${orderForm.delivery_time}` : '');
-      await fetch(`${API}/orders`, {
+      const res = await fetch(`${API}/orders`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -121,8 +122,10 @@ const Marketplace = () => {
           delivery_address: orderForm.delivery_address + ' | ' + note,
         })
       });
+      const data = await res.json();
       localStorage.setItem('buyer_name', orderForm.buyer_name);
       setQuantities(q => ({ ...q, [product.id]: 0 }));
+      setPlacedOrderId(data?.id || null);
       setOrderDone(true);
     } catch { } finally { setOrdering(false); }
   };
@@ -156,7 +159,14 @@ const Marketplace = () => {
                 <div style={{ fontSize: '3rem', marginBottom: '12px' }}>✅</div>
                 <h3 style={{ color: '#1B4332', marginBottom: '8px' }}>Order Placed!</h3>
                 <p style={{ color: '#666', fontSize: '0.9rem', marginBottom: '20px' }}>The seller has been notified and will confirm your order shortly.</p>
-                <button onClick={() => setOrderModal(null)} className="btn-primary" style={{ width: '100%' }}>Done</button>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                  {placedOrderId && (
+                    <button onClick={() => { setOrderModal(null); navigate(`/track/${placedOrderId}`); }} className="btn-primary" style={{ width: '100%' }}>
+                      📍 Track My Order
+                    </button>
+                  )}
+                  <button onClick={() => setOrderModal(null)} style={{ width: '100%', background: 'transparent', border: '1px solid #ccc', borderRadius: '40px', padding: '12px', color: '#666', cursor: 'pointer', fontWeight: 600 }}>Done</button>
+                </div>
               </div>
             ) : (
               <>

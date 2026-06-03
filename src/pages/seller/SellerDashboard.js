@@ -307,7 +307,7 @@ const SellerDashboard = () => {
         })()}
 
         {/* Tabs */}
-        <div style={{ display: 'flex', gap: '12px', marginBottom: '28px' }}>
+        <div style={{ display: 'flex', gap: '12px', marginBottom: '28px', flexWrap: 'wrap' }}>
           <button onClick={() => setTab('listings')} className={tab === 'listings' ? 'btn-primary' : 'btn-outline'}>
             {seller.shop_type === 'service' ? '🍽️ My Menu' : '📦 My Listings'}
           </button>
@@ -324,6 +324,9 @@ const SellerDashboard = () => {
                 {unreadCount}
               </span>
             )}
+          </button>
+          <button onClick={() => navigate('/seller/track')} className="btn-outline" style={{ borderColor: '#27AE60', color: '#27AE60' }}>
+            🗺️ Track Drivers
           </button>
         </div>
 

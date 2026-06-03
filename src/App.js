@@ -12,6 +12,7 @@ import Marketplace from './pages/Marketplace';
 import SellerRegister from './pages/seller/SellerRegister';
 import SellerLogin from './pages/seller/SellerLogin';
 import SellerDashboard from './pages/seller/SellerDashboard';
+import SellerTrackMap from './pages/seller/SellerTrackMap';
 import Chat from './pages/Chat';
 import BuyerChats from './pages/BuyerChats';
 import Services from './pages/Services';
@@ -20,6 +21,8 @@ import ShopPage from './pages/ShopPage';
 import DriverRegister from './pages/driver/DriverRegister';
 import DriverLogin from './pages/driver/DriverLogin';
 import DriverDashboard from './pages/driver/DriverDashboard';
+import DriverMap from './pages/driver/DriverMap';
+import TrackOrder from './pages/TrackOrder';
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -112,11 +115,14 @@ function App() {
           <Route path="/seller/register" element={<SellerRegister />} />
           <Route path="/seller/login" element={<SellerLogin />} />
           <Route path="/seller/dashboard" element={<SellerDashboard />} />
+          <Route path="/seller/track" element={<SellerTrackMap />} />
           <Route path="/chat/:sellerId/:productId" element={<Chat />} />
           <Route path="/buyer/chats" element={<BuyerChats />} />
           <Route path="/driver/register" element={<DriverRegister />} />
           <Route path="/driver/login" element={<DriverLogin />} />
           <Route path="/driver/dashboard" element={<DriverDashboard />} />
+          <Route path="/driver/map" element={<DriverMap />} />
+          <Route path="/track/:orderId" element={<TrackOrder />} />
         </Routes>
       </Layout>
     </BrowserRouter>

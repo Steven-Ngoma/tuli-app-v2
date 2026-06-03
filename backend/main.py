@@ -68,9 +68,13 @@ def init_db():
             vehicle TEXT DEFAULT 'Motorbike',
             password TEXT NOT NULL,
             online INTEGER DEFAULT 0,
+            current_lat REAL,
+            current_lng REAL,
             last_seen TIMESTAMP,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );
+        ALTER TABLE drivers ADD COLUMN IF NOT EXISTS current_lat REAL;
+        ALTER TABLE drivers ADD COLUMN IF NOT EXISTS current_lng REAL;
         ALTER TABLE orders ADD COLUMN IF NOT EXISTS driver_id INTEGER REFERENCES drivers(id);
         ALTER TABLE orders ADD COLUMN IF NOT EXISTS driver_status TEXT DEFAULT 'pending';
         CREATE TABLE IF NOT EXISTS products (
@@ -227,7 +231,29 @@ def ping_seller(seller_id: int):
     conn.close()
     return {"status": "ok"}
 
-@app.get("/sellers/{seller_id}/status")
+@app.get("/sellers/{seller_id}/active-deliveries")
+def get_seller_active_deliveries(seller_id: int):
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT o.id, o.buyer_name, o.delivery_address, o.driver_status, o.final_price,
+               p.name as product_name,
+               d.id as driver_id, d.name as driver_name, d.vehicle,
+               d.current_lat, d.current_lng, d.last_seen,
+               s.seller_lat, s.seller_lng, s.shop_name
+        FROM orders o
+        JOIN products p ON o.product_id = p.id
+        JOIN sellers s ON o.seller_id = s.id
+        LEFT JOIN drivers d ON o.driver_id = d.id
+        WHERE o.seller_id = %s
+        AND o.driver_status IN ('accepted', 'picked_up')
+        ORDER BY o.created_at DESC
+    """, (seller_id,))
+    rows = fetchall(cur)
+    cur.close(); conn.close()
+    return rows
+
+
 def seller_status(seller_id: int):
     conn = get_db()
     cur = conn.cursor()
@@ -581,6 +607,32 @@ def ping_driver(driver_id: int):
     cur.execute("UPDATE drivers SET last_seen = CURRENT_TIMESTAMP, online = 1 WHERE id = %s", (driver_id,))
     conn.commit(); cur.close(); conn.close()
     return {"status": "ok"}
+
+@app.post("/drivers/{driver_id}/location")
+def update_driver_location(driver_id: int, lat: float, lng: float):
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute("UPDATE drivers SET last_seen = CURRENT_TIMESTAMP, online = 1, current_lat = %s, current_lng = %s WHERE id = %s", (lat, lng, driver_id))
+    conn.commit(); cur.close(); conn.close()
+    return {"status": "ok"}
+
+@app.get("/orders/{order_id}/tracking")
+def get_order_tracking(order_id: int):
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT o.id, o.driver_status, o.delivery_address, o.buyer_name,
+               d.id as driver_id, d.name as driver_name, d.vehicle,
+               d.current_lat, d.current_lng, d.last_seen
+        FROM orders o
+        LEFT JOIN drivers d ON o.driver_id = d.id
+        WHERE o.id = %s
+    """, (order_id,))
+    row = fetchone(cur)
+    cur.close(); conn.close()
+    if not row:
+        raise HTTPException(status_code=404, detail="Order not found")
+    return row
 
 @app.patch("/drivers/{driver_id}/status")
 def update_driver_status(driver_id: int, data: DriverStatusUpdate):

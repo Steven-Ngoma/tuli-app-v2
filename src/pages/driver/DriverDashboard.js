@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { API } from '../../api';
 
-const API = 'https://tuli-backend-44vd.onrender.com';
-
+const MAPBOX_TOKEN = process.env.REACT_APP_MAPBOX_TOKEN || '';
 const STATUS_COLORS = { pending: '#F39C12', accepted: '#3498DB', picked_up: '#9B59B6', delivered: '#27AE60', cancelled: '#E74C3C' };
 
 const DriverDashboard = () => {
@@ -36,6 +36,54 @@ const DriverDashboard = () => {
     finally { setLoading(false); }
   };
 
+  const parseLatLng = (value = '') => {
+    const match = value.trim().match(/^(-?\d+(?:\.\d+)?),\s*(-?\d+(?:\.\d+)?)$/);
+    if (!match) return null;
+    return { lat: parseFloat(match[1]), lng: parseFloat(match[2]) };
+  };
+
+  const normalizeDestination = (value = '') => value.replace(/[-_|]/g, ' ').replace(/\s+/g, ' ').trim();
+
+  const resolveOpenStreetCoords = async (destination) => {
+    const normalizedDestination = normalizeDestination(destination);
+    if (!normalizedDestination) return null;
+    try {
+      const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(normalizedDestination)}&format=json&limit=1`;
+      const res = await fetch(url, { headers: { 'Accept-Language': 'en' } });
+      const data = await res.json();
+      if (data?.length > 0) {
+        return { lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon) };
+      }
+    } catch (err) {
+      console.warn('OpenStreetMap geocoding failed:', err);
+    }
+    return null;
+  };
+
+  const resolveDestinationCoords = async (destination) => {
+    const parsed = parseLatLng(destination);
+    if (parsed) return parsed;
+
+    const normalizedDestination = normalizeDestination(destination);
+    if (!normalizedDestination) return null;
+
+    if (MAPBOX_TOKEN && MAPBOX_TOKEN !== 'REPLACE_ME') {
+      try {
+        const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(normalizedDestination)}.json?access_token=${MAPBOX_TOKEN}&limit=1&country=zm`;
+        const res = await fetch(url);
+        const data = await res.json();
+        if (data.features?.length > 0) {
+          const [lng, lat] = data.features[0].center;
+          return { lat, lng };
+        }
+      } catch (err) {
+        console.warn('Mapbox geocoding failed:', err);
+      }
+    }
+
+    return resolveOpenStreetCoords(normalizedDestination);
+  };
+
   const acceptOrder = async (orderId) => {
     await fetch(`${API}/drivers/${driver.id}/accept/${orderId}`, { method: 'POST' });
     fetchData();
@@ -49,6 +97,38 @@ const DriverDashboard = () => {
       body: JSON.stringify({ status })
     });
     fetchData();
+  };
+
+  const buildMapState = (order, destinationCoords) => {
+    const destination = order.driver_status === 'accepted'
+      ? order.seller_address || order.delivery_address
+      : order.delivery_address;
+
+    return {
+      order,
+      destination,
+      destinationCoords,
+      destinationLabel: order.driver_status === 'accepted' ? 'Pickup from Seller' : 'Delivery to Buyer',
+      orderLabel: `${order.buyer_name || 'Buyer'} • ${order.shop_name || 'Shop'}`,
+    };
+  };
+
+  const goToMap = async (order) => {
+    const destination = order.driver_status === 'accepted'
+      ? order.seller_address || order.delivery_address
+      : order.delivery_address;
+
+    const destinationCoords = (order.driver_status === 'accepted' && order.seller_lat && order.seller_lng)
+      ? { lat: order.seller_lat, lng: order.seller_lng }
+      : await resolveDestinationCoords(destination);
+
+    navigate('/driver/map', { state: buildMapState(order, destinationCoords) });
+  };
+
+  const formatAddress = (address = '') => {
+    if (!address) return 'No address available';
+    const parts = address.split(',').map(part => part.trim()).filter(Boolean);
+    return parts.slice(0, 2).join(', ');
   };
 
   const toggleOnline = async () => {
@@ -138,10 +218,16 @@ const DriverDashboard = () => {
                   <span style={{ background: '#27AE6020', color: '#27AE60', borderRadius: '20px', padding: '4px 10px', fontSize: '0.72rem', fontWeight: 700 }}>K20 fee</span>
                 </div>
                 <p style={{ color: '#9BB7D4', fontSize: '0.82rem', marginBottom: '4px' }}>👤 {order.buyer_name}</p>
-                <p style={{ color: '#9BB7D4', fontSize: '0.82rem', marginBottom: '12px' }}>📍 {order.delivery_address}</p>
-                <button onClick={() => acceptOrder(order.id)} className="btn-primary" style={{ width: '100%', fontSize: '0.88rem', padding: '10px' }}>
-                  Accept Delivery →
-                </button>
+                <p style={{ color: '#9BB7D4', fontSize: '0.82rem', marginBottom: '4px' }}>📍 {formatAddress(order.delivery_address)}</p>
+                <p style={{ color: '#9BB7D4', fontSize: '0.72rem', marginBottom: '12px' }}>Tap the map button for full directions.</p>
+                <div style={{ display: 'flex', gap: '8px' }}>
+                  <button onClick={() => acceptOrder(order.id)} className="btn-primary" style={{ flex: 1, fontSize: '0.88rem', padding: '10px' }}>
+                    Accept Delivery →
+                  </button>
+                  <button type="button" onClick={() => goToMap(order)} style={{ flex: 1, fontSize: '0.88rem', padding: '10px', borderRadius: '18px', border: '1px solid #27AE60', background: '#1B4332', color: '#27AE60', cursor: 'pointer' }}>
+                    Map
+                  </button>
+                </div>
               </div>
             ))}
           </>
@@ -164,15 +250,19 @@ const DriverDashboard = () => {
                   </span>
                 </div>
                 <p style={{ color: '#9BB7D4', fontSize: '0.82rem', marginBottom: '4px' }}>👤 {order.buyer_name}</p>
-                <p style={{ color: '#9BB7D4', fontSize: '0.82rem', marginBottom: '12px' }}>📍 {order.delivery_address}</p>
-                <div style={{ display: 'flex', gap: '8px' }}>
+                <p style={{ color: '#9BB7D4', fontSize: '0.82rem', marginBottom: '4px' }}>📍 {formatAddress(order.delivery_address)}</p>
+                <p style={{ color: '#9BB7D4', fontSize: '0.72rem', marginBottom: '12px' }}>Tap the map button for full directions.</p>
+                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                  <button type="button" onClick={() => goToMap(order)} style={{ flex: '1 1 150px', width: '100%', fontSize: '0.88rem', padding: '8px', borderRadius: '20px', border: '1px solid #27AE60', background: '#1B4332', color: '#27AE60', cursor: 'pointer' }}>
+                    🗺️ Map
+                  </button>
                   {order.driver_status === 'accepted' && (
-                    <button onClick={() => updateStatus(order.id, 'picked_up')} style={{ flex: 1, background: '#9B59B6', color: 'white', border: 'none', borderRadius: '20px', padding: '8px', fontWeight: 700, fontSize: '0.82rem', cursor: 'pointer' }}>
+                    <button onClick={() => updateStatus(order.id, 'picked_up')} style={{ flex: '1 1 150px', background: '#9B59B6', color: 'white', border: 'none', borderRadius: '20px', padding: '8px', fontWeight: 700, fontSize: '0.82rem', cursor: 'pointer' }}>
                       📦 Picked Up
                     </button>
                   )}
                   {order.driver_status === 'picked_up' && (
-                    <button onClick={() => updateStatus(order.id, 'delivered')} style={{ flex: 1, background: '#27AE60', color: 'white', border: 'none', borderRadius: '20px', padding: '8px', fontWeight: 700, fontSize: '0.82rem', cursor: 'pointer' }}>
+                    <button onClick={() => updateStatus(order.id, 'delivered')} style={{ flex: '1 1 150px', background: '#27AE60', color: 'white', border: 'none', borderRadius: '20px', padding: '8px', fontWeight: 700, fontSize: '0.82rem', cursor: 'pointer' }}>
                       ✅ Mark Delivered
                     </button>
                   )}

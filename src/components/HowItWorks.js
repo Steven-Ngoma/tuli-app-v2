@@ -4,7 +4,7 @@ const steps = [
   { num: 1, title: 'Register as a seller', desc: 'Create your free seller account on TULI and set up your shop in minutes.' },
   { num: 2, title: 'List your products', desc: 'Add your products with photos, price and location directly from your dashboard.' },
   { num: 3, title: 'Buyer chats with you', desc: 'Interested buyers contact you directly through TULI chat.' },
-  { num: 4, title: 'You sell, we take 5%', desc: 'Close the deal on TULI. After the sale, send TULI a 5% commission via MoMo or Airtel Money.' },
+  { num: 4, title: 'Market produce sellers sell free', desc: 'Market produce sellers can sell on TULI with zero commission, making every sale fully theirs.' },
 ];
 
 const HowItWorks = () => (

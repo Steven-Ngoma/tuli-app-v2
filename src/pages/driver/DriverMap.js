@@ -87,6 +87,7 @@ const DriverMap = () => {
   const location = useLocation();
   const ls = location.state || {};
   const order = ls.order || null;
+  const driver = JSON.parse(localStorage.getItem('driver') || 'null');
 
   const mapRef = useRef(null);
   const markerRef = useRef(null);
@@ -179,6 +180,11 @@ const DriverMap = () => {
         if (typeof h === 'number' && !isNaN(h)) setHeading(h);
         else if (prevPosRef.current) setHeading(getBearing(prevPosRef.current.lat, prevPosRef.current.lng, lat, lng));
         prevPosRef.current = next;
+        // Broadcast location to backend so buyers can track
+        if (order?.driver_id || driver?.id) {
+          const dId = order?.driver_id || driver?.id;
+          fetch(`https://tuli-backend-44vd.onrender.com/drivers/${dId}/location?lat=${lat}&lng=${lng}`, { method: 'POST' }).catch(() => {});
+        }
       },
       () => {
         setMessage('GPS blocked — using seller location as start.');

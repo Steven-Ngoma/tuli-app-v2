@@ -37,7 +37,7 @@ const Units = () => (
             <li>✅ Fruits & leafy greens</li>
             <li>✅ Buyers order via TULI chat</li>
             <li>✅ No monthly fee — ever</li>
-            <li>✅ 5% commission per sale only</li>
+            <li>✅ 0% commission per sale</li>
           </ul>
           <Link to="/marketplace" className="btn-primary" style={{ marginTop: '12px' }}>
             Browse Market →

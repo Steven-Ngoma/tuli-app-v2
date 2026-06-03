@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
-const API = 'https://tuli-backend-44vd.onrender.com';
+import { API } from '../../api';
 
 const DriverLogin = () => {
   const navigate = useNavigate();

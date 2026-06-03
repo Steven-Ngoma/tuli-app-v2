@@ -1,10 +1,10 @@
+import { API } from './api';
+
 // This runs in the background and pings the backend every 14 minutes
 // to prevent Render free tier from sleeping
 
-const BACKEND = 'https://tuli-backend-44vd.onrender.com';
-
 const keepAlive = () => {
-  fetch(`${BACKEND}/`)
+  fetch(`${API}/`)
     .then(() => console.log('Backend kept alive'))
     .catch(() => {});
 };

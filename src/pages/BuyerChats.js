@@ -260,6 +260,7 @@ const BuyerChats = () => {
 
 const BuyerOrders = ({ buyerName }) => {
   const [orders, setOrders] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const load = () => fetch(`https://tuli-backend-44vd.onrender.com/orders/buyer/${encodeURIComponent(buyerName)}`)
@@ -270,12 +271,13 @@ const BuyerOrders = ({ buyerName }) => {
   }, [buyerName]);
 
   const statusColors = { pending: '#F39C12', confirmed: '#3498DB', delivered: '#27AE60', cancelled: '#E74C3C' };
+  const trackableStatuses = ['confirmed', 'accepted', 'picked_up'];
 
   if (orders.length === 0) return (
     <div style={{ textAlign: 'center', padding: '60px 0', color: '#4A6080' }}>
       <div style={{ fontSize: '3rem', marginBottom: '12px' }}>🛒</div>
       <p>No orders yet.</p>
-      <p style={{ fontSize: '0.85rem', marginTop: '8px' }}>Place an order from a chat to see it here.</p>
+      <p style={{ fontSize: '0.85rem', marginTop: '8px' }}>Place an order to see it here.</p>
     </div>
   );
 
@@ -287,17 +289,27 @@ const BuyerOrders = ({ buyerName }) => {
             <div>
               <div style={{ color: '#FFD966', fontWeight: 700 }}>{o.product_name}</div>
               <div style={{ color: '#9BB7D4', fontSize: '0.82rem', marginTop: '2px' }}>🏪 {o.shop_name}</div>
-              {o.delivery_address && <div style={{ color: '#9BB7D4', fontSize: '0.82rem', marginTop: '2px' }}>📍 {o.delivery_address}</div>}
+              {o.delivery_address && <div style={{ color: '#9BB7D4', fontSize: '0.82rem', marginTop: '2px' }}>📍 {o.delivery_address.split('|')[0].trim()}</div>}
             </div>
-            <span style={{ background: statusColors[o.status] + '30', color: statusColors[o.status], borderRadius: '20px', padding: '4px 12px', fontSize: '0.75rem', fontWeight: 700, textTransform: 'capitalize' }}>
+            <span style={{ background: (statusColors[o.status] || '#244C66') + '30', color: statusColors[o.status] || '#9BB7D4', borderRadius: '20px', padding: '4px 12px', fontSize: '0.75rem', fontWeight: 700, textTransform: 'capitalize' }}>
               {o.status}
             </span>
           </div>
-          <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
             <div style={{ background: '#1B4332', borderRadius: '12px', padding: '8px 14px' }}>
-              <div style={{ color: '#4A6080', fontSize: '0.7rem' }}>Agreed Price</div>
+              <div style={{ color: '#4A6080', fontSize: '0.7rem' }}>Price</div>
               <div style={{ color: '#27AE60', fontWeight: 700 }}>{o.final_price}</div>
             </div>
+            {trackableStatuses.includes(o.status) && (
+              <button
+                onClick={() => navigate(`/track/${o.id}`)}
+                style={{ background: '#27AE60', color: '#fff', border: 'none', borderRadius: '20px', padding: '8px 18px', fontWeight: 700, fontSize: '0.82rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                📍 Track Order
+              </button>
+            )}
+            {o.status === 'delivered' && (
+              <span style={{ color: '#27AE60', fontSize: '0.82rem', fontWeight: 700 }}>✅ Delivered</span>
+            )}
             <div style={{ color: '#4A6080', fontSize: '0.75rem', marginLeft: 'auto' }}>{new Date(o.created_at).toLocaleDateString()}</div>
           </div>
         </div>

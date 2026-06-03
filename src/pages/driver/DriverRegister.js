@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
-const API = 'https://tuli-backend-44vd.onrender.com';
+import { API } from '../../api';
 
 const ZONES = [
   'Lusaka CBD', 'Chilenje', 'Kabulonga', 'Woodlands', 'Kalingalinga',
@@ -61,7 +60,7 @@ const DriverRegister = () => {
             style={{ padding: '12px 16px', borderRadius: '40px', border: '1px solid #244C66', background: '#1B4332', color: '#EFF3F8', fontSize: '0.95rem' }}>
             <option value="Motorbike">🏍️ Motorbike</option>
             <option value="Bicycle">🚲 Bicycle</option>
-            <option value="Car">🚗 Car</option>
+            <option value="Human">🚶 Human (low delivery fee)</option>
           </select>
           <input placeholder="Create password" type="password" value={form.password} onChange={e => setForm({ ...form, password: e.target.value })} required
             style={{ padding: '12px 16px', borderRadius: '40px', border: '1px solid #244C66', background: '#1B4332', color: '#EFF3F8', fontSize: '0.95rem', outline: 'none' }} />
