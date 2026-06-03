@@ -10,3 +10,5 @@ services:
         value: postgresql://postgres.uzozmzfwymidsnoksihf:Tuli%40Zambia2025!@aws-1-eu-west-1.pooler.supabase.com:5432/postgres
       - key: PYTHON_VERSION
         value: 3.11.9
+      - key: DEPLOY_VERSION
+        value: "4"
