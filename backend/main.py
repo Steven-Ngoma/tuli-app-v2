@@ -10,7 +10,8 @@ import cloudinary
 import cloudinary.uploader
 from dotenv import load_dotenv
 
-load_dotenv()
+env_path = os.path.join(os.path.dirname(__file__), '.env')
+load_dotenv(env_path)
 
 app = FastAPI(title="TULI API")
 
@@ -47,6 +48,8 @@ def init_db():
             phone TEXT UNIQUE NOT NULL,
             email TEXT,
             location TEXT NOT NULL,
+            seller_lat REAL,
+            seller_lng REAL,
             password TEXT NOT NULL,
             shop_type TEXT DEFAULT 'product',
             subscription_expires TIMESTAMP,
@@ -54,6 +57,8 @@ def init_db():
             logo_url TEXT,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );
+        ALTER TABLE sellers ADD COLUMN IF NOT EXISTS seller_lat REAL;
+        ALTER TABLE sellers ADD COLUMN IF NOT EXISTS seller_lng REAL;
         ALTER TABLE sellers ADD COLUMN IF NOT EXISTS logo_url TEXT;
         CREATE TABLE IF NOT EXISTS drivers (
             id SERIAL PRIMARY KEY,
@@ -122,6 +127,8 @@ class SellerRegister(BaseModel):
     phone: str
     email: Optional[str] = None
     location: str
+    seller_lat: Optional[float] = None
+    seller_lng: Optional[float] = None
     password: str
     shop_type: str = 'product'
 
@@ -248,8 +255,8 @@ def register_seller(data: SellerRegister):
     if data.shop_type == 'service':
         sub_expires = datetime.utcnow() + timedelta(days=30)
     cur.execute(
-        "INSERT INTO sellers (name, shop_name, phone, email, location, password, shop_type, subscription_expires) VALUES (%s,%s,%s,%s,%s,%s,%s,%s) RETURNING id, name, shop_name, phone, location, shop_type, subscription_expires, logo_url",
-        (data.name, data.shop_name, data.phone, data.email, data.location, hash_password(data.password), data.shop_type, sub_expires)
+        "INSERT INTO sellers (name, shop_name, phone, email, location, seller_lat, seller_lng, password, shop_type, subscription_expires) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) RETURNING id, name, shop_name, phone, location, seller_lat, seller_lng, shop_type, subscription_expires, logo_url",
+        (data.name, data.shop_name, data.phone, data.email, data.location, data.seller_lat, data.seller_lng, hash_password(data.password), data.shop_type, sub_expires)
     )
     seller = fetchone(cur)
     conn.commit()
@@ -262,7 +269,7 @@ def login_seller(data: SellerLogin):
     conn = get_db()
     cur = conn.cursor()
     cur.execute(
-        "SELECT id, name, shop_name, phone, location, shop_type, subscription_expires, logo_url FROM sellers WHERE phone = %s AND password = %s",
+        "SELECT id, name, shop_name, phone, location, seller_lat, seller_lng, shop_type, subscription_expires, logo_url FROM sellers WHERE phone = %s AND password = %s",
         (data.phone, hash_password(data.password))
     )
     seller = fetchone(cur)
@@ -418,10 +425,6 @@ def update_seller_logo(seller_id: int, logo_url: str):
     conn.close()
     return {"status": "updated"}
 
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
-
 # ── Restaurant Routes ─────────────────────────────────────────────────────────
 
 @app.get("/restaurants")
@@ -429,7 +432,7 @@ def get_restaurants():
     conn = get_db()
     cur = conn.cursor()
     cur.execute("""
-        SELECT s.id, s.shop_name, s.location, s.last_seen, s.logo_url,
+        SELECT s.id, s.shop_name, s.location, s.seller_lat, s.seller_lng, s.last_seen, s.logo_url,
                COUNT(p.id) as item_count,
                MAX(p.image_url) as cover_image
         FROM sellers s
@@ -446,7 +449,7 @@ def get_restaurants():
 def get_menu(seller_id: int):
     conn = get_db()
     cur = conn.cursor()
-    cur.execute("SELECT id, shop_name, location, last_seen, logo_url FROM sellers WHERE id = %s", (seller_id,))
+    cur.execute("SELECT id, shop_name, location, seller_lat, seller_lng, last_seen, logo_url FROM sellers WHERE id = %s", (seller_id,))
     seller = fetchone(cur)
     if not seller:
         raise HTTPException(status_code=404, detail="Restaurant not found")
@@ -481,7 +484,7 @@ def get_shops():
     conn = get_db()
     cur = conn.cursor()
     cur.execute("""
-        SELECT s.id, s.shop_name, s.location, s.last_seen, s.logo_url,
+        SELECT s.id, s.shop_name, s.location, s.seller_lat, s.seller_lng, s.last_seen, s.logo_url,
                COUNT(p.id) as product_count,
                MAX(p.image_url) as cover_image
         FROM sellers s
@@ -498,7 +501,7 @@ def get_shops():
 def get_shop(seller_id: int):
     conn = get_db()
     cur = conn.cursor()
-    cur.execute("SELECT id, shop_name, location, last_seen, logo_url FROM sellers WHERE id = %s", (seller_id,))
+    cur.execute("SELECT id, shop_name, location, seller_lat, seller_lng, last_seen, logo_url FROM sellers WHERE id = %s", (seller_id,))
     seller = fetchone(cur)
     if not seller:
         raise HTTPException(status_code=404, detail="Shop not found")
@@ -592,7 +595,7 @@ def get_available_orders():
     conn = get_db()
     cur = conn.cursor()
     cur.execute("""
-        SELECT o.*, p.name as product_name, s.shop_name, s.location as shop_location
+        SELECT o.*, p.name as product_name, s.shop_name, s.location as seller_address, s.seller_lat as seller_lat, s.seller_lng as seller_lng
         FROM orders o
         JOIN products p ON o.product_id = p.id
         JOIN sellers s ON o.seller_id = s.id
@@ -616,7 +619,7 @@ def get_driver_deliveries(driver_id: int):
     conn = get_db()
     cur = conn.cursor()
     cur.execute("""
-        SELECT o.*, p.name as product_name, s.shop_name
+        SELECT o.*, p.name as product_name, s.shop_name, s.location as seller_address, s.seller_lat as seller_lat, s.seller_lng as seller_lng
         FROM orders o
         JOIN products p ON o.product_id = p.id
         JOIN sellers s ON o.seller_id = s.id
@@ -753,5 +756,9 @@ def get_seller_chats(seller_id: int):
     cur.close()
     conn.close()
     return rows
-# redeploy  
+# redeploy-v2-driver-routes
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)  
 
