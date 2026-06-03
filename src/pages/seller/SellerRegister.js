@@ -1,24 +1,144 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import mapboxgl from 'mapbox-gl';
+import 'mapbox-gl/dist/mapbox-gl.css';
+import { API } from '../../api';
+
+const MAPBOX_TOKEN = process.env.REACT_APP_MAPBOX_TOKEN || '';
+const HAS_MAPBOX = MAPBOX_TOKEN && MAPBOX_TOKEN !== 'REPLACE_ME';
 
 const SellerRegister = () => {
   const navigate = useNavigate();
   const [shopType, setShopType] = useState('');
   const [form, setForm] = useState({ name: '', shop_name: '', phone: '', email: '', location: '', password: '' });
+  const [coords, setCoords] = useState(null);
+  const [locationFetching, setLocationFetching] = useState(false);
+  const [locationError, setLocationError] = useState('');
+  const [autoLocationRequested, setAutoLocationRequested] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const mapContainerRef = useRef(null);
+  const mapRef = useRef(null);
+  const markerRef = useRef(null);
 
   const handleChange = e => setForm({ ...form, [e.target.name]: e.target.value });
+
+  const requestCurrentLocation = () => {
+    if (!navigator.geolocation) {
+      setLocationError('Geolocation is not supported by your browser.');
+      console.error('Geolocation not supported');
+      return;
+    }
+    setLocationError('');
+    setLocationFetching(true);
+    console.log('Requesting geolocation...');
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const locationCoords = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        };
+        console.log('Geolocation success:', locationCoords);
+        setCoords(locationCoords);
+        setForm((prev) => ({
+          ...prev,
+          location: prev.location || `Your current location (${locationCoords.lat.toFixed(5)}, ${locationCoords.lng.toFixed(5)})`,
+        }));
+        setLocationFetching(false);
+      },
+      (err) => {
+        console.error('Geolocation error:', err.code, err.message);
+        setLocationError(`Unable to access location (${err.code}). Please allow location access or enter coordinates manually.`);
+        setLocationFetching(false);
+      },
+      { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
+    );
+  };
+
+  const handleManualCoordinates = (lat, lng) => {
+    const locationCoords = { lat: parseFloat(lat), lng: parseFloat(lng) };
+    setCoords(locationCoords);
+    setForm((prev) => ({
+      ...prev,
+      location: prev.location || `Location (${lat}, ${lng})`,
+    }));
+  };
+
+  const setMapCoords = (lat, lng) => {
+    const locationCoords = { lat, lng };
+    setCoords(locationCoords);
+    setForm((prev) => ({ ...prev, location: prev.location || `Your shop location (${lat.toFixed(5)}, ${lng.toFixed(5)})` }));
+  };
+
+  useEffect(() => {
+    if (shopType && !coords && !autoLocationRequested) {
+      setAutoLocationRequested(true);
+      requestCurrentLocation();
+    }
+  }, [shopType, coords, autoLocationRequested]);
+
+  // Init Mapbox map after shopType is chosen and GPS is ready
+  useEffect(() => {
+    if (!shopType || mapRef.current) return;
+    const center = coords ? [coords.lng, coords.lat] : [28.3228, -15.3875];
+
+    if (HAS_MAPBOX) mapboxgl.accessToken = MAPBOX_TOKEN;
+
+    const map = new mapboxgl.Map({
+      container: mapContainerRef.current,
+      style: HAS_MAPBOX ? 'mapbox://styles/mapbox/streets-v12' : 'https://demotiles.maplibre.org/style.json',
+      center,
+      zoom: 15,
+    });
+
+    map.addControl(new mapboxgl.NavigationControl(), 'top-right');
+
+    const el = document.createElement('div');
+    el.style.cssText = 'width:36px;height:36px;background:#E74C3C;border:3px solid #fff;border-radius:50% 50% 50% 0;transform:rotate(-45deg);box-shadow:0 2px 8px rgba(0,0,0,0.4);cursor:grab';
+
+    const marker = new mapboxgl.Marker({ element: el, draggable: true, anchor: 'bottom' })
+      .setLngLat(center)
+      .addTo(map);
+
+    marker.on('dragend', () => {
+      const { lng, lat } = marker.getLngLat();
+      setMapCoords(lat, lng);
+    });
+
+    map.on('click', (e) => {
+      const { lng, lat } = e.lngLat;
+      marker.setLngLat([lng, lat]);
+      setMapCoords(lat, lng);
+    });
+
+    markerRef.current = marker;
+    mapRef.current = map;
+
+    return () => { map.remove(); mapRef.current = null; markerRef.current = null; };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [shopType]);
+
+  // When GPS coords arrive, fly map to them and update marker
+  useEffect(() => {
+    if (!coords || !mapRef.current || !markerRef.current) return;
+    markerRef.current.setLngLat([coords.lng, coords.lat]);
+    mapRef.current.flyTo({ center: [coords.lng, coords.lat], zoom: 16, speed: 1.2 });
+  }, [coords]);
 
   const handleSubmit = async e => {
     e.preventDefault();
     setLoading(true);
     setError('');
     try {
-      const res = await fetch('https://tuli-backend-44vd.onrender.com/sellers/register', {
+      const res = await fetch(`${API}/sellers/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...form, shop_type: shopType })
+        body: JSON.stringify({
+          ...form,
+          shop_type: shopType,
+          seller_lat: coords?.lat,
+          seller_lng: coords?.lng,
+        }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.detail || 'Registration failed');
@@ -130,6 +250,33 @@ const SellerRegister = () => {
               style={{ padding: '14px 18px', borderRadius: '40px', border: '1px solid #244C66', background: '#1B4332', color: '#EFF3F8', fontSize: '0.95rem', outline: 'none' }}
             />
           ))}
+
+          {/* Real-time location map */}
+          <div style={{ borderRadius: '20px', overflow: 'hidden', border: '2px solid #27AE60', marginTop: '4px' }}>
+            <div style={{ background: '#0F2A3D', padding: '8px 14px', fontSize: '0.8rem', color: '#9BB7D4' }}>
+              📍 Tap the map or drag the red pin to set your shop's exact location
+            </div>
+            <div ref={mapContainerRef} style={{ height: '240px', width: '100%' }} />
+          </div>
+
+          <div style={{ display: 'grid', gap: '10px', alignItems: 'center', marginTop: '4px' }}>
+            <button
+              type="button"
+              onClick={requestCurrentLocation}
+              disabled={locationFetching}
+              style={{ padding: '12px 18px', borderRadius: '32px', border: '1px solid #27AE60', background: locationFetching ? '#244C66' : '#27AE60', color: locationFetching ? '#A3C4D9' : '#102433', cursor: 'pointer', fontWeight: 700 }}
+            >
+              {locationFetching ? 'Getting current location…' : '📡 Snap to my GPS location'}
+            </button>
+            {coords && (
+              <div style={{ color: '#27AE60', fontSize: '0.82rem', fontWeight: 700 }}>
+                ✓ Location pinned: {coords.lat.toFixed(5)}, {coords.lng.toFixed(5)}
+              </div>
+            )}
+            {locationError && (
+              <div style={{ color: '#FFBABA', fontSize: '0.82rem' }}>{locationError}</div>
+            )}
+          </div>
 
           <button type="submit" className="btn-primary" disabled={loading} style={{ marginTop: '8px' }}>
             {loading ? 'Creating shop...' : 'Open my shop →'}
