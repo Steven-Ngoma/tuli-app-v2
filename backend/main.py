@@ -825,7 +825,7 @@ def get_seller_chats(seller_id: int):
     cur.close()
     conn.close()
     return rows
-# redeploy-v2-driver-routes
+# redeploy-v3-fix-init-order-2025
 
 if __name__ == "__main__":
     import uvicorn
