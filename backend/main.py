@@ -40,6 +40,7 @@ def get_db():
 def init_db():
     conn = get_db()
     cur = conn.cursor()
+    # 1. sellers
     cur.execute("""
         CREATE TABLE IF NOT EXISTS sellers (
             id SERIAL PRIMARY KEY,
@@ -60,6 +61,9 @@ def init_db():
         ALTER TABLE sellers ADD COLUMN IF NOT EXISTS seller_lat REAL;
         ALTER TABLE sellers ADD COLUMN IF NOT EXISTS seller_lng REAL;
         ALTER TABLE sellers ADD COLUMN IF NOT EXISTS logo_url TEXT;
+    """)
+    # 2. drivers
+    cur.execute("""
         CREATE TABLE IF NOT EXISTS drivers (
             id SERIAL PRIMARY KEY,
             name TEXT NOT NULL,
@@ -75,8 +79,9 @@ def init_db():
         );
         ALTER TABLE drivers ADD COLUMN IF NOT EXISTS current_lat REAL;
         ALTER TABLE drivers ADD COLUMN IF NOT EXISTS current_lng REAL;
-        ALTER TABLE orders ADD COLUMN IF NOT EXISTS driver_id INTEGER REFERENCES drivers(id);
-        ALTER TABLE orders ADD COLUMN IF NOT EXISTS driver_status TEXT DEFAULT 'pending';
+    """)
+    # 3. products
+    cur.execute("""
         CREATE TABLE IF NOT EXISTS products (
             id SERIAL PRIMARY KEY,
             seller_id INTEGER NOT NULL REFERENCES sellers(id),
@@ -90,11 +95,17 @@ def init_db():
             active INTEGER DEFAULT 1,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );
+    """)
+    # 4. product_images
+    cur.execute("""
         CREATE TABLE IF NOT EXISTS product_images (
             id SERIAL PRIMARY KEY,
             product_id INTEGER NOT NULL REFERENCES products(id),
             url TEXT NOT NULL
         );
+    """)
+    # 5. messages
+    cur.execute("""
         CREATE TABLE IF NOT EXISTS messages (
             id SERIAL PRIMARY KEY,
             room_id TEXT NOT NULL,
@@ -105,6 +116,9 @@ def init_db():
             is_seller INTEGER DEFAULT 0,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );
+    """)
+    # 6. orders (after sellers, drivers, products exist)
+    cur.execute("""
         CREATE TABLE IF NOT EXISTS orders (
             id SERIAL PRIMARY KEY,
             product_id INTEGER NOT NULL REFERENCES products(id),
@@ -116,6 +130,8 @@ def init_db():
             status TEXT DEFAULT 'pending',
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );
+        ALTER TABLE orders ADD COLUMN IF NOT EXISTS driver_id INTEGER REFERENCES drivers(id);
+        ALTER TABLE orders ADD COLUMN IF NOT EXISTS driver_status TEXT DEFAULT 'pending';
     """)
     conn.commit()
     cur.close()
@@ -254,6 +270,7 @@ def get_seller_active_deliveries(seller_id: int):
     return rows
 
 
+@app.get("/sellers/{seller_id}/status")
 def seller_status(seller_id: int):
     conn = get_db()
     cur = conn.cursor()
